@@ -1,0 +1,15 @@
+{
+  "logger": {
+    "level": "info"
+  },
+  "services": {
+    "host": "0.0.0.0",
+    "port": "3000",
+    "path": "/services"
+  },
+  "gateway": {
+    "host": "gateway",
+    "port": "80",
+    "path": "/services"
+  }
+}
