@@ -1,6 +1,6 @@
 {
   "name": "micro-base",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Base framework to implement seneca based microservices.",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ncornag/micro-base.git"
+    "url": "https://ncornag@bitbucket.org/ncornag/micro-base.git"
   },
   "author": "Nicolás Cornaglia Schlieman",
   "license": "MIT",
