@@ -1,0 +1,29 @@
+{
+  "name": "micro-base",
+  "version": "1.0.1",
+  "description": "Base framework to implement seneca based microservices.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ncornag/micro-base.git"
+  },
+  "author": "Nicolás Cornaglia Schlieman",
+  "license": "MIT",
+  "dependencies": {
+    "apply-patch": "^0.1.2",
+    "bluebird": "^3.3.5",
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "express-winston": "^1.3.0",
+    "morgan": "^1.7.0",
+    "multer": "^1.1.0",
+    "nconf": "^0.8.4",
+    "replace": "^0.3.0",
+    "seneca": "^2.0.0",
+    "tv4": "^1.2.7",
+    "winston": "^2.2.0"
+  }
+}
