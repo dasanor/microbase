@@ -9,6 +9,7 @@ applyPatch(__dirname + '/http.patch');
 
 const Seneca = require('seneca');
 const Promise = require('bluebird');
+const tv4 = require('tv4');
 
 module.exports = function (base) {
 
@@ -64,21 +65,43 @@ module.exports = function (base) {
   };
 
   // Add operation method
-  service.add = function (pattern, fn) {
-    base.logger.info('[services] added service [%s][%s]', service.name, pattern.op);
-    seneca.add(pattern, fn);
+  service.add = function (op) {
+    base.logger.info('[services] added service [%s][%s]', service.name, op.pattern.op);
+    seneca.add(op.pattern, op.handler);
+    // Add validator
+    if (op.schema) {
+      seneca.add(op.pattern, function validator(msg, done) {
+        var result = tv4.validateResult(msg, op.schema);
+        console.log(result, msg, op.schema);
+        if (result.valid) {
+          this.prior(msg, done);
+        } else {
+          return done(null, {
+            error: {
+              code: 10,
+              msg: 'Validation error',
+              error: result.error, // TODO: Clean this
+              missing: result.missing
+            }
+          });
+        }
+      });
+    }
   };
 
   // Add all the operations inside a module
   service.addModule = function (module) {
     for (var op of module) {
-      service.add(op.pattern, op.handler);
+      service.add(op);
     }
   };
 
   // Add ping op
-  service.add({op: 'ping'}, function (msg, done) {
-    return done(null, {answer: 'pong'});
+  service.add({
+    pattern: { op: 'ping' },
+    handler: function (msg, done) {
+      return done(null, { answer: 'pong' });
+    }
   });
 
   return service;
