@@ -1,90 +1,120 @@
-'use strict';
+const Hapi = require('hapi');
+const Wreck = require('wreck');
 
-/**
- Patch the http transport to change the
- url endpoint to allow ngnix routing
- */
-const applyPatch = require("apply-patch").applyPatch;
-applyPatch(__dirname + '/http.patch');
-
-const Seneca = require('seneca');
-const Promise = require('bluebird');
-const tv4 = require('tv4');
+// TODO: Refactor to split the service and the transports
 
 module.exports = function (base) {
 
-  const seneca = Seneca({
-    default_plugins: {
-      cluster: false,
-      'mem-store': true,
-      repl: false,
-      web: false
+  const wreck = Wreck.defaults({
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     }
   });
-  
+
+  const gatewayHost = base.config.get('gateway:host');
+  const gatewayPort = base.config.get('gateway:port');
+  const gatewayBasePath = base.config.get('gateway:path');
+  const serviceBasePath = base.config.get('services:path');
+  const gatewayBaseUrl = `http://${gatewayHost}:${gatewayPort}`;
+
+  const getOperationUrl = (basePath, service, version, operation) =>
+     `${basePath}/${service}/${version}/${operation}`;
+  const getOperationFullName = (serviceName, serviceVersion, operationName) =>
+     `${serviceName}:${serviceVersion}:${operationName}`;
+  const splitOperationName = name => {
+    const s = name.split(':')
+    let serviceName, serviceVersion = 'v1', operationName;
+    if (s.length === 1) {
+      serviceName = operationName = s[0];
+    } else if (s.length === 2) {
+      serviceName = s[0];
+      operationName = s[1];
+    } else {
+      serviceName = s[0];
+      serviceVersion = s[1];
+      operationName = s[2];
+    }
+    return {serviceName, serviceVersion, operationName};
+  };
+
   const service = {
-    name: base.config.get("services:name"),
-    version: base.config.get("services:version"),
-    use: function (module) {
-      seneca.use(module);
-      return seneca;
-    }
+    name: base.config.get('services:name'),
+    version: base.config.get('services:version'),
+    operations: new Set()
   };
 
-  // Seneca server
-  seneca.logroute({
-    level: base.config.get('logger:level'),
-    handler: function () {
-      if (arguments[3] == 'act') {
-        base.logger.log(arguments[2], arguments[1], arguments[6], arguments[7], arguments[8], arguments[12]);
-      }
-    }
-  });
-  seneca.listen({
-    type: 'http',
+  const server = new Hapi.Server();
+  server.connection({
     host: base.config.get('services:host'),
-    port: base.config.get('services:port'),
-    path: base.config.get('services:path')
+    port: base.config.get('services:port')
   });
 
-  // Client
-  const client = seneca.client({
-    type: 'http',
-    host: base.config.get('gateway:host'),
-    port: base.config.get('gateway:port'),
-    path: base.config.get('gateway:path')
-  });
-
-  // Add call method with promises
-  const act = Promise.promisify(client.act, {context: client});
-  service.act = function (data) {
-    if (data.service.indexOf(':') == -1) {
-      data.service = data.service + ':v1';
-    }
-    return act(data);
-  };
-
-  // Add operation method
-  service.add = function (op) {
-    base.logger.info('[services] added service [%s][%s]', service.name, op.pattern.op);
-    seneca.add(op.pattern, op.handler);
-    // Add validator
-    if (op.schema) {
-      seneca.add(op.pattern, function validator(msg, done) {
-        var result = tv4.validateResult(msg, op.schema);
-        console.log(result, msg, op.schema);
-        if (result.valid) {
-          this.prior(msg, done);
-        } else {
-          return done(null, {
-            error: {
-              code: 10,
-              msg: 'Validation error',
-              error: result.error, // TODO: Clean this
-              missing: result.missing
-            }
-          });
+  server.register([
+    {
+      register: require('ratify'),
+      options: {}
+    }, {
+      register: require('good'),
+      options: {
+        ops: {
+          interval: 1000
+        },
+        reporters: {
+          console: [{
+            module: 'good-squeeze',
+            name: 'Squeeze',
+            args: [{log: '*', request: '*', response: '*'}]
+          }, {
+            module: 'good-console'
+          }, 'stdout']
         }
+      }
+    }], (err) => {
+    if (err) {
+      throw err; // something bad happened loading the plugin
+    }
+    server.start((err) => {
+      if (err) {
+        throw err;
+      }
+      base.logger.info(`[server-http] running at: [${server.info.uri}${base.config.get('services:path')}]`);
+    });
+  });
+
+  /*
+   base.services.call('cart:get', { id: cartId }).then(cart => {})
+   */
+  service.call = function (name, msg) {
+    let {serviceName, serviceVersion, operationName} = splitOperationName(name);
+    const operationFullName = getOperationFullName(serviceName, serviceVersion, operationName);
+    if (service.operations.has('operationFullName')) {
+      // Its a local service
+      const operationUrl = getOperationUrl(serviceBasePath, serviceName, serviceVersion, operationName);
+      return server.inject({
+        url: operationUrl,
+        payload: msg,
+        method: 'POST',
+      }).then(response => {
+        return new Promise(resolve => {
+          return resolve(response.result, response);
+        });
+      });
+    } else {
+      // It's a remote operation
+      return new Promise((resolve, reject) => {
+        const operationUrl = getOperationUrl(gatewayBasePath, serviceName, serviceVersion, operationName);
+        wreck.post(
+           `${gatewayBaseUrl}${operationUrl}`,
+           {
+             payload: JSON.stringify(msg),
+             json: 'smart'
+           },
+           (error, response, payload) => {
+             if (error) return reject(error);
+             return resolve(payload, response);
+           })
+        ;
       });
     }
   };
@@ -96,15 +126,24 @@ module.exports = function (base) {
     }
   };
 
-  // Add ping op
-  service.add({
-    pattern: { op: 'ping' },
-    handler: function (msg, done) {
-      return done(null, { answer: 'pong' });
-    }
-  });
+  // Add operation method
+  service.add = function (op) {
+    const operationUrl = getOperationUrl(serviceBasePath, service.name, service.version, op.name)
+    base.logger.info(`[services] added service [${service.name}:${service.version}:${op.name}] in [${operationUrl}]`);
+    service.operations.add(getOperationFullName(service.name, service.version, op.name));
+    server.route({
+      method: ['GET', 'POST', 'PUT'],
+      path: operationUrl,
+      handler: (request, reply) => {
+        return op.handler(request.payload || {}, reply, request);
+      },
+      config: {
+        plugins: {
+          ratify: op.schema || {}
+        }
+      }
+    });
+  };
 
   return service;
-
 };
-

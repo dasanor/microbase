@@ -7,8 +7,7 @@ module.exports = function (stores) {
 
   stores = stores || {};
 
-
-  var env = process.env.NODE_ENV = process.env.NODE_ENV || 'local';
+  var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
   var basePath = path.normalize(__dirname + '/../..');
   var rootPath = path.dirname(require.main.filename);
 

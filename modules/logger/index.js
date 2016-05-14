@@ -6,10 +6,23 @@ module.exports = function (nine) {
   var level = nine.config.get('logger:level');
   var logger = new (winston.Logger)({
     transports: [
-      new (winston.transports.Console)({level: level, json: false, timestamp: true, colorize: true})
+      new (winston.transports.Console)({
+        level: level,
+        json: false,
+        timestamp: true,
+        colorize: true
+      })
     ],
+
     exceptionHandlers: [
-      new (winston.transports.Console)({level: level, json: false, timestamp: true, colorize: true, silent: false, prettyPrint: true})
+      new (winston.transports.Console)({
+        level: level,
+        json: false,
+        timestamp: true,
+        colorize: true,
+        silent: false,
+        prettyPrint: true
+      })
     ],
     exitOnError: false
   });
