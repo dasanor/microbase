@@ -6,8 +6,9 @@ module.exports = function (options) {
   options = options || {};
   /*
     options = options || {
-      config: Configuration Object
-      logger: Logger service
+      config: Configuration service,
+      logger: Logger service,
+      db:     Database service,
       module: Initial operations from a module
     };
   */
@@ -16,12 +17,15 @@ module.exports = function (options) {
   // Configuration object
   var rootPath = path.dirname(require.main.filename);
   base.config = options.config || require('./modules/config')([
-       rootPath + '/config/' + (process.env.NODE_ENV || 'local') + '.json',
+       rootPath + '/config/' + (process.env.NODE_ENV || 'development') + '.json',
        rootPath + '/config/defaults.json'
      ]);
 
   // Logger service
   base.logger = options.logger || require('./modules/logger')(base);
+
+  // Database service
+  base.db = options.db || require('./modules/db')(base);
 
   // Services service
   base.services = options.services || require('./modules/services')(base);
@@ -31,13 +35,6 @@ module.exports = function (options) {
     const module = options.module(base);
     base.services.addModule(module);
   }
-
-  // Global error handler
-  process.on('uncaughtException', function (err) {
-    console.error('An uncaught error occurred!');
-    console.error(err.stack);
-    process.exit(1);
-  });
 
   return base;
 };
