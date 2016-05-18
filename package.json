@@ -1,6 +1,6 @@
 {
   "name": "micro-base",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Base framework to implement seneca based microservices.",
   "main": "index.js",
   "scripts": {
