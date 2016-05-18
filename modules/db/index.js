@@ -25,6 +25,8 @@ function dbService(base) {
     });
   });
 
+  mongoose.url = url;
+
   return mongoose;
 }
 
