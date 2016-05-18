@@ -26,6 +26,11 @@ module.exports = function (nine) {
     ],
     exitOnError: false
   });
+
+  logger.isDebugEnabled = function() {
+    return level === 'debug';
+  };
+
   logger.info('[logger] initialized with [%s] level', level);
   return logger;
 };

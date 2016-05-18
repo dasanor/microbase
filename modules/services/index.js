@@ -82,9 +82,7 @@ module.exports = function (base) {
     });
   });
 
-  /*
-   base.services.call('cart:get', { id: cartId }).then(cart => {})
-   */
+  // Call internal or external services
   service.call = function (name, msg) {
     let {serviceName, serviceVersion, operationName} = splitOperationName(name);
     const operationFullName = getOperationFullName(serviceName, serviceVersion, operationName);
@@ -143,6 +141,17 @@ module.exports = function (base) {
         }
       }
     });
+  };
+
+  // Load a module
+  service.loadModule = function(key) {
+    if (!key) return null;
+    const name = base.config.get(key);
+    if (name.startsWith('.')) {
+      return require(`${base.config.get('rootPath')}/${name}`)(base)
+    } else {
+      return require(name)(base);
+    }
   };
 
   return service;
