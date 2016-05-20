@@ -27,11 +27,11 @@ module.exports = function (options) {
   // Database service
   base.db = options.db || require('./modules/db')(base);
 
-  // Workers service
-  base.workers = options.workers || require('./modules/workers')(base);
-
   // Services service
   base.services = options.services || require('./modules/services')(base);
+
+  // Workers service
+  base.workers = options.workers || require('./modules/workers')(base);
 
   // Initial operations
   if (options.module) {
