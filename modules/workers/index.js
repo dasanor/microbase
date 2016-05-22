@@ -1,6 +1,4 @@
-//var config = require('./config')
-//   ,common = require('../modules/common/common')
-const monq = require('monq')
+const monq = require('monq');
 const CronJob = require('cron').CronJob;
 
 function workers(base) {
@@ -17,7 +15,7 @@ function workers(base) {
       base.logger.info(`[workers] scheduled job [${job.worker}] at [${when}]`);
       const jobHandler = require(`${base.config.get('rootPath')}/${job.handler}`)(base);
 
-      const worker = jobs.worker([ job.worker ]);
+      const worker = jobs.worker([job.worker]);
       worker.register({
         [job.worker]: jobHandler
       });
