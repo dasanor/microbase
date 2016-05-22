@@ -19,9 +19,9 @@ module.exports = function (base) {
   const gatewayBaseUrl = `http://${gatewayHost}:${gatewayPort}`;
 
   const getOperationUrl = (basePath, service, version, operation) =>
-     `${basePath}/${service}/${version}/${operation}`;
+    `${basePath}/${service}/${version}/${operation}`;
   const getOperationFullName = (serviceName, serviceVersion, operationName) =>
-     `${serviceName}:${serviceVersion}:${operationName}`;
+    `${serviceName}:${serviceVersion}:${operationName}`;
   const splitOperationName = name => {
     const s = name.split(':')
     let serviceName, serviceVersion = 'v1', operationName;
@@ -35,7 +35,7 @@ module.exports = function (base) {
       serviceVersion = s[1];
       operationName = s[2];
     }
-    return {serviceName, serviceVersion, operationName};
+    return { serviceName, serviceVersion, operationName };
   };
 
   const service = {
@@ -48,6 +48,22 @@ module.exports = function (base) {
   server.connection({
     host: base.config.get('services:host'),
     port: base.config.get('services:port')
+  });
+
+  // Custom error responses
+  server.ext('onPreResponse', (request, reply) => {
+
+    const response = request.response;
+    if (!response.isBoom) {
+      return reply.continue();
+    }
+
+    if (response.data) {
+      Object.assign(response.output.payload, response.data);
+      response.reformat();
+    }
+
+    return reply(response);
   });
 
   server.register([
@@ -64,7 +80,7 @@ module.exports = function (base) {
           console: [{
             module: 'good-squeeze',
             name: 'Squeeze',
-            args: [{log: '*', request: '*', response: '*'}]
+            args: [{ log: '*', request: '*', response: '*' }]
           }, {
             module: 'good-console'
           }, 'stdout']
@@ -103,15 +119,15 @@ module.exports = function (base) {
       return new Promise((resolve, reject) => {
         const operationUrl = getOperationUrl(gatewayBasePath, serviceName, serviceVersion, operationName);
         wreck.post(
-           `${gatewayBaseUrl}${operationUrl}`,
-           {
-             payload: JSON.stringify(msg),
-             json: 'smart'
-           },
-           (error, response, payload) => {
-             if (error) return reject(error);
-             return resolve(payload, response);
-           })
+          `${gatewayBaseUrl}${operationUrl}`,
+          {
+            payload: JSON.stringify(msg),
+            json: 'smart'
+          },
+          (error, response, payload) => {
+            if (error) return reject(error);
+            return resolve(payload, response);
+          })
         ;
       });
     }
@@ -144,11 +160,18 @@ module.exports = function (base) {
   };
 
   // Load a module
-  service.loadModule = function(key) {
+  service.loadModule = function (key) {
+    if (base.logger.isDebugEnabled()) base.logger.debug(`[services] loading module from ${key}`);
     if (!key) return null;
     const name = base.config.get(key);
     if (name.startsWith('.')) {
-      return require(`${base.config.get('rootPath')}/${name}`)(base)
+      const modulePath = `${base.config.get('rootPath')}/${name}`;
+      try {
+        return require(modulePath)(base)
+      } catch (e) {
+        base.logger.error(`[services] module '${modulePath}' not found`)
+        return false;
+      }
     } else {
       return require(name)(base);
     }
