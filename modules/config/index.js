@@ -10,7 +10,9 @@ module.exports = function (stores) {
   var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
   var basePath = path.normalize(__dirname + '/../..');
   var rootPath = path.dirname(require.main.filename);
-
+  if (rootPath.lastIndexOf('node_modules') != -1) {
+    rootPath = rootPath.substr(0, rootPath.lastIndexOf('node_modules') - 1);
+  }
   // add framework defaults
   stores.push(basePath + '/modules/config/defaults.json');
 
@@ -32,7 +34,7 @@ module.exports = function (stores) {
       if (!fs.existsSync(file)) {
         throw new Error('File doesn\'t exist');
       }
-      conf.use('z' + i++, {type: 'file', file: file});
+      conf.use('z' + i++, { type: 'file', file: file });
     } catch (e) {
       console.log('%s - \u001b[31merror\u001b[39m: [config] file [%s] error [%s]', new Date().toISOString(), file, e.message);
     }

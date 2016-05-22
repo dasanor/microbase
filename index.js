@@ -5,21 +5,24 @@ var path = require('path');
 module.exports = function (options) {
   options = options || {};
   /*
-    options = options || {
-      config: Configuration service,
-      logger: Logger service,
-      db:     Database service,
-      module: Initial operations from a module
-    };
-  */
+   options = options || {
+   config: Configuration service,
+   logger: Logger service,
+   db:     Database service,
+   module: Initial operations from a module
+   };
+   */
   const base = {};
 
   // Configuration object
   var rootPath = path.dirname(require.main.filename);
+  if (rootPath.lastIndexOf('node_modules') != -1) {
+    rootPath = rootPath.substr(0, rootPath.lastIndexOf('node_modules') - 1);
+  }
   base.config = options.config || require('./modules/config')([
-       rootPath + '/config/' + (process.env.NODE_ENV || 'development') + '.json',
-       rootPath + '/config/defaults.json'
-     ]);
+      rootPath + '/config/' + (process.env.NODE_ENV || 'development') + '.json',
+      rootPath + '/config/defaults.json'
+    ]);
 
   // Logger service
   base.logger = options.logger || require('./modules/logger')(base);

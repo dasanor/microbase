@@ -2,8 +2,8 @@
 
 var winston = require('winston');
 
-module.exports = function (nine) {
-  var level = nine.config.get('logger:level');
+module.exports = function (base) {
+  var level = base.config.get('logger:level');
   var logger = new (winston.Logger)({
     transports: [
       new (winston.transports.Console)({

@@ -44,7 +44,7 @@ module.exports = function (base) {
     operations: new Set()
   };
 
-  const server = new Hapi.Server();
+  const server = service.server = new Hapi.Server();
   server.connection({
     host: base.config.get('services:host'),
     port: base.config.get('services:port')
@@ -80,7 +80,7 @@ module.exports = function (base) {
           console: [{
             module: 'good-squeeze',
             name: 'Squeeze',
-            args: [{ log: '*', request: '*', response: '*' }]
+            args: [{ log: '*', request: '*', response: '*', error: '*' }]
           }, {
             module: 'good-console'
           }, 'stdout']
