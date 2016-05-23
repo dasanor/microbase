@@ -18,8 +18,8 @@ module.exports = function (base) {
   const serviceBasePath = base.config.get('services:path');
   const gatewayBaseUrl = `http://${gatewayHost}:${gatewayPort}`;
 
-  const getOperationUrl = (basePath, service, version, operation) =>
-    `${basePath}/${service}/${version}/${operation}`;
+  const getOperationUrl = (basePath, serviceName, serviceVersion, operationName, operationPath) =>
+    `${basePath}/${serviceName}/${serviceVersion}${operationPath !== undefined ? operationPath : '/' + operationName}`;
   const getOperationFullName = (serviceName, serviceVersion, operationName) =>
     `${serviceName}:${serviceVersion}:${operationName}`;
   const splitOperationName = name => {
@@ -118,6 +118,7 @@ module.exports = function (base) {
       // It's a remote operation
       return new Promise((resolve, reject) => {
         const operationUrl = getOperationUrl(gatewayBasePath, serviceName, serviceVersion, operationName);
+        if (base.logger.isDebugEnabled()) base.logger.debug(`[services] calling ${gatewayBaseUrl}${operationUrl} with ${JSON.stringify(msg)}`);
         wreck.post(
           `${gatewayBaseUrl}${operationUrl}`,
           {
@@ -140,22 +141,47 @@ module.exports = function (base) {
     }
   };
 
+  // Routes configuration
+  const routeConfig = (schema) => {
+    return {
+      plugins: {
+        ratify: schema || {}
+      }
+    }
+  };
+
+  // Routes handler
+  const routeHandler = (handler) => (request, reply) => {
+    let payload = request.payload || {};
+    Object.assign(payload, request.params);
+    return handler(payload || {}, reply, request);
+  };
+
+  // Routes style
+  const routesStyle = base.config.get('services:style');
+
   // Add operation method
   service.add = function (op) {
-    const operationUrl = getOperationUrl(serviceBasePath, service.name, service.version, op.name)
-    base.logger.info(`[services] added service [${service.name}:${service.version}:${op.name}] in [${operationUrl}]`);
-    service.operations.add(getOperationFullName(service.name, service.version, op.name));
+    const operationFullName = getOperationFullName(service.name, service.version, op.name);
+    let operationUrl, operationMethod;
+    if (routesStyle === 'REST') {
+      // REST style
+      operationUrl = getOperationUrl(serviceBasePath, service.name, service.version, op.name, op.path);
+      operationMethod = op.method || 'POST';
+    } else {
+      // RPC style
+      operationUrl = getOperationUrl(serviceBasePath, service.name, service.version, op.name, undefined);
+      operationMethod = 'POST';
+    }
+    base.logger.info(`[services] added service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
+    // Add the operation to this service operations
+    service.operations.add(operationFullName);
+    // Add the Hapi route, mixing parameters and payload to call the handler
     server.route({
-      method: ['GET', 'POST', 'PUT'],
+      method: operationMethod,
       path: operationUrl,
-      handler: (request, reply) => {
-        return op.handler(request.payload || {}, reply, request);
-      },
-      config: {
-        plugins: {
-          ratify: op.schema || {}
-        }
-      }
+      handler: routeHandler(op.handler),
+      config: routeConfig(op.schema)
     });
   };
 

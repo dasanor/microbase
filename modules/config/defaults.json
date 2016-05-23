@@ -5,7 +5,8 @@
   "services": {
     "host": "0.0.0.0",
     "port": "3000",
-    "path": "/services"
+    "path": "/services",
+    "style": "REST"
   },
   "gateway": {
     "host": "gateway",
