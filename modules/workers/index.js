@@ -3,8 +3,14 @@ const CronJob = require('cron').CronJob;
 
 function workers(base) {
 
+  const dburl = base.db.url;
+  if (!dburl) {
+    base.logger.warn('[workers] database properties not configured');
+    return;
+  }
+
   // queue
-  const jobs = monq(base.db.url);
+  const jobs = monq(dburl);
 
   base.logger.info('[workers] initialized');
 
