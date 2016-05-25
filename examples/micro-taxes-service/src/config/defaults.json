@@ -1,0 +1,6 @@
+{
+  "services": {
+    "name": "taxes",
+    "version": "v1"
+  }
+}
