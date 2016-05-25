@@ -185,6 +185,15 @@ module.exports = function (base) {
     });
   };
 
+  // Add a ping operation to allow health checks and keep alives
+  service.add({
+    name: 'ping',
+    method: 'GET',
+    handler: (msg, reply) => {
+      return reply({ answer: 'pong' });
+    }
+  })
+
   // Load a module
   service.loadModule = function (key) {
     if (base.logger.isDebugEnabled()) base.logger.debug(`[services] loading module from ${key}`);
