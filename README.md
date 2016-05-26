@@ -5,11 +5,39 @@ basic utilities like config, logging, jobs and MongoDB access.
 
 It can be used as a base to implement applications with a microservices style architecture.
 
-Real world examples of use could be found here:
+## Examples:
 
-[micro-cart-service](https://github.com/ncornag/micro-cart-service/tree/develop)
+[micro-math-service](https://github.com/ncornag/micro-base/tree/develop/examples/micro-math-service)
 
-[micro-stock-service](https://github.com/ncornag/micro-stock-service/tree/develop)
+[micro-taxes-service](https://github.com/ncornag/micro-base/tree/develop/examples/micro-taxes-service)
+
+### Run the examples:
+```bash
+cd examples
+docker-compose up
+```
+The Consul services could be viewed at:
+```
+http://localhost:8500
+```
+The services endpoints are at:
+```
+http://localhost/services
+```
+ie:
+```
+curl --request POST \
+  --url http://localhost:80/services/taxes/v1/vat \
+  --header 'cache-control: no-cache' \
+  --header 'content-type: application/json' \
+  --data '{"net": "1000"}'
+```
+
+## Real world examples of use could be found here:
+
+[micro-cart-service](https://github.com/ncornag/micro-cart-service)
+
+[micro-stock-service](https://github.com/ncornag/micro-stock-service)
 
 
 ## Code documentation
@@ -24,35 +52,63 @@ Shamefully, no tests yet.
 
 1. Install the framework:
 
-  ```
-  install i -S micro-base
+  ```bash
+  npm i -S micro-base
   ```
 
 2. Create an `index.js` file with the following content:
 
   ```javascript
-  const baseFactory = require('micro-base');
-  const cartFactory = require('./modules/cart');
-
-  // Instantiate micro-base
-  const base = baseFactory();
+  const base = require('micro-base')();
 
   // Add operations
-  base.services.addModule(cartFactory(base));
+  base.services.add(require('./operations/new')(base));
 
   // Return express app for easy testing
-  module.exports = base.app;
+  module.exports = base;
   ```
 
-3. Implement the `modules/cart.js`
+3. Implement the `operations/new/index.js`
 
-4. Start the application
+  ```javascript
+  const moment = require('moment');
+  const shortId = require('shortid');
+  const boom = require('boom');
+  
+  function opFactory(base) {
+  
+    const op = {
+      name: 'new',
+      path: '',
+      handler: (msg, reply) => {
+        // Implemetation here
+      }
+    };
+    return op;
+  }
+  
+  // Exports the factory
+  module.exports = opFactory;
+  ```
+
+4. Configure the service in `config/defaults.js`
+   
+   ```json
+   {
+     "services": {
+       "name": "cart",
+       "version": "v1"
+     }
+   }
+   ```
+    
+5. Start the application
 
   ```
-  node index.html
+  node index.js
   ```
 
-5. Access the service operations
+6. Access the service operations
 
   ```
   curl --request POST \

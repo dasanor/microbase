@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+
+  consul:
+    image: ncornag/micro-docker-lb
+    ports:
+    - 80:80
+    - 8500:8500
+
+  taxes-service:
+    build: ./micro-taxes-service
+    links:
+    - consul:gateway
+
+  math-service:
+    build: ./micro-math-service
+    links:
+    - consul:gateway
