@@ -1,6 +1,6 @@
 {
   "name": "micro-base",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Base framework to implement microservices.",
   "main": "index.js",
   "scripts": {
@@ -20,10 +20,13 @@
     "good-console": "^6.1.1",
     "good-squeeze": "^3.0.1",
     "hapi": "^13.4.0",
+    "hapi-auth-jwt": "^4.0.0",
     "mongoose": "^4.4.16",
     "monq": "^0.3.4",
     "nconf": "^0.8.4",
+    "node-uuid": "^1.4.7",
     "ratify": "^2.1.0",
+    "session-cache": "^0.2.0",
     "winston": "^2.2.0",
     "wreck": "^7.2.1"
   }

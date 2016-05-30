@@ -12,5 +12,13 @@
     "host": "gateway",
     "port": "80",
     "path": "/services"
+  },
+  "auth": {
+    "scope": [
+      "api"
+    ]
+  },
+  "token": {
+    "secretKey": "micro-base"
   }
 }

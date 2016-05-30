@@ -1,5 +1,8 @@
 const Hapi = require('hapi');
 const Wreck = require('wreck');
+const AuthJWT = require('hapi-auth-jwt');
+const uuid = require('node-uuid').v4;
+const sessionCache = require('session-cache');
 
 // TODO: Refactor to split the service and the transports
 
@@ -98,17 +101,59 @@ module.exports = function (base) {
     });
   });
 
+  // Verify jwt token
+  server.register(AuthJWT, (err) => {
+    const token_signingKey = base.config.get('token:secretKey');
+    server.auth.strategy('jwt', 'jwt', {
+      key: token_signingKey,
+      verifyOptions: { algorithms: ['HS256'] },
+      validateFunc: function (request, decodedToken, callback) {
+        // DB token search and clean.
+        //  base.db.models.Token
+        //  .findById(verifiedJwt.body.jti)
+        //  .exec()
+        //  .then(token => {
+        //    if (!token) return callback(null, false);
+        //    if (new Date() > token.expirationDate) {
+        //      token.remove();
+        //      return callback(null, false)
+        //    } else {
+        //      return callback(null, true, {
+        //        clientId: decodedToken.sub,
+        //        scope: decodedToken.scope
+        //      });
+        //    }
+        //  })
+        //  .catch(error => {
+        //    return callback(error, false);
+        //  });
+        return callback(null, true, {
+          clientId: decodedToken.sub,
+          scope: [decodedToken.scope]
+        });
+      }
+    });
+  });
+
   // Call internal or external services
   service.call = function (name, msg) {
+
+    // Get default headers from session
+    const headers = {
+      'x-request-id': session.get('x-request-id'),
+      authorization: session.get('authorization')
+    };
+
     let {serviceName, serviceVersion, operationName} = splitOperationName(name);
     const operationFullName = getOperationFullName(serviceName, serviceVersion, operationName);
-    if (service.operations.has('operationFullName')) {
+    if (service.operations.has(operationFullName)) {
       // Its a local service
       const operationUrl = getOperationUrl(serviceBasePath, serviceName, serviceVersion, operationName);
       return server.inject({
         url: operationUrl,
         payload: msg,
         method: 'POST',
+        headers: headers
       }).then(response => {
         return new Promise(resolve => {
           return resolve(response.result, response);
@@ -123,7 +168,8 @@ module.exports = function (base) {
           `${gatewayBaseUrl}${operationUrl}`,
           {
             payload: JSON.stringify(msg),
-            json: 'smart'
+            json: 'smart',
+            headers: headers
           },
           (error, response, payload) => {
             if (error) return reject(error);
@@ -134,27 +180,33 @@ module.exports = function (base) {
     }
   };
 
-  // Add all the operations inside a module
-  service.addModule = function (module) {
-    for (var op of module) {
-      service.add(op);
-    }
-  };
-
   // Routes configuration
-  const routeConfig = (schema) => {
+  const routeConfig = (schema, scope) => {
     return {
       plugins: {
         ratify: schema || {}
+      },
+      auth: {
+        strategy: 'jwt',
+        scope: scope
       }
     }
   };
 
   // Routes handler
   const routeHandler = (handler) => (request, reply) => {
+    // Mix body payload and params
     let payload = request.payload || {};
     Object.assign(payload, request.params);
-    return handler(payload || {}, reply, request);
+    // Create CID
+    if (!request.headers['x-request-id']) {
+      request.headers['x-request-id'] = uuid();
+    }
+    // Store CID & Authorization token in session
+    session.set('x-request-id', request.headers['x-request-id']);
+    session.set('authorization', request.headers['authorization']);
+
+    return handler.call(this, payload, reply, request);
   };
 
   // Routes style
@@ -173,6 +225,7 @@ module.exports = function (base) {
       operationUrl = getOperationUrl(serviceBasePath, service.name, service.version, op.name, undefined);
       operationMethod = 'POST';
     }
+    const defaultScope = base.config.get('auth:scope');
     base.logger.info(`[services] added service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
     // Add the operation to this service operations
     service.operations.add(operationFullName);
@@ -181,8 +234,15 @@ module.exports = function (base) {
       method: operationMethod,
       path: operationUrl,
       handler: routeHandler(op.handler),
-      config: routeConfig(op.schema)
+      config: op.config || routeConfig(op.schema, op.scope || defaultScope)
     });
+  };
+
+  // Add all the operations inside a module
+  service.addModule = function (module) {
+    for (var op of module) {
+      service.add(op);
+    }
   };
 
   // Add a ping operation to allow health checks and keep alives
@@ -211,6 +271,9 @@ module.exports = function (base) {
       return require(name)(base);
     }
   };
+
+  // session-cache to store authorization and CID
+  var session = sessionCache('microbase');
 
   return service;
 };
