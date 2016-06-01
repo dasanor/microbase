@@ -195,9 +195,10 @@ module.exports = function (base) {
 
   // Routes handler
   const routeHandler = (handler) => (request, reply) => {
-    // Mix body payload and params
+    // Mix body payload/params/query
     let payload = request.payload || {};
     Object.assign(payload, request.params);
+    Object.assign(payload, request.query);
     // Create CID
     if (!request.headers['x-request-id']) {
       request.headers['x-request-id'] = uuid();
