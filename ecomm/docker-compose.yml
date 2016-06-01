@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+
+  consul:
+    image: ncornag/micro-docker-lb
+    ports:
+    - 80:80
+    - 8500:8500
+
+  cart-service:
+    build: ./services/micro-cart-service
+    links:
+    - consul:gateway
+    depends_on:
+    - consul
+    - mongo
+
+  stock-service:
+    build: ./services/micro-stock-service
+    links:
+    - consul:gateway
+    depends_on:
+    - consul
+    - mongo
+
+  catalog-service:
+    build: ./services/micro-catalog-service
+    links:
+    - consul:gateway
+    depends_on:
+    - consul
+    - mongo
+
+  mongo:
+    image: mongo:3.3
+    ports:
+    - 27018:27017
