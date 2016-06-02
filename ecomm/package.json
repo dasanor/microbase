@@ -4,8 +4,8 @@
   "description": "Ecommerce services.",
   "main": "index.js",
   "scripts": {
-    "doc": "docker -i . -o ../docs/code index.js models operations",
-    "apidoc": "aglio -i docs/api/main.apib --theme-template triple -o docs/api/index.html"
+    "doc": "npm install docker && docker -i . -o docs/code index.js models operations",
+    "apidoc": "npm install aglio && aglio -i docs/api/main.apib --theme-template triple -o docs/api/index.html"
   },
   "repository": {
     "type": "git",
