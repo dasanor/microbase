@@ -136,7 +136,9 @@ module.exports = function (base) {
   });
 
   // Call internal or external services
-  service.call = function (name, msg) {
+  service.call = function (config, msg) {
+
+    console.log(config);
 
     // Get default headers from session
     const headers = {
@@ -144,15 +146,17 @@ module.exports = function (base) {
       authorization: session.get('authorization')
     };
 
-    let {serviceName, serviceVersion, operationName} = splitOperationName(name);
+    let {serviceName, serviceVersion, operationName} = splitOperationName(config.name);
     const operationFullName = getOperationFullName(serviceName, serviceVersion, operationName);
+    const operationMethod = config.method || 'POST';
     if (service.operations.has(operationFullName)) {
       // Its a local service
-      const operationUrl = getOperationUrl(serviceBasePath, serviceName, serviceVersion, operationName);
+      const operationUrl = getOperationUrl(serviceBasePath, serviceName, serviceVersion, operationName, config.path);
+      if (base.logger.isDebugEnabled()) base.logger.debug(`[services] calling [${operationMethod}] ${operationUrl} with ${JSON.stringify(msg)}`);
       return server.inject({
         url: operationUrl,
         payload: msg,
-        method: 'POST',
+        method: config.method || 'POST',
         headers: headers
       }).then(response => {
         return new Promise(resolve => {
@@ -162,18 +166,21 @@ module.exports = function (base) {
     } else {
       // It's a remote operation
       return new Promise((resolve, reject) => {
-        const operationUrl = getOperationUrl(gatewayBasePath, serviceName, serviceVersion, operationName);
-        if (base.logger.isDebugEnabled()) base.logger.debug(`[services] calling ${gatewayBaseUrl}${operationUrl} with ${JSON.stringify(msg)}`);
-        wreck.post(
-          `${gatewayBaseUrl}${operationUrl}`,
+        const operationUrl = getOperationUrl(gatewayBaseUrl + gatewayBasePath, serviceName, serviceVersion, operationName, config.path);
+        if (base.logger.isDebugEnabled()) base.logger.debug(`[services] calling [${operationMethod}] ${operationUrl} with ${JSON.stringify(msg)}`);
+        wreck.request(
+          operationMethod,
+          operationUrl,
           {
-            payload: JSON.stringify(msg),
-            json: 'smart',
-            headers: headers
+            payload: JSON.stringify(msg)msg,
+            headers: headers,
+            timeout: config.timeout || 1000
           },
-          (error, response, payload) => {
-            if (error) return reject(error);
-            return resolve(payload, response);
+          (error, response) => {
+            Wreck.read(response, { json: 'smart' }, (error, payload) => {
+              if (error) return reject(error);
+              return resolve(payload, response);
+            });
           })
         ;
       });
