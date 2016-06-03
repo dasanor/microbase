@@ -1,6 +1,4 @@
-'use strict';
-
-var winston = require('winston');
+const winston = require('winston');
 
 module.exports = function (base) {
   var level = base.config.get('logger:level');

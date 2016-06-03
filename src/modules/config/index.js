@@ -1,7 +1,6 @@
-'use strict';
-
-var path = require('path');
-var fs = require('fs');
+const path = require('path');
+const fs = require('fs');
+const conf = require('nconf');
 
 module.exports = function (stores) {
 
@@ -15,8 +14,6 @@ module.exports = function (stores) {
   }
   // add framework defaults
   stores.push(basePath + '/modules/config/defaults.json');
-
-  var conf = require('nconf');
 
   console.log('%s - \u001b[32minfo\u001b[39m: [config] using [%s] configuration', new Date().toISOString(), env);
 

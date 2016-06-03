@@ -138,8 +138,6 @@ module.exports = function (base) {
   // Call internal or external services
   service.call = function (config, msg) {
 
-    console.log(config);
-
     // Get default headers from session
     const headers = {
       'x-request-id': session.get('x-request-id'),
@@ -172,7 +170,7 @@ module.exports = function (base) {
           operationMethod,
           operationUrl,
           {
-            payload: JSON.stringify(msg)msg,
+            payload: JSON.stringify(msg),
             headers: headers,
             timeout: config.timeout || 1000
           },
