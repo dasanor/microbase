@@ -27,6 +27,9 @@ module.exports = function (options) {
   // Logger service
   base.logger = options.logger || require('./modules/logger')(base);
 
+  // Events service
+  base.events = options.events || require('./modules/events')(base);
+
   // Database service
   base.db = options.db || require('./modules/db')(base);
 
