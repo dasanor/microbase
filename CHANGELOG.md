@@ -2,7 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
-micro-base is in a pre-1.0 state. This means that its APIs and behavior are subject to breaking changes without deprecation notices. Until 1.0, version numbers will follow a [Semver][]-ish `0.y.z` format, where `y` is incremented when new features or breaking changes are introduced, and `z` is incremented for lesser changes or bug fixes.
+micro-base is in a pre-1.0 state. This means that its APIs and behavior 
+are subject to breaking changes without deprecation notices. Until 1.0, 
+version numbers will follow a [Semver][]-ish `0.y.z` format, where `y` 
+is incremented when new features or breaking changes are introduced, 
+and `z` is incremented for lesser changes or bug fixes.
+
+## [0.4.0][] (2016-06-4)
+* Added local events service
+* Added Search service with Elasticsearch
+* Remove multiple crons per worker. 
+* Added ability to launch a job on demand.
+* Allow rest urls calls in Services service.
+* Added doc/test scripts
+* Moved src files to their own folder
+* Added ecomm services as submodules (forgive me...)
+* Added ecomm package file
+* Added ecomm Docker composer file
+* Added ecomm API documentation
+* Added Cart perf test files
+* Added query parameters to the operation payload
+* Removed generated docs from git
 
 ## [0.3.1][] (2016-05-30)
 
