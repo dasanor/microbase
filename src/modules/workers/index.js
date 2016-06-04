@@ -17,31 +17,44 @@ function workers(base) {
   const workers = base.config.get("workers") || [];
 
   workers.forEach(job => {
-    job.when.forEach(when => {
-      base.logger.info(`[workers] scheduled job [${job.worker}] at [${when}]`);
-      const jobHandler = require(`${base.config.get('rootPath')}/${job.handler}`)(base);
+    base.logger.info(`[workers] job [${job.worker}] created [${job.when ? job.when : ''}]`);
+    const jobHandler = require(`${base.config.get('rootPath')}/${job.handler}`)(base);
 
-      const worker = jobs.worker([job.worker]);
-      worker.register({
-        [job.worker]: jobHandler
-      });
-      worker.start();
+    const worker = jobs.worker([job.worker]);
+    worker.register({
+      [job.worker]: jobHandler
+    });
+    worker.start();
 
+    // Start a cronjob if configured
+    if (job.when) {
       new CronJob({
-        cronTime: when,
+        cronTime: job.when,
         start: true,
         timeZone: 'UTC',
         onTick: () => {
-          if (base.logger.isDebugEnabled) base.logger.debug(`[worker] enqueuing scheduled job ${job.worker}`);
-          jobs.queue(job.queue).enqueue(job.worker, {}, function (err, job) {
+          if (base.logger.isDebugEnabled) base.logger.debug(`[worker] enqueuing scheduled job '${job.worker}'`);
+          const queueName = job.queue || job.worker;
+          jobs.queue(queueName).enqueue(job.worker, {}, function (err, job) {
             if (err) base.logger.error('[worker] error running scheduled job ${job.worker}: ${err}');
           });
         }
       });
-    });
+    }
   });
 
-  return { jobs }
+  function enqueue(workerName, queueName, params) {
+    if (!params) {
+      params = queueName;
+      queueName = workerName;
+    }
+    jobs.queue(queueName).enqueue(workerName, params, function (err, job) {
+      console.log(err);
+      if (err) base.logger.error(`[worker] error running job '${workerName}': ${err}`);
+    });
+  };
+
+  return { jobs, enqueue }
 }
 
 module.exports = workers;
