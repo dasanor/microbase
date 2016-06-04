@@ -30,6 +30,9 @@ module.exports = function (options) {
   // Database service
   base.db = options.db || require('./modules/db')(base);
 
+  // Search service
+  base.search = options.search || require('./modules/search')(base);
+
   // Services service
   base.services = options.services || require('./modules/services')(base);
 

@@ -17,6 +17,7 @@
   "license": "MIT",
   "dependencies": {
     "cron": "^1.1.0",
+    "elasticsearch": "^11.0.1",
     "good": "^7.0.0",
     "good-console": "^6.1.1",
     "good-squeeze": "^3.0.1",
