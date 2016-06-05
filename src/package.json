@@ -1,0 +1,48 @@
+{
+  "name": "micro-base",
+  "version": "0.4.0",
+  "description": "Base framework to implement microservices.",
+  "main": "index.js",
+  "scripts": {
+    "doc": "docker -i . -o docs/code index.js modules",
+    "apidoc": "aglio -i docs/main.apib --theme-template triple -o docs/api/index.html",
+    "test": "NODE_ENV=test && lab test/test.js",
+    "test-cov-html": "NODE_ENV=test && lab -r html -o coverage.html test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ncornag/micro-base.git"
+  },
+  "author": "Nicolás Cornaglia Schlieman",
+  "license": "MIT",
+  "dependencies": {
+    "cron": "^1.1.0",
+    "elasticsearch": "^11.0.1",
+    "good": "^7.0.0",
+    "good-console": "^6.1.1",
+    "good-squeeze": "^3.0.1",
+    "hapi": "^13.4.0",
+    "hapi-auth-jwt": "^4.0.0",
+    "mongoose": "^4.4.16",
+    "monq": "^0.3.4",
+    "nconf": "^0.8.4",
+    "node-uuid": "^1.4.7",
+    "ratify": "^2.1.0",
+    "session-cache": "^0.2.0",
+    "winston": "^2.2.0",
+    "wreck": "^7.2.1"
+  },
+  "devDependencies": {
+    "aglio": "^2.2.1",
+    "code": "^3.0.0",
+    "database-cleaner": "^0.13.0",
+    "docker": "^0.2.14",
+    "eslint": "^2.9.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.7.0",
+    "eslint-plugin-jsx-a11y": "^1.2.0",
+    "eslint-plugin-react": "^5.0.1",
+    "lab": "^10.6.1",
+    "nock": "^8.0.0"
+  }
+}

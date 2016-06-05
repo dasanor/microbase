@@ -1,0 +1,6 @@
+{
+  "services": {
+    "name": "math",
+    "version": "v1"
+  }
+}

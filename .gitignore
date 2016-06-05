@@ -1,0 +1,7 @@
+node_modules
+docs/code
+docs/api/index.html
+ecomm/node_modules
+ecomm/docs/api/index.html
+ecomm/docs/code
+coverage.html
