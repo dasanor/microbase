@@ -255,6 +255,7 @@ module.exports = function (base) {
   service.add({
     name: 'ping',
     method: 'GET',
+    config: {},
     handler: (msg, reply) => {
       return reply({ answer: 'pong' });
     }
