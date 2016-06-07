@@ -3,14 +3,14 @@ const events = require('events');
 module.exports = function (base) {
 
   base.logger.info('[events] local events started');
-  var eventEmitter = new events.EventEmitter();
+  const eventEmitter = new events.EventEmitter();
 
   return {
-    send: function (channel, data) {
-      eventEmitter.emit(channel, data);
+    send: (channelName, eventType, data) => {
+      eventEmitter.emit(channelName, { type: eventType, data: data });
     },
-    listen: function (channel, handler) {
-      eventEmitter.on(channel, handler);
+    listen: (channelName, handler) => {
+      eventEmitter.on(channelName, handler);
     }
   };
 
