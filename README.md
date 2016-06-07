@@ -25,7 +25,7 @@ The services endpoints are at:
 http://localhost/services
 ```
 ie:
-```
+```bash
 curl --request POST \
   --url http://localhost:80/services/taxes/v1/vat \
   --header 'cache-control: no-cache' \
@@ -33,11 +33,34 @@ curl --request POST \
   --data '{"net": "1000"}'
 ```
 
-## Real world examples of use could be found here:
+## Ecomm
 
-[micro-cart-service](https://github.com/ncornag/micro-cart-service)
+The ecomm services has been linked as submodules to this project.
+ 
+To test them:
 
-[micro-stock-service](https://github.com/ncornag/micro-stock-service)
+```bash
+cd ecomm
+docker-compose up
+curl --request POST \
+  --url http://localhost:80/services/catalog/v1/category \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --header 'authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew' \
+  --data '{"title": "Category 01", "description": "This is the Category 01", "slug": "category01", "parent": "ROOT"}'
+```
+
+The `authorizarion` header is based on the default security configuration. It should be changed in production.
+
+### Ecomm repositories:
+
+[Cart Service](https://github.com/ncornag/micro-cart-service)
+
+[Stock Service](https://github.com/ncornag/micro-stock-service)
+
+[Catalog Service](https://github.com/ncornag/micro-catalog-service)
+
+[Oauth Service](https://github.com/ncornag/micro-oauth-service)
 
 
 ## Code documentation

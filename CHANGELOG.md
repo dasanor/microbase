@@ -8,7 +8,16 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced, 
 and `z` is incremented for lesser changes or bug fixes.
 
-## [0.4.0][] (2016-06-4)
+## [0.5.0][] (2016-06-07)
+* Added sample data creation script
+* Refactored the events payload to add message type
+
+## [0.4.1][] (2016-06-06)
+* Remove security from ping operation
+* Updated readme
+* Updated ecomm submodules (from develop)
+
+## [0.4.0][] (2016-06-04)
 * Added local events service
 * Added Search service with Elasticsearch
 * Remove multiple crons per worker. 
