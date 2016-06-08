@@ -94,17 +94,16 @@ Shamefully, no tests yet.
 3. Implement the `operations/new/index.js`
 
   ```javascript
-  const moment = require('moment');
-  const shortId = require('shortid');
-  const boom = require('boom');
-  
   function opFactory(base) {
   
     const op = {
       name: 'new',
-      path: '',
+      path: '/',
+      method: 'POST'
       handler: (msg, reply) => {
-        // Implemetation here
+        // Implementation here. i.e.:
+        // save(msg);
+        // reply('Cart saved').code(200);
       }
     };
     return op;
@@ -135,10 +134,10 @@ Shamefully, no tests yet.
 
   ```
   curl --request POST \
-    --url http://localhost:3000/services/cart/v1/new \
+    --url http://localhost:3000/services/cart/v1 \
     --header 'content-type: application/json' \
     --header 'accept: application/json' \
-    --data '{}'
+    --data '{user: '100'}'
   ```
 
 ## Modules
