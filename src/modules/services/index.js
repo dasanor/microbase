@@ -8,6 +8,31 @@ const sessionCache = require('session-cache');
 
 module.exports = function (base) {
 
+  const service = {
+    name: base.config.get('services:name'),
+    version: base.config.get('services:version'),
+    operations: new Set(),
+    loadModule: (key) => {
+      if (base.logger.isDebugEnabled()) base.logger.debug(`[services] loading module from '${key}'`);
+      const name = base.config.get(key);
+      if (!name) {
+        base.logger.warn(`[services] module '${key}' not found`);
+        return null;
+      }
+      if (name.startsWith('.')) {
+        const modulePath = `${base.config.get('rootPath')}/${name}`;
+        try {
+          return require(modulePath)(base)
+        } catch (e) {
+          base.logger.error(`[services] module '${key}:${modulePath}' not found`)
+          return false;
+        }
+      } else {
+        return require(name)(base);
+      }
+    }
+  };
+
   const wreck = Wreck.defaults({
     headers: {
       'Content-Type': 'application/json',
@@ -18,8 +43,16 @@ module.exports = function (base) {
   const gatewayHost = base.config.get('gateway:host');
   const gatewayPort = base.config.get('gateway:port');
   const gatewayBasePath = base.config.get('gateway:path');
+  const gatewayUrlOverrride = base.config.get('gateway:gatewayUrlOverrride');
+  let getGatewayBaseUrl;
+  if (gatewayUrlOverrride) {
+    getGatewayBaseUrl = service.loadModule('gateway:gatewayUrlOverrride');
+  } else {
+    const gatewayBaseUrl = `http://${gatewayHost}:${gatewayPort}`;
+    getGatewayBaseUrl = () => gatewayBaseUrl;
+  }
+
   const serviceBasePath = base.config.get('services:path');
-  const gatewayBaseUrl = `http://${gatewayHost}:${gatewayPort}`;
 
   const getOperationUrl = (basePath, serviceName, serviceVersion, operationName, operationPath) =>
     `${basePath}/${serviceName}/${serviceVersion}${operationPath !== undefined ? operationPath : '/' + operationName}`;
@@ -39,12 +72,6 @@ module.exports = function (base) {
       operationName = s[2];
     }
     return { serviceName, serviceVersion, operationName };
-  };
-
-  const service = {
-    name: base.config.get('services:name'),
-    version: base.config.get('services:version'),
-    operations: new Set()
   };
 
   const server = service.server = new Hapi.Server();
@@ -157,6 +184,7 @@ module.exports = function (base) {
         method: config.method || 'POST',
         headers: headers
       }).then(response => {
+        //return Promise.resolve(response.result, response);
         return new Promise(resolve => {
           return resolve(response.result, response);
         });
@@ -164,7 +192,7 @@ module.exports = function (base) {
     } else {
       // It's a remote operation
       return new Promise((resolve, reject) => {
-        const operationUrl = getOperationUrl(gatewayBaseUrl + gatewayBasePath, serviceName, serviceVersion, operationName, config.path);
+        const operationUrl = getOperationUrl(getGatewayBaseUrl(serviceName, serviceVersion, operationName) + gatewayBasePath, serviceName, serviceVersion, operationName, config.path);
         if (base.logger.isDebugEnabled()) base.logger.debug(`[services] calling [${operationMethod}] ${operationUrl} with ${JSON.stringify(msg)}`);
         wreck.request(
           operationMethod,
@@ -260,24 +288,6 @@ module.exports = function (base) {
       return reply({ answer: 'pong' });
     }
   })
-
-  // Load a module
-  service.loadModule = function (key) {
-    if (base.logger.isDebugEnabled()) base.logger.debug(`[services] loading module from ${key}`);
-    if (!key) return null;
-    const name = base.config.get(key);
-    if (name.startsWith('.')) {
-      const modulePath = `${base.config.get('rootPath')}/${name}`;
-      try {
-        return require(modulePath)(base)
-      } catch (e) {
-        base.logger.error(`[services] module '${modulePath}' not found`)
-        return false;
-      }
-    } else {
-      return require(name)(base);
-    }
-  };
 
   // session-cache to store authorization and CID
   var session = sessionCache('microbase');
