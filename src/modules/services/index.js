@@ -77,7 +77,8 @@ module.exports = function (base) {
   const server = service.server = new Hapi.Server();
   server.connection({
     host: base.config.get('services:host'),
-    port: base.config.get('services:port')
+    port: base.config.get('services:port'),
+    routes: { cors: true }
   });
 
   // Custom error responses
