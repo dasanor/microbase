@@ -95,22 +95,22 @@ EOM
 
 # Categories
 
-LastID=`insertCategory 'ROOT' 'Sound Devices' 'sound'`
-LastID=`insertCategory $LastID 'Headphones' 'headphones'`
-LastID=`insertCategory $LastID 'MP3 Players' 'mp3'`
-LastID=`insertCategory $LastID 'Musical Instruments' 'instruments'`
+CatID=`insertCategory 'ROOT' 'Sound Devices' 'sound'`
+LastID=`insertCategory $CatID 'Headphones' 'headphones'`
+LastID=`insertCategory $CatID 'MP3 Players' 'mp3'`
+LastID=`insertCategory $CatID 'Musical Instruments' 'instruments'`
 
-LastID=`insertCategory 'ROOT' 'Cameras' 'cameras'`
-LastID=`insertCategory $LastID 'Digital SLRs' 'slr'`
-LastID=`insertCategory $LastID 'Point and Shoot' 'pointandshoot'`
-LastID=`insertCategory $LastID 'Compact System Cameras' 'compact'`
-LastID=`insertCategory $LastID 'Accessories' 'accessories'`
+CatID=`insertCategory 'ROOT' 'Cameras' 'cameras'`
+LastID=`insertCategory $CatID 'Digital SLRs' 'slr'`
+LastID=`insertCategory $CatID 'Point and Shoot' 'pointandshoot'`
+LastID=`insertCategory $CatID 'Compact System Cameras' 'compact'`
+LastID=`insertCategory $CatID 'Accessories' 'accessories'`
 
-LastID=`insertCategory 'ROOT' 'Computers' 'computers'`
-LastID=`insertCategory $LastID 'Desktops' 'desktops'`
-LastID=`insertCategory $LastID 'Laptops' 'laptops'`
-LastID=`insertCategory $LastID 'Accessories' 'accessories'`
-LastID=`insertCategory $LastID 'Monitors' 'monitors'`
+CatID=`insertCategory 'ROOT' 'Computers' 'computers'`
+LastID=`insertCategory $CatID 'Desktops' 'desktops'`
+LastID=`insertCategory $CatID 'Laptops' 'laptops'`
+LastID=`insertCategory $CatID 'Accessories' 'accessories'`
+LastID=`insertCategory $CatID 'Monitors' 'monitors'`
 
 # Products
 
