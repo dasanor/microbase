@@ -49,7 +49,6 @@ function workers(base) {
       queueName = workerName;
     }
     jobs.queue(queueName).enqueue(workerName, params, function (err, job) {
-      console.log(err);
       if (err) base.logger.error(`[worker] error running job '${workerName}': ${err}`);
     });
   };
