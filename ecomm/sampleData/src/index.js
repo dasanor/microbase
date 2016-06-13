@@ -3,9 +3,17 @@ const parse = require('csv-parse');
 const transform = require('stream-transform');
 const fs = require('fs');
 const slug = require('slugg');
+const Wreck = require('wreck');
 
 const headers = base.config.get('gateway:defaultHeaders');
 const categoryMap = new Map();
+
+const wreck = Wreck.defaults({
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+});
 
 function insertCategory(data) {
 
@@ -113,6 +121,14 @@ categoryData.reduce(function (prev, curr) {
       });
     });
   }, Promise.resolve())
+  .then(() => {
+    return new Promise((resolve, reject) => {
+      wreck.delete('http://localhost:9200/products', (err) => {
+        if (err) return reject(err);
+        return resolve();
+      })
+    })
+  })
   .then(() => {
 
     return new Promise((resolve, reject) => {
