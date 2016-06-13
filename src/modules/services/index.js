@@ -152,6 +152,7 @@ module.exports = function (base) {
       'x-request-id': session.get('x-request-id'),
       authorization: session.get('authorization')
     };
+    Object.assign(headers, config.headers);
 
     let {serviceName, serviceVersion, operationName} = splitOperationName(config.name);
     const operationFullName = getOperationFullName(serviceName, serviceVersion, operationName);
