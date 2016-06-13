@@ -11,26 +11,7 @@ module.exports = function (base) {
   const service = {
     name: base.config.get('services:name'),
     version: base.config.get('services:version'),
-    operations: new Set(),
-    loadModule: (key) => {
-      if (base.logger.isDebugEnabled()) base.logger.debug(`[services] loading module from '${key}'`);
-      const name = base.config.get(key);
-      if (!name) {
-        base.logger.warn(`[services] module '${key}' not found`);
-        return null;
-      }
-      if (name.startsWith('.')) {
-        const modulePath = `${base.config.get('rootPath')}/${name}`;
-        try {
-          return require(modulePath)(base)
-        } catch (e) {
-          base.logger.error(`[services] module '${key}:${modulePath}' not found`)
-          return false;
-        }
-      } else {
-        return require(name)(base);
-      }
-    }
+    operations: new Set()
   };
 
   const wreck = Wreck.defaults({
@@ -46,7 +27,7 @@ module.exports = function (base) {
   const gatewayUrlOverrride = base.config.get('gateway:gatewayUrlOverrride');
   let getGatewayBaseUrl;
   if (gatewayUrlOverrride) {
-    getGatewayBaseUrl = service.loadModule('gateway:gatewayUrlOverrride');
+    getGatewayBaseUrl = base.utils.loadModule('gateway:gatewayUrlOverrride');
   } else {
     const gatewayBaseUrl = `http://${gatewayHost}:${gatewayPort}`;
     getGatewayBaseUrl = () => gatewayBaseUrl;

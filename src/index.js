@@ -22,6 +22,9 @@ module.exports = function (options) {
       rootPath + '/config/defaults.json'
     ]);
 
+  // Util service
+  base.utils = options.utils || require('./modules/utils')(base);
+
   // Logger service
   base.logger = options.logger || require('./modules/logger')(base);
 
