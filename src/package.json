@@ -14,7 +14,7 @@
     "url": "https://github.com/ncornag/micro-base.git"
   },
   "author": "Nicolás Cornaglia Schlieman",
-  "license": "MIT",
+  "license": "OSL-3.0",
   "dependencies": {
     "cron": "^1.1.0",
     "elasticsearch": "^11.0.1",
