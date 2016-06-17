@@ -186,6 +186,7 @@ module.exports = function (base) {
             timeout: config.timeout || 1000
           },
           (error, response) => {
+            if (error) return reject(error);
             Wreck.read(response, { json: 'smart' }, (error, payload) => {
               if (error) return reject(error);
               return resolve(payload, response);
