@@ -99,7 +99,7 @@ Shamefully, no tests yet.
     const op = {
       name: 'new',
       path: '/',
-      method: 'POST'
+      method: 'POST',
       handler: (msg, reply) => {
         // Implementation here. i.e.:
         // save(msg);
@@ -113,7 +113,7 @@ Shamefully, no tests yet.
   module.exports = opFactory;
   ```
 
-4. Configure the service in `config/defaults.js`
+4. Configure the service in `config/defaults.json`
    
    ```json
    {
@@ -123,14 +123,21 @@ Shamefully, no tests yet.
      }
    }
    ```
+
+5. Create an empty `config/development.json` (to be used for the local development evironment)
+
+   ```json
+   {
+   }
+   ```
     
-5. Start the application
+6. Start the application
 
   ```
   node index.js
   ```
 
-6. Access the service operations
+7. Access the service operations
 
   ```
   curl --request POST \
