@@ -4,9 +4,19 @@ const transform = require('stream-transform');
 const fs = require('fs');
 const slug = require('slugg');
 const Wreck = require('wreck');
+const DatabaseCleaner = require('database-cleaner');
 
+const databaseCleaner = new DatabaseCleaner('mongodb');
+const connect = require('mongodb').connect;
 const headers = base.config.get('gateway:defaultHeaders');
 const categoryMap = new Map();
+
+// TODO: get from parameters
+const cleanDatabase = false;
+const insertCategories = false;
+const insertProducts = false;
+const insertStocks = false;
+const insertTaxes = true;
 
 const wreck = Wreck.defaults({
   headers: {
@@ -15,8 +25,23 @@ const wreck = Wreck.defaults({
   }
 });
 
-function insertCategory(data) {
+// Helper to clean the database
+function initDB() {
+  console.log(cleanDatabase ? 'Cleaning database' : 'Skipping database cleaning');
+  if (!cleanDatabase) return Promise.resolve();
+  return new Promise((resolve) => {
+    connect(base.db.url, (err, db) => {
+      databaseCleaner.clean(db, () => {
+        console.log('Database cleaned');
+        resolve();
+      });
+    });
+  })
+}
 
+// Helper to insert a Category
+function insertCategory(data) {
+  if (!insertCategories) return;
   function save(data) {
     return base.services.call({
         name: 'catalog:createCategory',
@@ -58,7 +83,9 @@ function insertCategory(data) {
     });
 }
 
+// Helper to insert a Product
 function insertProduct(data) {
+  if (!insertProducts) return;
   return base.services.call({
     name: 'catalog:createProduct',
     method: 'POST',
@@ -67,7 +94,20 @@ function insertProduct(data) {
   }, data);
 }
 
+// Helper to insert a Tax
+function insertTax(data) {
+  if (!insertTaxes) return;
+  return base.services.call({
+    name: 'cart:createTax',
+    method: 'POST',
+    path: '/tax',
+    headers: headers
+  }, data);
+}
+
+// Helper to insert Stock
 function insertStock(data) {
+  if (!insertStocks) return;
   return base.services.call({
     name: 'stock:create',
     method: 'POST',
@@ -76,6 +116,7 @@ function insertStock(data) {
   }, data);
 }
 
+// Helper to get a Category by title
 function getCategoryByTitle(title) {
   return base.services.call({
     name: 'catalog:getCategory',
@@ -85,6 +126,7 @@ function getCategoryByTitle(title) {
   }, {});
 }
 
+// TODO: convert to csv
 const categoryData = [
   ['ROOT', 'Elecrodomésticos'],
   ['catIdByTitle(Elecrodomésticos)', 'Frigoríficos y Congeladores', [
@@ -110,18 +152,28 @@ const categoryData = [
   ['catIdByTitle(Frigoríficos y Congeladores)', 'Fabricador de cubitos']
 ];
 
-categoryData.reduce(function (prev, curr) {
-    return prev.then(function (val) {
-      //curr = current arr value, val = return val from last iteration
-      return insertCategory({
-        parent: curr[0],
-        title: curr[1],
-        slug: slug(curr[1]),
-        classifications: curr[2] || []
-      });
-    });
-  }, Promise.resolve())
+// Clean DB & insert data
+initDB()
   .then(() => {
+    console.log(insertCategories ? 'Inserting categories' : 'Skipping categories');
+    // Insert category data
+    return categoryData.reduce(function (prev, curr) {
+      // Sequencially insert Category data
+      return prev.then(function (val) {
+        // curr = current arr value, val = return val from last iteration
+        return insertCategory({
+          parent: curr[0],
+          title: curr[1],
+          slug: slug(curr[1]),
+          classifications: curr[2] || []
+        });
+      });
+    }, Promise.resolve())
+  })
+  .then(() => {
+    // Remove index server "products" index
+    console.log(cleanDatabase ? 'Cleanning products index' : 'Skipping products index cleaning');
+    if (!cleanDatabase) return Promise.resolve();
     return new Promise((resolve, reject) => {
       wreck.delete('http://localhost:9200/products', (err) => {
         if (err) return reject(err);
@@ -130,15 +182,17 @@ categoryData.reduce(function (prev, curr) {
     })
   })
   .then(() => {
-
+    // Parse products csv and insert them
     return new Promise((resolve, reject) => {
       let i = 0;
       const parser = parse({});
-      const input = fs.createReadStream('./data/data.csv');
+      const input = fs.createReadStream('./data/products.csv');
       const transformer = transform(function (rec, callback) {
+        // if (rec[0] != '001004721216770') return callback(null, '');
+        if (i == 0) return callback(null, '');
 
-//        if (rec[0] != '001004721216770') return callback(null, '');
-
+        // TODO: Clean csv data before and not in this script
+        // TODO: Convert classification data to CSV
         const catName = rec[12].split(':')[2];
         const catId = categoryMap.get(catName);
         if (!catId) throw new Error(`Category '${catName}' not found`);
@@ -162,6 +216,8 @@ categoryData.reduce(function (prev, curr) {
           categories: [categoryMap.get(rec[12].split(':')[2])],
           price: rec[3],
           salePrice: rec[4],
+          isNetPrice: false,
+          taxCode: "default",
           brand: rec[2],
           medias: ('' + rec[13]).split(':').map((img, i) => ({
             id: `210x210:${i + 1}`,
@@ -200,6 +256,46 @@ categoryData.reduce(function (prev, curr) {
           })
           .catch(error => {
             console.error(error);
+            process.exit();
+          });
+
+      }, { parallel: 1 });
+      transformer.on('finish', function () {
+        setTimeout(() => {
+          resolve()
+        }, insertProducts ? 2500 : 0);
+      });
+      console.log(insertProducts ? 'Inserting products' : 'Skipping products');
+      input.pipe(parser).pipe(transformer).pipe(process.stdout);
+    })
+
+  })
+  .then(() => {
+    // Insert taxes
+    return new Promise((resolve, reject) => {
+      let i = 0;
+      const parser = parse({ relax: true });
+      const input = fs.createReadStream('./data/taxes.csv');
+      const transformer = transform(function (rec, callback) {
+        console.log(rec);
+        insertTax({
+          code: rec[0],
+          class: rec[1],
+          title: rec[2],
+          rate: rec[3],
+          isPercentage: rec[4]
+        })
+          .then(response => {
+            if (response.error) {
+              console.log(rec);
+              console.log(response);
+              process.exit();
+            }
+            callback(null, '' + ++i + ' ' + rec[0] + ' ' + rec[1] + '\n');
+          })
+          .catch(error => {
+            console.error(error);
+            process.exit();
           });
 
       }, { parallel: 1 });
@@ -208,9 +304,9 @@ categoryData.reduce(function (prev, curr) {
           resolve()
         }, 2500)
       });
+      console.log(insertTaxes ? 'Inserting taxes' : 'Skipping taxes');
       input.pipe(parser).pipe(transformer).pipe(process.stdout);
-    })
-
+    });
   })
   .then(() => {
     process.exit();
@@ -218,16 +314,5 @@ categoryData.reduce(function (prev, curr) {
   .catch(error => {
     console.log(error);
   });
-
-function readProducts() {
-  let a = 0;
-  const parser = parse({});
-  const input = fs.createReadStream('./data/data.csv');
-  const transformer = transform(function (record, callback) {
-    callback(null, '' + ++a + ' ' + record[12] + '\n');
-    if (a === 10) process.exit();
-  }, { parallel: 1 });
-  input.pipe(parser).pipe(transformer).pipe(process.stdout);
-}
 
 module.exports = base;

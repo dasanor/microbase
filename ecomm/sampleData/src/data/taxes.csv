@@ -1,0 +1,4 @@
+"default","default","IVA 21%",21,true
+"ca-on-gst","default","GST 5%",5,true
+"ca-on-hst","default","HST 13%",13,true
+"ca-on","ca-on","GST-HST Discriminator",4,false
