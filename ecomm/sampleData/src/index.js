@@ -14,9 +14,9 @@ const categoryMap = new Map();
 // TODO: get from parameters
 const cleanDatabase = false;
 const insertCategories = false;
-const insertProducts = false;
+const insertProducts = true;
 const insertStocks = false;
-const insertTaxes = true;
+const insertTaxes = false;
 
 const wreck = Wreck.defaults({
   headers: {
@@ -189,31 +189,28 @@ initDB()
       const input = fs.createReadStream('./data/products.csv');
       const transformer = transform(function (rec, callback) {
         // if (rec[0] != '001004721216770') return callback(null, '');
-        if (i == 0) return callback(null, '');
-
         // TODO: Clean csv data before and not in this script
         // TODO: Convert classification data to CSV
-        const catName = rec[12].split(':')[2];
+        const catName = rec[12];
         const catId = categoryMap.get(catName);
         if (!catId) throw new Error(`Category '${catName}' not found`);
 
         const classifications = [];
-        if (rec[7]) classifications.push({ id: 'energy', value: rec[7] });
-        if (rec[8]) classifications.push({ id: 'capacity', value: rec[8].replace(' litros', '') });
-        if (rec[9]) classifications.push({ id: 'color', value: rec[9] });
-        if (rec[10]) {
-          const values = rec[10].split(' ');
-          classifications.push({ id: 'width', value: values[0].replace(',', '.') });
-          classifications.push({ id: 'height', value: values[2].replace(',', '.') });
-          classifications.push({ id: 'depth', value: values[4].replace(',', '.') });
+        if (rec[5]) classifications.push({ id: 'energy', value: rec[5] });
+        if (rec[6]) classifications.push({ id: 'capacity', value: rec[6] });
+        if (rec[7]) classifications.push({ id: 'color', value: rec[7] });
+        if (rec[8]) {
+          classifications.push({ id: 'width', value: values[8] });
+          classifications.push({ id: 'height', value: values[9] });
+          classifications.push({ id: 'depth', value: values[10] });
         }
 
-        insertProduct({
+        const data = {
           sku: rec[0],
           status: 'ONLINE',
           title: rec[1],
           description: rec[11],
-          categories: [categoryMap.get(rec[12].split(':')[2])],
+          categories: [catId],
           price: rec[3],
           salePrice: rec[4],
           isNetPrice: false,
@@ -232,7 +229,9 @@ initDB()
               url: img
             })).filter(rec =>rec.url !== '')),
           classifications: classifications
-        })
+        };
+
+        insertProduct(data)
           .then(response => {
             if (response.error) {
               console.log(rec);
