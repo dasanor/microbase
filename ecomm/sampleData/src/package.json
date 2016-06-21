@@ -24,7 +24,8 @@
     "osmosis": "^1.0.1",
     "shortid": "^2.2.6",
     "slugg": "^1.0.0",
-    "stream-transform": "^0.1.1"
+    "stream-transform": "^0.1.1",
+    "wreck": "^8.0.0"
   },
   "devDependencies": {}
 }

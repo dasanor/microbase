@@ -186,7 +186,7 @@ initDB()
     return new Promise((resolve, reject) => {
       let i = 0;
       const parser = parse({});
-      const input = fs.createReadStream('./data/products.csv');
+      const input = fs.createReadStream('./data/dataFridges.csv');
       const transformer = transform(function (rec, callback) {
         // if (rec[0] != '001004721216770') return callback(null, '');
         // TODO: Clean csv data before and not in this script
@@ -274,7 +274,7 @@ initDB()
     return new Promise((resolve, reject) => {
       let i = 0;
       const parser = parse({ relax: true });
-      const input = fs.createReadStream('./data/taxes.csv');
+      const input = fs.createReadStream('./data/dataTaxes.csv');
       const transformer = transform(function (rec, callback) {
         console.log(rec);
         insertTax({

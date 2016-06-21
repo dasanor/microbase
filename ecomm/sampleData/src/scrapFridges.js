@@ -23,7 +23,7 @@ function doIt(url) {
       reject(err);
     });
     stringifier.on('finish', function () {
-      fs.appendFile("./data/data.csv", data, function (err) {
+      fs.appendFile("./data/dataFridges.csv", data, function (err) {
         if (err) return reject(err);
         console.log("The file was saved!");
         resolve();
