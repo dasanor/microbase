@@ -22,7 +22,7 @@ module.exports = function (stores) {
 
   var i = 1;
   stores.forEach(function (file) {
-    if (file.indexOf('/') != 0) {
+    if (!path.isAbsolute(file)) {
       file = rootPath + '/' + file;
     }
     file = path.normalize(file);
