@@ -1,8 +1,11 @@
 var osmosis = require('osmosis');
-var stringify = require('csv-stringify');
 var fs = require('fs');
 
-function doIt(url) {
+var wstream = fs.createWriteStream('./data/dataProductsFridges.json');
+
+function doIt(baseUrl, path) {
+
+  const url = baseUrl + path;
 
   return new Promise((resolve, reject) => {
 
@@ -12,23 +15,6 @@ function doIt(url) {
 
     let data = '';
     let a = 0;
-
-    const stringifier = stringify({ quoted: true });
-    stringifier.on('readable', function () {
-      while (row = stringifier.read()) {
-        data += row;
-    }
-  });
-    stringifier.on('error', function (err) {
-      reject(err);
-    });
-    stringifier.on('finish', function () {
-      fs.appendFile("./data/dataFridges.csv", data, function (err) {
-        if (err) return reject(err);
-        console.log("The file was saved!");
-        resolve();
-      });
-    });
 
     osmosis
       .get(url)
@@ -41,6 +27,8 @@ function doIt(url) {
         data: 'span@data-json'
       })
       .then(function (context, data, next) {
+        const dto = JSON.parse(data.data);
+        Object.assign(data, dto);
         var items = context.find('div > div.product-image');
         next(items[0], data);
       })
@@ -50,11 +38,6 @@ function doIt(url) {
       // Product Page
       .find('#product-info')
       .set({
-        //id: '#pid@data-product-id',
-        //title: 'h2.title',
-        //brand: 'h2.brand > a@title',
-        //price: '#price-container > div > span.former',
-        //salePrice: '#price-container > div > span.current',
         description: 'div.description-container > p'
       })
       .find('.product-features')
@@ -71,42 +54,80 @@ function doIt(url) {
         'img640': ['div > ul > li > img@data-screen-src'],
         'img1200': ['div > ul > li > img@data-zoom-src']
       })
-      .data(function (p) {
-        const dto = JSON.parse(p.data);
-        const dimensions = p.dimensions ? p.dimensions.split(' ') : [];
-        stringifier.write([
-          dto.id,
-          dto.name,
-          dto.brand,
-          dto.price.original,
-          dto.price.final,
-          p.classenerg,
-          p.capacity ? p.capacity.replace(' litros', '') : '',
-          p.color,
-          p.dimensions ? dimensions[0].replace(',', '.') : '',
-          p.dimensions ? dimensions[2].replace(',', '.') : '',
-          p.dimensions ? dimensions[4].replace(',', '.') : '',
-          p.description,
-          dto.category[2],
-          p.img210.join(':'),
-          p.img640.join(':'),
-          p.img1200.join(':')
-        ]);
-        console.log(++a, dto.id, dto.name);
+      .data(function (data) {
+        const saveData = {
+          sku: data.id,
+          title: data.name,
+          brand: data.brand,
+          price: data.price.original || data.price.final,
+          salePrice: data.price.final || data.price.original,
+          description: data.description,
+          categories: [`categoryIdByTitle(${data.category[2]})`],
+          isNetPrice: false,
+          taxCode: 'default',
+          status: 'ONLINE',
+          classifications: [],
+          medias: data.img210.map((img, i) => ({
+            id: `210x210:${i + 1}`,
+            url: img
+          })).concat(data.img640.map((img, i) => ({
+              id: `600x600:${i + 1}`,
+              url: img
+            })))
+            .concat(data.img1200.map((img, i) => ({
+              id: `1200x1200:${i + 1}`,
+              url: img
+            })))
+            .filter(rec =>rec.url !== '')
+        };
+        if (data.classenerg) saveData.classifications.push({
+          id: 'energy',
+          value: data.classenerg
+        });
+        if (data.capacity) saveData.classifications.push({
+          id: 'capacity',
+          value: data.capacity.replace(' litros', '')
+        });
+        if (data.color) saveData.classifications.push({
+          id: 'color',
+          value: data.color
+        });
+        if (data.dimensions) {
+          const dimensions = data.dimensions.split(' ');
+          saveData.classifications.push({
+            id: 'width',
+            value: dimensions[0].replace(',', '.')
+          });
+          saveData.classifications.push({
+            id: 'height',
+            value: dimensions[2].replace(',', '.')
+          });
+          saveData.classifications.push({
+            id: 'depth',
+            value: dimensions[4].replace(',', '.')
+          });
+
+        }
+
+        wstream.write(JSON.stringify(saveData) + '\n');
+        console.log(++a, data.id, '', data.name);
       })
       .done(function () {
-        stringifier.end();
+        resolve();
       })
-      //.log(console.log)
       .error(console.log)
+    //.log(console.log)
     //.debug(console.log)
   })
 }
 
-doIt('http://www.elcorteingles.es/electrodomesticos/search/?s=frigor%C3%ADficos')
+doIt('http://www.elcorteingles.es', '/electrodomesticos/search/?s=frigor%C3%ADficos')
   .then(() => {
-    return doIt('http://www.elcorteingles.es/electrodomesticos/frigorificos-y-congeladores/congeladores/');
+    return doIt('http://www.elcorteingles.es', '/electrodomesticos/frigorificos-y-congeladores/congeladores/');
   })
   .then(() => {
-    return doIt('http://www.elcorteingles.es/electrodomesticos/frigorificos-y-congeladores/vinotecas/');
+    return doIt('http://www.elcorteingles.es', '/electrodomesticos/frigorificos-y-congeladores/vinotecas/');
+  })
+  .then(() => {
+    wstream.end();
   });

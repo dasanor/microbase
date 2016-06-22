@@ -1,7 +1,8 @@
 var osmosis = require('osmosis');
-var stringify = require('csv-stringify');
 var fs = require('fs');
 var wreck = require('wreck');
+
+var wstream = fs.createWriteStream('./data/dataProductsShoes.json');
 
 function doIt(baseUrl, path) {
 
@@ -16,30 +17,12 @@ function doIt(baseUrl, path) {
     let data = '';
     let a = 0;
 
-    const stringifier = stringify({ quoted: true });
-    stringifier.on('readable', function () {
-      while (row = stringifier.read()) {
-        data += row;
-      }
-    });
-
-    stringifier.on('error', function (err) {
-      reject(err);
-    });
-    stringifier.on('finish', function () {
-      fs.writeFile("./data/dataShoes.csv", data, function (err) {
-        if (err) return reject(err);
-        console.log("The file was saved!");
-        resolve();
-      });
-    });
-
     osmosis
       .get(url)
       .config('concurrency', 1)
       .config('tries', 3)
       .config('timeout', 2500)
-      .paginate('.pagination > ul > li:last > a', 1)
+      .paginate('.pagination > ul > li:last > a', 100)
       .find('.product')
       .set({
         data: 'span@data-json'
@@ -63,11 +46,6 @@ function doIt(baseUrl, path) {
       .find('.product-features')
       .set({
         pisada: 'dl>dt:contains("Tipo de pisada") + dd'
-        //type: 'dl>dt:contains("Tipo de frigorifico") + dd',
-        //classenerg: 'dl>dt:contains("Clasificación energética") + dd',
-        //capacity: 'dl>dt:contains("Capacidad útil del refrigerador") + dd',
-        //color: 'dl>dt:contains("Color de la puerta") + dd',
-        //dimensions: 'dl>dt:contains("Dimensiones (ancho x alto x fondo)") + dd',
       })
       .find('#product-images')
       .set({
@@ -164,49 +142,95 @@ function doIt(baseUrl, path) {
         }
       )
       .data(function (data) {
-        if (data.id == '001017730838236') {
-          //console.log(data.defaultColor, data.defaultColor2, data);
-        }
-        const saveData = [
-          data.id,
-          '',
-          data.name,
-          data.brand,
-          data.price.original || data.price.final,
-          data.price.final,
-          data.defaultColor || data.defaultColor2,
-          data.genero,
-          data.pisada,
-          data.description,
-          data.category[2],
-          data.modifiers.join(':'),
-          data.img210.join(':'),
-          data.img640.join(':'),
-          data.img1200.join(':')
-        ];
-        stringifier.write(saveData);
+        const saveData = {
+          sku: data.id,
+          title: data.name,
+          brand: data.brand,
+          price: data.price.original || data.price.final,
+          salePrice: data.price.final || data.price.original,
+          description: data.description,
+          categories: [`categoryIdByTitle(${data.category[2]})`],
+          isNetPrice: false,
+          taxCode: 'default',
+          status: 'ONLINE',
+          modifiers: data.modifiers,
+          classifications: [],
+          medias: data.img210.map((img, i) => ({
+            id: `210x210:${i + 1}`,
+            url: img
+          })).concat(data.img640.map((img, i) => ({
+              id: `600x600:${i + 1}`,
+              url: img
+            })))
+            .concat(data.img1200.map((img, i) => ({
+              id: `1200x1200:${i + 1}`,
+              url: img
+            })))
+            .filter(rec =>rec.url !== '')
+        };
+        if (data.defaultColor || data.defaultColor2) saveData.classifications.push({
+          id: 'color',
+          value: data.defaultColor || data.defaultColor2
+        });
+        if (data.genero) saveData.classifications.push({
+          id: 'genre',
+          value: data.genero
+        });
+        if (data.pisada) saveData.classifications.push({
+          id: 'footprint',
+          value: data.pisada
+        });
+
+        wstream.write(JSON.stringify(saveData) + '\n');
         console.log(++a, data.id, '', data.name);
 
         try {
           data.variantsData.forEach(v => {
-            const saveData = [
-              v.sku,
-              data.id,
-              data.name,
-              data.brand,
-              v.pricing.price,
-              v.pricing.sale_price,
-              data.defaultColor || v.variations.find(v => v.match(/color:/)).split(':')[1],
-              data.genero,
-              data.pisada,
-              data.description,
-              data.category[2],
-              v.variations.join('#'),
-              v.img210.join(':'),
-              v.img640.join(':'),
-              v.img1200.join(':')
-            ];
-            stringifier.write(saveData);
+            const saveData = {
+              sku: v.sku,
+              base: `productIdBySku(${data.id})`,
+              title: data.name,
+              brand: data.brand,
+              price: v.pricing.price,
+              salePrice: v.pricing.sale_price,
+              description: data.description,
+              categories: [`categoryIdByTitle(${data.category[2]})`],
+              isNetPrice: false,
+              taxCode: 'default',
+              status: 'ONLINE',
+              classifications: [],
+              medias: v.img210.map((img, i) => ({
+                id: `210x210:${i + 1}`,
+                url: img
+              })).concat(v.img640.map((img, i) => ({
+                  id: `600x600:${i + 1}`,
+                  url: img
+                })))
+                .concat(v.img1200.map((img, i) => ({
+                  id: `1200x1200:${i + 1}`,
+                  url: img
+                })))
+                .filter(rec =>rec.url !== ''),
+              variations: v.variations.reduce((prev, v) => {
+                const vdata = v.split(':');
+                prev.push({ id: vdata[0], value: vdata[1] });
+                return prev;
+              }, [])
+            };
+            if (data.defaultColor || v.variations.find(v => v.match(/color:/)).split(':')[1]) saveData.classifications.push({
+              id: 'color',
+              value: data.defaultColor || v.variations.find(v => v.match(/color:/)).split(':')[1]
+            });
+            if (data.genero) saveData.classifications.push({
+              id: 'genre',
+              value: data.genero
+            });
+            if (data.pisada) saveData.classifications.push({
+              id: 'footprint',
+              value: data.pisada
+            });
+
+            wstream.write(JSON.stringify(saveData) + '\n');
             console.log(++a, v.sku, data.id, data.name);
           })
         } catch (e) {
@@ -216,13 +240,16 @@ function doIt(baseUrl, path) {
 
       })
       .done(function () {
-        stringifier.end();
+        resolve();
       })
       .error(console.log)
-//.log(console.log)
-//.debug(console.log)
+    //.log(console.log)
+    //.debug(console.log)
   })
 }
 
-doIt('http://www.elcorteingles.es', '/deportes/search/?s=Gel+Noosa+Tri+11+hombre');
-//doIt('http://www.elcorteingles.es', '/deportes/running/zapatillas/');
+//doIt('http://www.elcorteingles.es', '/deportes/search/?s=Gel+Noosa+Tri+11+hombre');
+doIt('http://www.elcorteingles.es', '/deportes/running/zapatillas/')
+  .then(() => {
+    wstream.end();
+  });
