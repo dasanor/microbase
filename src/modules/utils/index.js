@@ -1,3 +1,5 @@
+const boom = require('boom');
+
 module.exports = function (base) {
 
   const service = {
@@ -28,6 +30,17 @@ module.exports = function (base) {
       } else {
         return require(name)(base);
       }
+    },
+
+    genericErrorResponse: (error) => {
+      if (error.name && error.name === 'ValidationError') {
+        return boom.create(406, 'ValidationError', { data: service.extractErrors(error) });
+      }
+      if (error.name && error.name === 'MongoError' && (error.code === 11000 || error.code === 11001)) {
+        return boom.forbidden('duplicate key', { data: error.errmsg });
+      }
+      if (!(error.isBoom || error.statusCode === 404)) base.logger.error(error);
+      return boom.wrap(error);
     }
 
   };
