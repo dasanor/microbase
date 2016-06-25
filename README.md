@@ -211,14 +211,31 @@ database.
 
 #### Use
 
-In the application, use the `mongoose` interface:
+In the application, use the `mongoose` interface to register and use the models.
 
-Register models
+Register the model in a module (i.e.: `cartModel.js`):
+```javascript
+function modelFactory(base) {
+  const schema = base.db.Schema({
+    userId: { type: String, required: true },
+    items: [itemsSchema]
+  });
+  return base.db.model('Cart', schema);
+}
+module.exports = modelFactory;
+```
+
+and use the module directly:
+```javascript
+const Cart = require('./models/cartModel')(base);
+```
+
+or using config parameters:
 ```javascript
 const Cart = require(base.config.get('models:cartModel'))(base);
 ```
 
-Use the models
+To use the models, access the `base.db` property:
 ```javascript
 base.db.models.Cart
 .find({id: 'ByQpDBcM'})
