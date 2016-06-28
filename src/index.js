@@ -28,6 +28,9 @@ module.exports = function (options) {
   // Logger service
   base.logger = options.logger || require('./modules/logger')(base);
 
+  // Cache service
+  base.cache = options.cache || require('./modules/cache')(base);
+
   // Events service
   base.events = options.events || require('./modules/events')(base);
 

@@ -211,21 +211,68 @@ module.exports = function (base) {
     }
   };
 
-  // Routes handler
-  const routeHandler = (handler) => (request, reply) => {
-    // Mix body payload/params/query
-    let payload = request.payload || {};
-    Object.assign(payload, request.params);
-    Object.assign(payload, request.query);
-    // Create CID
-    if (!request.headers['x-request-id']) {
-      request.headers['x-request-id'] = uuid();
+  // Cache responses
+  server.ext('onPreResponse', (request, reply) => {
+    const response = request.response;
+    if (response.isBoom || !request.headers['mb-cache']) {
+      return reply.continue();
     }
-    // Store CID & Authorization token in session
-    session.set('x-request-id', request.headers['x-request-id']);
-    session.set('authorization', request.headers['authorization']);
+    const cache = base.cache.get(request.headers['mb-cache']);
+    cache.set(request.headers['mb-cache-key'], {
+      statusCode: response.statusCode || 200,
+      payload: response.source
+    });
+    return reply.continue();
+  });
 
-    return handler.call(this, payload, reply, request);
+  // Routes handler
+  const routeHandler = (cache, operationFullName, handler) => {
+    return (request, reply) => {
+      // Mix body payload/params/query
+      let payload = request.payload || {};
+      Object.assign(payload, request.params);
+      Object.assign(payload, request.query);
+      // Create CID
+      if (!request.headers['x-request-id']) {
+        request.headers['x-request-id'] = uuid();
+      }
+      // Store CID & Authorization token in session
+      session.set('x-request-id', request.headers['x-request-id']);
+      session.set('authorization', request.headers['authorization']);
+
+      // If the operation result is cacheable
+      if (cache) {
+        // Verify the no-cache header to bypass the cache
+        let noStore = false;
+        if (request.headers['cache-control']) {
+          noStore = Wreck.parseCacheControl(request.headers['cache-control'])['no-store'];
+        }
+        if (noStore) {
+          return handler.call(this, payload, reply, request);
+        }
+
+        // Try to get the result from cache
+        const cache = base.cache.get(operationFullName);
+        const key = base.utils.hash({ op: operationFullName, payload: payload });
+        cache.get(key)
+          .then((value) => {
+            if (value) {
+              // If the result was on the cache, return it.
+              return reply(value.payload).code(value.statusCode || 200);
+            }
+            // The result was not in the cache, set the headers to store the result
+            request.headers['mb-cache'] = operationFullName;
+            request.headers['mb-cache-key'] = key;
+            return handler.call(this, payload, reply, request);
+          })
+          .catch(error => {
+            return reply(err);
+          });
+      } else {
+        // The operation is not cacheable
+        return handler.call(this, payload, reply, request);
+      }
+    };
   };
 
   // Routes style
@@ -248,11 +295,15 @@ module.exports = function (base) {
     base.logger.info(`[services] added service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
     // Add the operation to this service operations
     service.operations.add(operationFullName);
+    // Create cache
+    if (op.cache) {
+      base.cache.create(operationFullName, op.cache);
+    }
     // Add the Hapi route, mixing parameters and payload to call the handler
     server.route({
       method: operationMethod,
       path: operationUrl,
-      handler: routeHandler(op.handler),
+      handler: routeHandler(op.cache || false, operationFullName, op.handler),
       config: op.config || routeConfig(op.schema, op.scope || defaultScope)
     });
   };
