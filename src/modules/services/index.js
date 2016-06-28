@@ -25,6 +25,7 @@ module.exports = function (base) {
   const gatewayPort = base.config.get('gateway:port');
   const gatewayBasePath = base.config.get('gateway:path');
   const gatewayUrlOverrride = base.config.get('gateway:gatewayUrlOverrride');
+  const remoteCallsTimeout = base.config.get('gateway:timeout');
   let getGatewayBaseUrl;
   if (gatewayUrlOverrride) {
     getGatewayBaseUrl = base.utils.loadModule('gateway:gatewayUrlOverrride');
@@ -183,7 +184,7 @@ module.exports = function (base) {
           {
             payload: JSON.stringify(msg),
             headers: headers,
-            timeout: config.timeout || 1000
+            timeout: config.timeout || remoteCallsTimeout
           },
           (error, response) => {
             if (error) return reject(error);
