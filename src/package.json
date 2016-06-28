@@ -27,6 +27,7 @@
     "monq": "^0.3.4",
     "nconf": "^0.8.4",
     "node-uuid": "^1.4.7",
+    "object-hash": "^1.1.2",
     "ratify": "^2.1.0",
     "session-cache": "^0.2.0",
     "winston": "^2.2.0",

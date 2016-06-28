@@ -1,4 +1,5 @@
 const boom = require('boom');
+const hash = require('object-hash');
 
 module.exports = function (base) {
 
@@ -41,6 +42,10 @@ module.exports = function (base) {
       }
       if (!(error.isBoom || error.statusCode === 404)) base.logger.error(error);
       return boom.wrap(error);
+    },
+
+    hash: (payload) => {
+      return hash(payload);
     }
 
   };
