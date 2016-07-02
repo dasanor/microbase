@@ -21,5 +21,8 @@
   },
   "token": {
     "secretKey": "micro-base"
+  },
+  "cache": {
+    "implementation": "./memoryCache"
   }
 }

@@ -218,6 +218,7 @@ module.exports = function (base) {
       return reply.continue();
     }
     const cache = base.cache.get(request.headers['mb-cache']);
+
     cache.set(request.headers['mb-cache-key'], {
       statusCode: response.statusCode || 200,
       payload: response.source
@@ -226,7 +227,7 @@ module.exports = function (base) {
   });
 
   // Routes handler
-  const routeHandler = (cache, operationFullName, handler) => {
+  const routeHandler = (cacheOptions, handler) => {
     return (request, reply) => {
       // Mix body payload/params/query
       let payload = request.payload || {};
@@ -240,29 +241,35 @@ module.exports = function (base) {
       session.set('x-request-id', request.headers['x-request-id']);
       session.set('authorization', request.headers['authorization']);
 
-      // If the operation result is cacheable
-      if (cache) {
+      // Cache the results id configured
+      if (cacheOptions) {
+        const key = cacheOptions.keyGenerator ? cacheOptions.keyGenerator(payload) : base.utils.hash(payload);
+
         // Verify the no-cache header to bypass the cache
         let noStore = false;
         if (request.headers['cache-control']) {
           noStore = Wreck.parseCacheControl(request.headers['cache-control'])['no-store'];
         }
         if (noStore) {
+          // Set the headers to store the result
+          request.headers['mb-cache'] = cacheOptions.name;
+          request.headers['mb-cache-key'] = key;
+          // Execute the operation
           return handler.call(this, payload, reply, request);
         }
 
         // Try to get the result from cache
-        const cache = base.cache.get(operationFullName);
-        const key = base.utils.hash({ op: operationFullName, payload: payload });
+        const cache = base.cache.get(cacheOptions.name);
         cache.get(key)
           .then((value) => {
             if (value) {
-              // If the result was on the cache, return it.
-              return reply(value.payload).code(value.statusCode || 200);
+              // If the result was on the cache, just return it.
+              return reply(value.item.payload).code(value.item.statusCode || 200);
             }
             // The result was not in the cache, set the headers to store the result
-            request.headers['mb-cache'] = operationFullName;
+            request.headers['mb-cache'] = cacheOptions.name;
             request.headers['mb-cache-key'] = key;
+            // Execute the operation
             return handler.call(this, payload, reply, request);
           })
           .catch(error => {
@@ -297,13 +304,14 @@ module.exports = function (base) {
     service.operations.add(operationFullName);
     // Create cache
     if (op.cache) {
-      base.cache.create(operationFullName, op.cache);
+      op.cache.name = op.cache.name || operationFullName;
+      base.cache.create(op.cache.name, op.cache.options);
     }
     // Add the Hapi route, mixing parameters and payload to call the handler
     server.route({
       method: operationMethod,
       path: operationUrl,
-      handler: routeHandler(op.cache || false, operationFullName, op.handler),
+      handler: routeHandler(op.cache, op.handler),
       config: op.config || routeConfig(op.schema, op.scope || defaultScope)
     });
   };
