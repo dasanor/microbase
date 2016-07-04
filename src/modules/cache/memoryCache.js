@@ -9,20 +9,47 @@ module.exports = function (base) {
     return {
       get: (key) => {
         return new Promise(function (resolve, reject) {
-          cache.get(key, (err, value, cached, report) => {
-            if (err) return reject(err);
-            return resolve(cached);
-          });
+          const keys = key.split(':');
+          if (keys[1]) {
+            // Hierarchical key
+            cache.get(keys[0], (err, value, cached, report) => {
+              if (err) return reject(err);
+              if (!cached) return resolve(cached);
+              return resolve(cached.item[keys[1]]);
+            });
+          } else {
+            cache.get(key, (err, value, cached, report) => {
+              if (err) return reject(err);
+              return resolve(cached.item);
+            });
+          }
         })
       },
 
       set: (key, value) => {
-        cache.set(key, value, undefined, err => {
-          if (err) base.logger.error(`[cache] setting '${key}'`)
-        });
+        const keys = key.split(':');
+        if (keys[1]) {
+          // Hierarchical key
+          cache.get(keys[0], (err, val, cached, report) => {
+            if (err) return reject(err);
+            let cachedValue = {};
+            if (cached) {
+              cachedValue = cached.item;
+            }
+            cachedValue[keys[1]] = value;
+            cache.set(keys[0], cachedValue, undefined, err => {
+              if (err) base.logger.error(`[cache] setting '${key}'`)
+            });
+          });
+        } else {
+          cache.set(key, value, undefined, err => {
+            if (err) base.logger.error(`[cache] setting '${key}'`)
+          });
+        }
       },
 
       drop: (key) => {
+        console.log('dropping', key);
         cache.drop(key, err => {
           if (err) base.logger.error(`[cache] dropping '${key}'`)
         });

@@ -243,7 +243,7 @@ module.exports = function (base) {
 
       // Cache the results id configured
       if (cacheOptions) {
-        const key = cacheOptions.keyGenerator ? cacheOptions.keyGenerator(payload) : base.utils.hash(payload);
+        const key = (cacheOptions.keyGenerator ? (cacheOptions.keyGenerator(payload) + ':') : '') + base.utils.hash(payload);
 
         // Verify the no-cache header to bypass the cache
         let noStore = false;
@@ -264,7 +264,7 @@ module.exports = function (base) {
           .then((value) => {
             if (value) {
               // If the result was on the cache, just return it.
-              return reply(value.item.payload).code(value.item.statusCode || 200);
+              return reply(value.payload).code(value.statusCode || 200);
             }
             // The result was not in the cache, set the headers to store the result
             request.headers['mb-cache'] = cacheOptions.name;
