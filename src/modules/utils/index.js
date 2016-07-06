@@ -5,7 +5,7 @@ module.exports = function (base) {
 
   const service = {
 
-    extractErrors: (error) => {
+    extractErrors(error) {
       const errors = [];
       for (field in error.errors) {
         errors.push(`${field}: ${error.errors[field].message}`);
@@ -13,7 +13,7 @@ module.exports = function (base) {
       return errors;
     },
 
-    loadModule: (key) => {
+    loadModule(key) {
       if (base.logger.isDebugEnabled()) base.logger.debug(`[services] loading module from '${key}'`);
       const name = base.config.get(key);
       if (!name) {
@@ -33,7 +33,7 @@ module.exports = function (base) {
       }
     },
 
-    genericErrorResponse: (error) => {
+    genericErrorResponse(error) {
       if (error.name && error.name === 'ValidationError') {
         return boom.create(406, 'ValidationError', { data: service.extractErrors(error) });
       }
@@ -44,8 +44,45 @@ module.exports = function (base) {
       return boom.wrap(error);
     },
 
-    hash: (payload) => {
+    hash(payload) {
       return hash(payload);
+    },
+
+    Chain: class Chain {
+      constructor() {
+        this.middlewares = [];
+      }
+
+      use(middleware) {
+        if (typeof middleware === 'function') {
+          this.middlewares.push(middleware);
+        } else if (typeof middleware === 'string') {
+          const config = base.config.get(middleware);
+          Object.keys(config).forEach(mRoute => {
+            const m = base.utils.loadModule(`${middleware}:${mRoute}`)
+            this.middlewares.push(m);
+          })
+        }
+        return this;
+      }
+
+      exec(data) {
+        const self = this;
+        return new Promise((resolve, reject) => {
+          (function iterator(index) {
+            if (index === self.middlewares.length) return resolve(data);
+            try {
+              self.middlewares[index](data, (err) => {
+                if (err) return reject(err);
+                iterator(++index);
+              });
+            } catch (e) {
+              reject(e);
+            }
+          })(0);
+        })
+      }
+
     }
 
   };
