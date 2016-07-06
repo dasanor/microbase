@@ -1,6 +1,6 @@
 {
   "name": "micro-base",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Base framework to implement microservices.",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,10 @@
     "url": "https://github.com/ncornag/micro-base.git"
   },
   "author": "Nicolás Cornaglia Schlieman",
-  "license": "MIT",
+  "license": "OSL-3.0",
   "dependencies": {
+    "catbox": "^7.1.1",
+    "catbox-memory": "^2.0.3",
     "cron": "^1.1.0",
     "elasticsearch": "^11.0.1",
     "good": "^7.0.0",
@@ -27,6 +29,7 @@
     "monq": "^0.3.4",
     "nconf": "^0.8.4",
     "node-uuid": "^1.4.7",
+    "object-hash": "^1.1.2",
     "ratify": "^2.1.0",
     "session-cache": "^0.2.0",
     "winston": "^2.2.0",

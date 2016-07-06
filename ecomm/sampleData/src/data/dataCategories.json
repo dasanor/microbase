@@ -1,0 +1,112 @@
+{
+  "parent": "ROOT",
+  "title": "Elecrodomésticos"
+}
+{
+  "parent": "categoryIdByTitle(Elecrodomésticos)",
+  "title": "Frigoríficos y Congeladores",
+  "classifications": [
+    {
+      "id": "energy",
+      "description": "Energy classification",
+      "type": "STRING",
+      "mandatory": false
+    },
+    {
+      "id": "width",
+      "description": "Width dimension",
+      "type": "NUMBER",
+      "mandatory": false
+    },
+    {
+      "id": "height",
+      "description": "Height dimension",
+      "type": "NUMBER",
+      "mandatory": false
+    },
+    {
+      "id": "depth",
+      "description": "Depth dimension",
+      "type": "NUMBER",
+      "mandatory": false
+    },
+    {
+      "id": "color",
+      "description": "Color",
+      "type": "STRING",
+      "mandatory": false
+    },
+    {
+      "id": "capacity",
+      "description": "Volume capacity",
+      "type": "NUMBER",
+      "mandatory": false
+    }
+  ]
+}
+{
+  "parent": "categoryIdByTitle(Frigoríficos y Congeladores)",
+  "title": "Congeladores"
+}
+{
+  "parent": "categoryIdByTitle(Frigoríficos y Congeladores)",
+  "title": "Frigoríficos combi"
+}
+{
+  "parent": "categoryIdByTitle(Frigoríficos y Congeladores)",
+  "title": "Frigoríficos minis"
+}
+{
+  "parent": "categoryIdByTitle(Frigoríficos y Congeladores)",
+  "title": "Frigoríficos 1 puerta"
+}
+{
+  "parent": "categoryIdByTitle(Frigoríficos y Congeladores)",
+  "title": "Frigoríficos 2 puertas"
+}
+{
+  "parent": "categoryIdByTitle(Frigoríficos y Congeladores)",
+  "title": "Frigoríficos Side by Side"
+}
+{
+  "parent": "categoryIdByTitle(Frigoríficos y Congeladores)",
+  "title": "Vinotecas"
+}
+{
+  "parent": "categoryIdByTitle(Frigoríficos y Congeladores)",
+  "title": "Fabricador de cubitos"
+}
+
+
+{
+  "parent": "ROOT",
+  "title": "Deportes"
+}
+{
+  "parent": "categoryIdByTitle(Deportes)",
+  "title": "Running"
+}
+{
+  "parent": "categoryIdByTitle(Running)",
+  "title": "Zapatillas",
+  "classifications": [
+    {
+      "id": "color",
+      "description": "Color",
+      "type": "STRING",
+      "mandatory": false
+    },
+    {
+      "id": "genre",
+      "description": "Female/Male/Kids",
+      "type": "STRING",
+      "mandatory": false
+    },
+    {
+      "id": "footprint",
+      "description": "Motion mechanics",
+      "type": "STRING",
+      "mandatory": false
+    }
+  ]
+}

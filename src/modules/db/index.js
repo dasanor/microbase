@@ -8,6 +8,9 @@ function dbService(base) {
   const url = getMongoUrl(base.config.get('db'), true);
   base.logger.info(`[db-mongo] connecting to [${getMongoUrl(base.config.get('db'))}]`);
 
+  // Use native Promises
+  mongoose.Promise = global.Promise;
+
   // DB
   mongoose.connect(url);
   //  mongoose.set('debug', true);

@@ -8,6 +8,22 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced, 
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.6.0][] (2016-07-06)
+
+* Added middleware utility
+* Use native promises un mongoose
+* Added cache service.
+* Added caching to the operations response (server side caching)
+* Update db instructions and examples in readme
+* Added generic error response to utils
+* Created a generic data import tool for products, categories & taxes
+* Updated sampleData for Fridges (with classifications) and Shoes (with variants)
+* Added taxes sample data
+* Added Open Software License v. 3.0 (OSL-3.0)
+* Added 'headers' as a configuration option in service calls.
+* Added utils service.
+* Added CORS configuration
+
 ## [0.5.0][] (2016-06-07)
 * Added sample data creation script
 * Refactored the events payload to add message type

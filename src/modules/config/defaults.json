@@ -11,7 +11,8 @@
   "gateway": {
     "host": "gateway",
     "port": "80",
-    "path": "/services"
+    "path": "/services",
+    "timeout": 5000
   },
   "auth": {
     "scope": [
@@ -20,5 +21,8 @@
   },
   "token": {
     "secretKey": "micro-base"
+  },
+  "cache": {
+    "implementation": "./memoryCache"
   }
 }
