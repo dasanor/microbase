@@ -31,8 +31,8 @@ module.exports = function (options) {
   // Cache service
   base.cache = options.cache || require('./modules/cache')(base);
 
-  // Events service
-  base.events = options.events || require('./modules/events')(base);
+  // Bus service
+  base.bus = options.bus || require('./modules/bus')(base);
 
   // Database service
   base.db = options.db || require('./modules/db')(base);
