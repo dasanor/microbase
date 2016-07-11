@@ -49,7 +49,6 @@ module.exports = function (base) {
       },
 
       drop: (key) => {
-        console.log('dropping', key);
         cache.drop(key, err => {
           if (err) base.logger.error(`[cache] dropping '${key}'`)
         });
