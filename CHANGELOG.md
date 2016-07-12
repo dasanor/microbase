@@ -8,6 +8,11 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced, 
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.6.1][] (2016-07-12)
+
+* Switched the events service with a more modular 'bus' with amqp support.
+* Slightly improve the documentation for workers, events and server side cache.
+
 ## [0.6.0][] (2016-07-06)
 
 * Added middleware utility

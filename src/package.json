@@ -1,6 +1,6 @@
 {
   "name": "micro-base",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Base framework to implement microservices.",
   "main": "index.js",
   "scripts": {
