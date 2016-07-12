@@ -1,5 +1,10 @@
 module.exports = function (base) {
 
+  if (!base.config.get('bus')) {
+    base.logger.warn('[bus] bus properties not configured');
+    return;
+  }
+
   const enginesConfig = base.config.get('bus:engines');
   const engines = {};
 
