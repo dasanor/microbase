@@ -1,4 +1,4 @@
 {"code": "default", "class": "default", "title": "IVA 21%", "rate": 21, "isPercentage": true}
-{"code": "ca-on-gst", "class": "default", "title": "GST 5%", "rate": 5, "isPercentage": true}
-{"code": "ca-on-hst", "class": "default", "title": "HST 13%", "rate": 13, "isPercentage": true}
-{"code": "ca-on", "class": "ca-on", "title": "GST-HST Discriminator", "rate": 4, "isPercentage": false}
+{"code": "ca-on-gst", "class": "default", "title": "Canada - Ontario - GST 5%", "rate": 5, "isPercentage": true}
+{"code": "ca-on-hst", "class": "default", "title": "Canada - Ontario - HST 13%", "rate": 13, "isPercentage": true}
+{"code": "ca-on-pm", "class": "ca-on-pm", "title": "Canada - Ontario - Prepared food GST-HST Discriminator", "rate": 4, "isPercentage": false}

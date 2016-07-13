@@ -1,6 +1,6 @@
 {
   "name": "micro-base",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Base framework to implement microservices.",
   "main": "index.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "node-uuid": "^1.4.7",
     "object-hash": "^1.1.2",
     "ratify": "^2.1.0",
+    "servicebus": "^2.0.2",
     "session-cache": "^0.2.0",
     "winston": "^2.2.0",
     "wreck": "^7.2.1"

@@ -261,36 +261,75 @@ In the application, use the `winston` interface:
 base.logger.info(`[server-http] running at: [${server.info.uri}${base.config.get('services:path')}]`);
 ```
 
-### workers
+### events
 
-The service uses a combination `monq` and `cron` npm modules to schedule jobs.
+Simpe wrapper over the `EventEmitter` to send and listen to messages.
 
 #### Use
 
-Configure the job launch times in the `workers` key:
+Listen to a channel:
+
+```javascript
+base.events.listen(productsChannel, (msg) => {
+  if (msg.type === 'CREATE') {
+    base.workers.enqueue('indexProduct', msg.data);
+  }
+});
+```
+
+Send messages to a channel:
+
+```javascript
+base.events.send(productsChannel, 'CREATE', productData);
+```
+
+### workers
+
+The service uses `monq` to configure and launch jobs.
+
+#### Use
+
+Configure the job in the `workers` key:
 ```json
 "workers": [
   {
-    "worker": "expireCart",
-    "queue": "expireCart",
-    "when": [
-      "0 */1 * * * *"
-    ]
+    "worker": "unreserveExpired",
+    "handler": "./jobs/unreserveExpired",
+    "when": "0 */1 * * * *"
   }]
 ```
 
-The time zone is UTC.
+If you add the `when` key, the service will use the `cron` npm module to schedule the job. The time zone is UTC.
 
-Configure the jobs in the application:
+Configure the job in the application:
 ```javascript
-const worker = base.workers.jobs.worker(['expireCart']);
-worker.register({
-  expireCart: (params, done) => {
+function jobFactory(base) {
+  return (params, done) => {
     // Do the work
+    if (params.since) {
+       ...
+    } else {
+       ...
+    }
+    // Call the callback when done.
     done();
   }
+}
+module.exports = jobFactory;
+```
+
+To manually launch a job (enqueue it for execution) use the `enqueue` method:
+
+```javascript
+base.workers.enqueue('unreserveExpired', {since: '2016-06-20T21:20:11.287Z'});
+```
+
+This service is best used with the events module. Listen to an event and launch a job:
+
+```javascript
+base.events.listen(productsChannel, (msg) => {
+  base.workers.enqueue('indexProduct', msg);
 });
-worker.start();
 ```
 
 ### services
@@ -376,4 +415,30 @@ internal call (an operation hosted in the same application) and not an http conn
 * If you want to specify the service version to call, put the version after the service name (ie
 `'stock:v2:reserve'`). The default is `v1`.
 
+### cache (server side)
 
+Server side cache for operations.
+
+#### Use
+
+TODO
+
+#### Example
+
+```javascript
+const op = {
+  name: 'getProduct',
+  path: '/product/{id}',
+  method: 'GET',
+  cache: {
+    options: {
+      expiresIn: base.config.get('cache:products')
+    },
+    name: 'products',
+    keyGenerator: payload => payload.id
+  },
+  handler: (params, reply) => {
+    ...
+  }
+}
+```
