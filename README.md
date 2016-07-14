@@ -1,15 +1,62 @@
-# micro-base
+# MicroBase
 
-Micro-base is a small framework developed as a Node.js module, to define and call services, and give
-basic utilities like config, logging, jobs and MongoDB access.
+MicroBase is an ecommerce platform ecosystem that allows the development 
+of the ecommerce store backends. The architecture embraces the 
+microservices paradigm, so the services are organized as a separate 
+projects.
 
-It can be used as a base to implement applications with a microservices style architecture.
+Each service is executed in a separate environment and it communicates 
+with the others via http and/or messaging. To know where the other 
+service is, a registry mechanism is used [Consul](https://www.consul.io/). 
+To efectively reach the other service the calls are redirected via
+a gateway [nginx](https://www.nginx.com/) in the default configuration.
+
+The language choosen for the developments is ES6 (ES2015) Javascript, so
+Node 6.x is needed to run it.
+ 
+An updated version of the Services code are linked as submodules to this 
+project. For the most up to date ones refer to the original repositories:
+
+[Catalog Service](https://github.com/ncornag/micro-catalog-service)
+
+[Cart Service](https://github.com/ncornag/micro-cart-service)
+
+[Stock Service](https://github.com/ncornag/micro-stock-service)
+
+[Oauth Service](https://github.com/ncornag/micro-oauth-service)
+
+## Run
+
+Theres is a docker compose file provided to run the whole services, plus
+the additional infrastructure services needed (MongoDB, Consul).
+
+```bash
+cd ecomm
+docker-compose up
+curl --request POST \
+  --url http://localhost:80/services/catalog/v1/category \
+  --header 'accept: application/json' \
+  --header 'content-type: application/json' \
+  --header 'authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew' \
+  --data '{"title": "Category 01", "description": "This is the Category 01", "slug": "category01", "parent": "ROOT"}'
+```
+
+The `authorizarion` header is based on the default security configuration. It should be changed in production.
+
+# The framework
+
+Microbase is build on top of a a small framework developed as a Node.js 
+module to define and call services, and give basic utilities like 
+config, logging, jobs, cache and MongoDB access.
+
+It can be used as a base to implement any application with a 
+microservices style architecture.
 
 ## Examples:
 
-[micro-math-service](https://github.com/ncornag/micro-base/tree/develop/examples/micro-math-service)
+[micro-math-service](https://github.com/ncornag/microbase/tree/develop/examples/micro-math-service)
 
-[micro-taxes-service](https://github.com/ncornag/micro-base/tree/develop/examples/micro-taxes-service)
+[micro-taxes-service](https://github.com/ncornag/microbase/tree/develop/examples/micro-taxes-service)
 
 ### Run the examples:
 ```bash
@@ -33,56 +80,22 @@ curl --request POST \
   --data '{"net": "1000"}'
 ```
 
-## Ecomm
-
-The ecomm services has been linked as submodules to this project.
- 
-To test them:
-
-```bash
-cd ecomm
-docker-compose up
-curl --request POST \
-  --url http://localhost:80/services/catalog/v1/category \
-  --header 'accept: application/json' \
-  --header 'content-type: application/json' \
-  --header 'authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew' \
-  --data '{"title": "Category 01", "description": "This is the Category 01", "slug": "category01", "parent": "ROOT"}'
-```
-
-The `authorizarion` header is based on the default security configuration. It should be changed in production.
-
-### Ecomm repositories:
-
-[Cart Service](https://github.com/ncornag/micro-cart-service)
-
-[Stock Service](https://github.com/ncornag/micro-stock-service)
-
-[Catalog Service](https://github.com/ncornag/micro-catalog-service)
-
-[Oauth Service](https://github.com/ncornag/micro-oauth-service)
-
-
-## Code documentation
-
-The code is documented with `docco` and can be accessed [here](https://rawgit.com/ncornag/micro-base/develop/docs/index.js.html)
-
 ## Tests
 
-Shamefully, no tests yet.
+Shamefully, no tests available yet.
 
-## How to
+## How to build your own service
 
 1. Install the framework:
 
   ```bash
-  npm i -S micro-base
+  npm i -S microbase
   ```
 
 2. Create an `index.js` file with the following content:
 
   ```javascript
-  const base = require('micro-base')();
+  const base = require('microbase')();
 
   // Add operations
   base.services.add(require('./operations/new')(base));
@@ -157,7 +170,7 @@ framework reads the following files:
 ```
 config/${NODE_ENV:development}.json
 config/default.json
-node_modules/micro-base/modules/config/defaults.json
+node_modules/microbase/modules/config/defaults.json
 ```
 
 The service also reads the environment variables and command line parameters.
@@ -334,7 +347,7 @@ base.events.listen(productsChannel, (msg) => {
 
 ### services
 
-The service use the `Hapi` framework to expose and call the service operations.
+The services use the `Hapi` framework to expose and call the service operations.
 
 #### Use
 
@@ -395,7 +408,7 @@ base.services.addModule(stockFactory(base));
 
 #### Calling another service
 
-You can call another `micro-base` service using the `call` method
+You can call another `microbase` services using the `call` method
 
 ```javascript
 base.services.call('stock:reserve', {
