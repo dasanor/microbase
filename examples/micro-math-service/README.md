@@ -1,1 +1,1 @@
-Example service using micro-base framework.
+Example service using microbase framework.
