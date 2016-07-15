@@ -1,7 +1,7 @@
 {
   "name": "microbase",
-  "version": "0.6.1",
-  "description": "Base framework to implement microservices.",
+  "version": "0.7.0",
+  "description": "Ecommerce platform to develop store backends.",
   "main": "index.js",
   "scripts": {
     "doc": "docker -i . -o docs/code index.js modules",
