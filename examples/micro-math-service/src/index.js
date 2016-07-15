@@ -1,4 +1,4 @@
-const base = require('micro-base')();
+const base = require('microbase')();
 
 // Add operations
 base.services.addModule(require('./modules/math')(base));
