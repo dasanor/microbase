@@ -5,25 +5,60 @@ of the ecommerce store backends. The architecture embraces the
 microservices paradigm, so the services are organized as a separate 
 projects.
 
+## Architecture
+
 Each service is executed in a separate environment and it communicates 
 with the others via http and/or messaging. To know where the other 
-service is, a registry mechanism is used [Consul](https://www.consul.io/). 
-To efectively reach the other service the calls are redirected via
-a gateway [nginx](https://www.nginx.com/) in the default configuration.
+service is, [Consul](https://www.consul.io/) is used as a registry.
 
-The language choosen for the developments is ES6 (ES2015) Javascript, so
-Node 6.x is needed to run it.
+To efectively reach the other service the calls are redirected via
+an [NGINX](https://www.nginx.com/) gateway.
+
+Example add to Cart call
+![](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=IyBGcm9tIGh0dHBzOi8vd3d3LndlYnNlcXVlbmNlZGlhZ3JhbXMuY29tLwp0aXRsZSBCb290c3RyYXAgUwAfBwoKcGFydGljaXBhbnQgVXNlcgAEDUdhdGV3YXkAGA1SZWdpc3RyAAcOQ2FydCBTZXJ2aWNlAEYNU3RvY2sAEQkKAAINLT4ARAg6AE8HZXIKAFcILT4Adgc6IFVwZGF0ZSBDb25maWcKAF8MAAw2VXNlcgBUC0FkZCBQcm9kdWN0IFJlcXVlc3QKAIFyBy0-AIFNDDogUm91dGVkAB0VAIEJDgCBMwlDaGVjawCBfwcATBEAghANAFUJAB8UAIIpDwCCEgkAglkGQXZhaWxhYmlsaXR5IFJlc3BvbnNlAIEsGAAXHACCTg4AgW4OAIIcCwCBVRgAgjwOAHcQVXNlcgANFw&s=napkin)
+
+## Requisites to run the services
+
+* The language choosen for the developments is ES6 (ES2015) Javascript, so
+[Node](https://nodejs.org) 6.x is needed to run microbase.
+* [MongoDB](https://www.mongodb.com/) is used to store data.
+* [Elasticsearch](https://www.elastic.co/products/elasticsearch) indexes the product data.
+* [RabbitMQ](https://www.rabbitmq.com/) is the preferred choice for messaging. 
+ 
+## Services
  
 An updated version of the Services code are linked as submodules to this 
 project. For the most up to date ones refer to the original repositories:
 
 [Catalog Service](https://github.com/ncornag/micro-catalog-service)
 
+* Hierarchical Categories
+* Category Classifications
+* Variants
+* Indexing and faceted search
+* Taxes per product
+* Stock status per product
+
 [Cart Service](https://github.com/ncornag/micro-cart-service)
+
+* Single or bulk add to Cart
+* Stock checking available per product
+* Define max number of items items in Cart
+* Define max number of items per Product in Cart
+* Aggregate same products or add them as a single line each
+* Fast Cart calculation
+* Configurable Taxes
+* Abandonment handling
 
 [Stock Service](https://github.com/ncornag/micro-stock-service)
 
+* Warehose enabled
+* Reservation system available with expiration times
+
 [Oauth Service](https://github.com/ncornag/micro-oauth-service)
+
+* API tokens
+* User tokens
 
 ## Run
 
