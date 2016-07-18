@@ -82,7 +82,7 @@ module.exports = function (base) {
   server.register([
     {
       register: require('ratify'),
-      options: {}
+      options: { apiVersion: service.version }
     }, {
       register: require('good'),
       options: {
