@@ -18,8 +18,8 @@ module.exports = function (options) {
     rootPath = rootPath.substr(0, rootPath.lastIndexOf('node_modules') - 1);
   }
   base.config = options.config || require('./modules/config')([
-      rootPath + '/config/' + (process.env.NODE_ENV || 'development') + '.json',
-      rootPath + '/config/defaults.json'
+      `${rootPath}/config/${process.env.NODE_ENV || 'development'}.json`,
+      `${rootPath}/config/defaults.json`
     ]);
 
   // Util service
