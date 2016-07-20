@@ -90,13 +90,17 @@ module.exports = function (base) {
           interval: 1000
         },
         reporters: {
-          console: [{
-            module: 'good-squeeze',
-            name: 'Squeeze',
-            args: [{ log: '*', request: '*', response: '*', error: '*' }]
-          }, {
-            module: 'good-console'
-          }, 'stdout']
+          console: [
+            {
+              module: 'good-squeeze',
+              name: 'Squeeze',
+              args: base.config.get('logger:good')
+            },
+            {
+              module: 'good-console'
+            },
+            'stdout'
+          ]
         }
       }
     }], (err) => {
