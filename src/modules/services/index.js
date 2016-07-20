@@ -4,9 +4,16 @@ const AuthJWT = require('hapi-auth-jwt');
 const uuid = require('node-uuid').v4;
 const sessionCache = require('session-cache');
 
+const goodWinston = require('hapi-good-winston').goodWinston;
+const logLvl = require('hapi-good-winston').logLvl;
+
 // TODO: Refactor to split the service and the transports
 
 module.exports = function (base) {
+
+  // Map good->winston levels
+  Object.assign(logLvl, base.config.get('logger:server'));
+  console.log(logLvl);
 
   const service = {
     name: base.config.get('services:name'),
@@ -90,17 +97,7 @@ module.exports = function (base) {
           interval: 1000
         },
         reporters: {
-          console: [
-            {
-              module: 'good-squeeze',
-              name: 'Squeeze',
-              args: base.config.get('logger:good')
-            },
-            {
-              module: 'good-console'
-            },
-            'stdout'
-          ]
+          winston: [goodWinston(base.logger)]
         }
       }
     }], (err) => {
