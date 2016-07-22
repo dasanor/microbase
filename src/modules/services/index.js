@@ -13,7 +13,6 @@ module.exports = function (base) {
 
   // Map good->winston levels
   Object.assign(logLvl, base.config.get('logger:server'));
-  console.log(logLvl);
 
   const service = {
     name: base.config.get('services:name'),
