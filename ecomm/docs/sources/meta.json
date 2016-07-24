@@ -1,22 +1,16 @@
 {
   "index": {
     "menu": [
-      {"url": "pages/index.html", "body": "MicroBase"},
-      {"url": "pages/micro-cart-service.html", "body": "Cart"},
-      {"url": "pages/micro-catalog-service.html", "body": "Catalog"},
-      {"url": "pages/micro-stock-service.html", "body": "Stock"},
-      {"url": "pages/micro-oauth-service.html", "body": "Oauth"}
+      {"url": "index.html", "body": "MicroBase"},
+      {"url": "micro-cart-service.html", "body": "Cart"},
+      {"url": "micro-catalog-service.html", "body": "Catalog"},
+      {"url": "micro-stock-service.html", "body": "Stock"},
+      {"url": "micro-oauth-service.html", "body": "Oauth"}
     ]
   },
   "*": {
     "title": "MicroBase · eCommerce made simple",
     "repoUrl": "https://github.com/ncornag/microbase/",
-    "menu": [
-      {"url": "../pages/index.html", "body": "MicroBase"},
-      {"url": "../pages/micro-cart-service.html", "body": "Cart"},
-      {"url": "../pages/micro-catalog-service.html", "body": "Catalog"},
-      {"url": "../pages/micro-stock-service.html", "body": "Stock"},
-      {"url": "../pages/micro-oauth-service.html", "body": "Oauth"}
-    ]
+    "assetspath": "http://microbase.io/"
   }
 }
