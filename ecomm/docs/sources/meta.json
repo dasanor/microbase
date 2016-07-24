@@ -1,5 +1,10 @@
 {
   "index": {
+  },
+  "*": {
+    "title": "MicroBase · eCommerce made simple",
+    "repoUrl": "https://github.com/ncornag/microbase/",
+    "assetspath": "http://microbase.io/",
     "menu": [
       {"url": "index.html", "body": "MicroBase"},
       {"url": "micro-cart-service.html", "body": "Cart"},
@@ -7,10 +12,5 @@
       {"url": "micro-stock-service.html", "body": "Stock"},
       {"url": "micro-oauth-service.html", "body": "Oauth"}
     ]
-  },
-  "*": {
-    "title": "MicroBase · eCommerce made simple",
-    "repoUrl": "https://github.com/ncornag/microbase/",
-    "assetspath": "http://microbase.io/"
   }
 }
