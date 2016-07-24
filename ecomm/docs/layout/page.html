@@ -1,0 +1,20 @@
+{{> header}}
+
+<div class="page-content">
+  <div class="container">
+    <nav class="col-xs-3">
+      <ul>
+        {{#each menu}}
+        <li><a href="{{url}}">{{body}}</a></li>
+        {{/each}}
+      </ul>
+
+      {{~> toc}}
+    </nav>
+    <div class="col-xs-9">
+      {{~> content}}
+    </div>
+  </div>
+</div>
+
+{{> footer}}

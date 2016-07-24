@@ -5,7 +5,7 @@ of the ecommerce store backends. The architecture embraces the
 microservices paradigm, so the services are organized as a separate 
 projects.
 
-# Architecture
+## Architecture
 
 Each service is executed in a separate environment and it communicates 
 with the others via http and/or messaging. To know where the other 
@@ -17,7 +17,15 @@ an [NGINX](https://www.nginx.com/) gateway.
 Example add to Cart call
 ![](https://www.websequencediagrams.com/cgi-bin/cdraw?lz=IyBGcm9tIGh0dHBzOi8vd3d3LndlYnNlcXVlbmNlZGlhZ3JhbXMuY29tLwp0aXRsZSBCb290c3RyYXAgUwAfBwoKcGFydGljaXBhbnQgVXNlcgAEDUdhdGV3YXkAGA1SZWdpc3RyAAcOQ2FydCBTZXJ2aWNlAEYNU3RvY2sAEQkKAAINLT4ARAg6AE8HZXIKAFcILT4Adgc6IFVwZGF0ZSBDb25maWcKAF8MAAw2VXNlcgBUC0FkZCBQcm9kdWN0IFJlcXVlc3QKAIFyBy0-AIFNDDogUm91dGVkAB0VAIEJDgCBMwlDaGVjawCBfwcATBEAghANAFUJAB8UAIIpDwCCEgkAglkGQXZhaWxhYmlsaXR5IFJlc3BvbnNlAIEsGAAXHACCTg4AgW4OAIIcCwCBVRgAgjwOAHcQVXNlcgANFw&s=napkin)
 
-# Services
+## Requisites to run the services
+
+* The language choosen for the developments is ES6 (ES2015) Javascript, so
+[Node](https://nodejs.org) 6.x is needed to run microbase.
+* [MongoDB](https://www.mongodb.com/) is used to store data.
+* [Elasticsearch](https://www.elastic.co/products/elasticsearch) indexes the product data.
+* [RabbitMQ](https://www.rabbitmq.com/) is the preferred choice for messaging. 
+ 
+## Services
  
 An updated version of the Services code are linked as submodules to this 
 project. For the most up to date ones refer to the original repositories:
@@ -51,14 +59,6 @@ project. For the most up to date ones refer to the original repositories:
 
 * API tokens
 * User tokens
-
-## Requisites to run the services
-
-* The language choosen for the developments is ES6 (ES2015) Javascript, so
-[Node](https://nodejs.org) 6.x is needed to run microbase.
-* [MongoDB](https://www.mongodb.com/) is used to store data.
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch) indexes the product data.
-* [RabbitMQ](https://www.rabbitmq.com/) is the preferred choice for messaging. 
 
 ## Run
 
@@ -115,7 +115,11 @@ curl --request POST \
   --data '{"net": "1000"}'
 ```
 
-# Your own services
+## Tests
+
+Shamefully, no tests available yet.
+
+## How to build your own service
 
 1. Install the framework:
 
@@ -191,9 +195,9 @@ curl --request POST \
     --data '{user: '100'}'
   ```
 
-# Modules
+## Modules
 
-## config
+### config
 
 The configuration properties are handled with `nconf`. Out of the box, when used in a service, the
 framework reads the following files:
@@ -211,7 +215,7 @@ The first file can be customized changing the value of the `NODE_ENV` environmen
 ie: If `NODE_ENV` is `prod`, the config file used will be `config/prod.json`. If unsetted, the file
 `config/development.json`
 
-### Use
+#### Use
 
 In the application, get the configured values using the `nconf` interface:
 
@@ -219,12 +223,12 @@ In the application, get the configured values using the `nconf` interface:
 const maxQuantityPerProduct = base.config.get('hooks:preAddEntry:maxQuantityPerProduct');
 ```
 
-## db
+### db
 
 The service uses `Mongoose` framework. The connection configuration parameters must be set in the
 `db` key of the configuration properties.
 
-### Basic parameters
+#### Basic parameters
 
 ```json
 "db": {
@@ -233,7 +237,7 @@ The service uses `Mongoose` framework. The connection configuration parameters m
 }
 ```
 
-### Full parameters
+#### Full parameters
 
 ```json
 "db": {
@@ -253,7 +257,7 @@ database.
 2016-05-18T23:22:01.321Z - debug: [db-mongo] reserves.find({"expirationTime":{"$lt":"2016-05-19T13:22:01.321Z"},"state":"ISSUED"})
 ```
 
-### Use
+#### Use
 
 In the application, use the `mongoose` interface to register and use the models.
 
@@ -293,11 +297,11 @@ base.db.models.Cart
 
 ```
 
-## logger
+### logger
 
 The service uses `Winston` to log messages to the console.
 
-### Use
+#### Use
 
 In the application, use the `winston` interface:
 
@@ -305,11 +309,11 @@ In the application, use the `winston` interface:
 base.logger.info(`[server-http] running at: [${server.info.uri}${base.config.get('services:path')}]`);
 ```
 
-## events
+### events
 
 Simpe wrapper over the `EventEmitter` to send and listen to messages.
 
-### Use
+#### Use
 
 Listen to a channel:
 
@@ -327,11 +331,11 @@ Send messages to a channel:
 base.events.send(productsChannel, 'CREATE', productData);
 ```
 
-## workers
+### workers
 
 The service uses `monq` to configure and launch jobs.
 
-### Use
+#### Use
 
 Configure the job in the `workers` key:
 ```json
@@ -376,15 +380,15 @@ base.events.listen(productsChannel, (msg) => {
 });
 ```
 
-## services
+### services
 
 The services use the `Hapi` framework to expose and call the service operations.
 
-### Use
+#### Use
 
 You must register your operation in the framework with the `add` or the `addModule` methods.
 
-### add method
+#### add method
 
 ```javascript
 const operation = {
@@ -414,7 +418,7 @@ The framework creates a `Hapi` route with the following details:
 * config: The operation is also configured with the `ratify` json schema validator
   * schema: the `schema` provided
 
-### addModule method
+#### addModule method
 
 If all your operations are inside a module, you can add all of them at once:
 
@@ -437,7 +441,7 @@ const cartFactory = require('./modules/cartService');
 base.services.addModule(stockFactory(base));
 ```
 
-### Calling another service
+#### Calling another service
 
 You can call another `microbase` services using the `call` method
 
@@ -459,15 +463,15 @@ internal call (an operation hosted in the same application) and not an http conn
 * If you want to specify the service version to call, put the version after the service name (ie
 `'stock:v2:reserve'`). The default is `v1`.
 
-## cache (server side)
+### cache (server side)
 
 Server side cache for operations.
 
-### Use
+#### Use
 
 TODO
 
-### Example
+#### Example
 
 ```javascript
 const op = {
