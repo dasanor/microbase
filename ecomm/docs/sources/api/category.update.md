@@ -4,8 +4,8 @@ This method is used to update Category data
 
 # Arguments
 
-This method has the URL https://server/services/catalog/v1/category.update and 
-follows the MicroBase API calling conventions.
+This method has the URL https://server/services/catalog/v1/category.create and 
+follows the [MicroBase API calling conventions](../calling-conventions.html).
 
 Argument | Example | Required | Description
 ---------|---------|----------|------------
