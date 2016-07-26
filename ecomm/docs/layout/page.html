@@ -3,12 +3,49 @@
 <div class="page-content">
   <div class="container">
     <nav class="col-xs-3">
+
+      {{#eq level 0}}
+      <h3>Overview</h3>
       <ul>
-        {{#each menu}}
+        <li><a href="index.html">MicroBase</a></li>
+      </ul>
+      <h3>Services</h3>
+      <ul>
+        {{#each services}}
         <li><a href="{{url}}">{{body}}</a></li>
         {{/each}}
       </ul>
+      <h3>API</h3>
+      <ul>
+        <li><a href="calling-conventions.html">Calling conventions</a></li>
+        {{#each api}}
+        <li><a href="{{url}}">{{body}}</a></li>
+        {{/each}}
+      </ul>
+      {{/eq}}
 
+      {{#eq level 1}}
+      <h3>Overview</h3>
+      <ul>
+        <li><a href="../index.html">MicroBase</a></li>
+      </ul>
+      <h3>Services</h3>
+      <ul>
+        {{#each services}}
+        <li><a href="../{{url}}">{{body}}</a></li>
+        {{/each}}
+      </ul>
+      <h3>API</h3>
+      <ul>
+        <li><a href="../calling-conventions.html">Calling conventions</a></li>
+        {{#each api}}
+        <li><a href="../{{url}}">{{body}}</a></li>
+        {{/each}}
+      </ul>
+      {{/eq}}
+
+      ________________________
+      <h3>{{title}} TOC</h3>
       {{~> toc}}
     </nav>
     <div class="col-xs-9">
