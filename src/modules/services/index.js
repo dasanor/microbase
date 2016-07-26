@@ -296,10 +296,10 @@ module.exports = function (base) {
     } else {
       // RPC style
       operationUrl = getOperationUrl(serviceBasePath, service.name, service.version, op.name, undefined);
-      operationMethod = 'POST';
+      operationMethod = ['GET', 'POST'];
     }
     const defaultScope = base.config.get('auth:scope');
-    base.logger.info(`[services] added service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
+    base.logger.info(`[services] added ${routesStyle} service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
     // Add the operation to this service operations
     service.operations.add(operationFullName);
     // Create cache
