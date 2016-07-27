@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "doc": "docker -i . -o docs/code index.js modules",
-    "apidoc": "aglio -i docs/main.apib --theme-template triple -o docs/api/index.html",
     "test": "lab test/test.js -I shortid,adjectives,nouns -v",
     "test-cov-html": "lab -r html -o coverage.html test/test.js"
   },
@@ -36,7 +35,6 @@
     "wreck": "^7.2.1"
   },
   "devDependencies": {
-    "aglio": "^2.2.1",
     "code": "^3.0.0",
     "database-cleaner": "^0.13.0",
     "docker": "^0.2.14",
