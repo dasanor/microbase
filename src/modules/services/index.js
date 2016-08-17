@@ -4,9 +4,15 @@ const AuthJWT = require('hapi-auth-jwt');
 const uuid = require('node-uuid').v4;
 const sessionCache = require('session-cache');
 
+const goodWinston = require('hapi-good-winston').goodWinston;
+const logLvl = require('hapi-good-winston').logLvl;
+
 // TODO: Refactor to split the service and the transports
 
 module.exports = function (base) {
+
+  // Map good->winston levels
+  Object.assign(logLvl, base.config.get('logger:server'));
 
   const service = {
     name: base.config.get('services:name'),
@@ -37,7 +43,7 @@ module.exports = function (base) {
   const serviceBasePath = base.config.get('services:path');
 
   const getOperationUrl = (basePath, serviceName, serviceVersion, operationName, operationPath) =>
-    `${basePath}/${serviceName}/${serviceVersion}${operationPath !== undefined ? operationPath : '/' + operationName}`;
+    `${basePath}/${serviceName}/${serviceVersion}/${operationName}${operationPath !== undefined ? operationPath : ''}`;
   const getOperationFullName = (serviceName, serviceVersion, operationName) =>
     `${serviceName}:${serviceVersion}:${operationName}`;
   const splitOperationName = name => {
@@ -65,16 +71,17 @@ module.exports = function (base) {
 
   // Custom error responses
   server.ext('onPreResponse', (request, reply) => {
-
     const response = request.response;
     if (!response.isBoom) {
       return reply.continue();
     }
 
-    if (response.data) {
-      Object.assign(response.output.payload, response.data);
-      response.reformat();
-    }
+    response.output.payload = base.utils.genericResponse(null, {
+      code: response.output.payload.error,
+      data: {
+        statusCode: response.output.payload.statusCode
+      }
+    });
 
     return reply(response);
   });
@@ -82,7 +89,7 @@ module.exports = function (base) {
   server.register([
     {
       register: require('ratify'),
-      options: {}
+      options: { apiVersion: service.version }
     }, {
       register: require('good'),
       options: {
@@ -90,13 +97,7 @@ module.exports = function (base) {
           interval: 1000
         },
         reporters: {
-          console: [{
-            module: 'good-squeeze',
-            name: 'Squeeze',
-            args: [{ log: '*', request: '*', response: '*', error: '*' }]
-          }, {
-            module: 'good-console'
-          }, 'stdout']
+          winston: [goodWinston(base.logger)]
         }
       }
     }], (err) => {
@@ -296,10 +297,10 @@ module.exports = function (base) {
     } else {
       // RPC style
       operationUrl = getOperationUrl(serviceBasePath, service.name, service.version, op.name, undefined);
-      operationMethod = 'POST';
+      operationMethod = ['GET', 'POST'];
     }
     const defaultScope = base.config.get('auth:scope');
-    base.logger.info(`[services] added service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
+    base.logger.info(`[services] added ${routesStyle} service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
     // Add the operation to this service operations
     service.operations.add(operationFullName);
     // Create cache

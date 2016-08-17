@@ -1,6 +1,13 @@
 {
   "logger": {
-    "level": "info"
+    "level": "info",
+    "server": {
+      "ops": "silly",
+      "response": "info",
+      "log": "info",
+      "error": "error",
+      "request": "info"
+    }
   },
   "services": {
     "host": "0.0.0.0",

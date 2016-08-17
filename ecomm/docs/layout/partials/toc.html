@@ -1,0 +1,7 @@
+<ul>
+  {{#each headings}}
+  {{#eq depth 1}}
+  <li><a href="#{{id}}">{{text}}</a></li>
+  {{/eq}}
+  {{/each}}
+</ul>

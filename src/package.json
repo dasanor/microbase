@@ -1,13 +1,12 @@
 {
   "name": "microbase",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Ecommerce platform to develop store backends.",
   "main": "index.js",
   "scripts": {
     "doc": "docker -i . -o docs/code index.js modules",
-    "apidoc": "aglio -i docs/main.apib --theme-template triple -o docs/api/index.html",
-    "test": "NODE_ENV=test && lab test/test.js",
-    "test-cov-html": "NODE_ENV=test && lab -r html -o coverage.html test/test.js"
+    "test": "lab test/test.js -I shortid,adjectives,nouns -v",
+    "test-cov-html": "lab -r html -o coverage.html test/test.js"
   },
   "repository": {
     "type": "git",
@@ -21,10 +20,9 @@
     "cron": "^1.1.0",
     "elasticsearch": "^11.0.1",
     "good": "^7.0.0",
-    "good-console": "^6.1.1",
-    "good-squeeze": "^3.0.1",
     "hapi": "^13.4.0",
     "hapi-auth-jwt": "^4.0.0",
+    "hapi-good-winston": "^0.1.2",
     "mongoose": "^4.4.16",
     "monq": "^0.3.4",
     "nconf": "^0.8.4",
@@ -37,7 +35,6 @@
     "wreck": "^7.2.1"
   },
   "devDependencies": {
-    "aglio": "^2.2.1",
     "code": "^3.0.0",
     "database-cleaner": "^0.13.0",
     "docker": "^0.2.14",

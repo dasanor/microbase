@@ -4,8 +4,8 @@
   "description": "Ecommerce services.",
   "main": "index.js",
   "scripts": {
-    "doc": "npm install docker && docker -i . -o docs/code index.js models operations",
-    "apidoc": "npm install aglio && aglio -i docs/api/main.apib --theme-template triple -o docs/api/index.html"
+    "doc": "generate-md --layout docs/layout --input docs/sources --output docs/generated --no-header-links",
+    "codedoc": "npm install docker && docker -i . -o docs/generated/code index.js models operations"
   },
   "repository": {
     "type": "git",
@@ -13,9 +13,8 @@
   },
   "author": "Nicolás Cornaglia Schlieman",
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "aglio": "^2.2.1"
+    "markdown-styles": "^3.1.6"
   }
 }

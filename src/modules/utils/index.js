@@ -35,13 +35,33 @@ module.exports = function (base) {
 
     genericErrorResponse(error) {
       if (error.name && error.name === 'ValidationError') {
-        return boom.create(406, 'ValidationError', { data: service.extractErrors(error) });
+        return { error: 'validation_error', data: this.extractErrors(error) };
       }
       if (error.name && error.name === 'MongoError' && (error.code === 11000 || error.code === 11001)) {
-        return boom.forbidden('duplicate key', { data: error.errmsg });
+        return { error: 'duplicate_key', data: error.errmsg };
       }
-      if (!(error.isBoom || error.statusCode === 404)) base.logger.error(error);
-      return boom.wrap(error);
+      //if (!(error.isBoom || error.statusCode === 404)) base.logger.error(error);
+      const response = {};
+      if (error.code) response.error = error.code.replace(' ', '_').toLowerCase();
+      if (error.data) response.data = error.data;
+      if (!response.data && error.message) response.data = error.message;
+      return response;
+    },
+
+    Error(code, data) {
+      const e = new Error();
+      e.code = code.replace(' ', '_').toLowerCase();
+      if (data) e.data = data;
+      return e;
+    },
+
+    genericResponse(payload, error) {
+      const response = {
+        ok: error ? false : true
+      };
+      Object.assign(response, payload);
+      if (error) Object.assign(response, this.genericErrorResponse(error));
+      return response;
     },
 
     hash(payload) {

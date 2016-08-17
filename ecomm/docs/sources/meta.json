@@ -1,0 +1,40 @@
+{
+  "api/*": {
+    "assetspath": "http://microbase.io/",
+    "level": 1
+  },
+  "*": {
+    "repoUrl": "https://github.com/ncornag/microbase/",
+    "assetspath": "http://microbase.io/",
+    "level": 0,
+    "services": [
+      {"url": "micro-catalog-service.html", "body": "Catalog"},
+      {"url": "micro-stock-service.html", "body": "Stock"},
+      {"url": "micro-cart-service.html", "body": "Cart"},
+      {"url": "micro-oauth-service.html", "body": "Oauth"}
+    ],
+    "api": [
+      {"url": "api/category.create.html", "body": "category.create"},
+      {"url": "api/category.info.html", "body": "category.info"},
+      {"url": "api/category.list.html", "body": "category.list"},
+      {"url": "api/category.remove.html", "body": "category.remove"},
+      {"url": "api/category.update.html", "body": "category.update"},
+      {"url": "api/product.create.html", "body": "product.create"},
+      {"url": "api/product.info.html", "body": "product.info"},
+      {"url": "api/product.list.html", "body": "product.list"},
+      {"url": "api/product.remove.html", "body": "product.remove"},
+      {"url": "api/product.update.html", "body": "product.update"},
+      {"url": "api/stock.create.html", "body": "stock.create"},
+      {"url": "api/stock.info.html", "body": "stock.info"},
+      {"url": "api/stock.update.html", "body": "stock.update"},
+      {"url": "api/stock.reserve.html", "body": "stock.reserve"},
+      {"url": "api/stock.unreserve.html", "body": "stock.unreserve"},
+      {"url": "api/cart.new.html", "body": "cart.new"},
+      {"url": "api/cart.info.html", "body": "cart.info"},
+      {"url": "api/cart.addEntry.html", "body": "cart.addEntry"},
+      {"url": "api/cart.removeEntry.html", "body": "cart.removeEntry"},
+      {"url": "api/tax.create.html", "body": "tax.create"},
+      {"url": "api/tax.cartTaxes.html", "body": "tax.cartTaxes"}
+    ]
+  }
+}
