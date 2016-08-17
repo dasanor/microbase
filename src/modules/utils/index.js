@@ -42,7 +42,7 @@ module.exports = function (base) {
       }
       //if (!(error.isBoom || error.statusCode === 404)) base.logger.error(error);
       const response = {};
-      if (error.code) response.error = error.code;
+      if (error.code) response.error = error.code.replace(' ', '_').toLowerCase();
       if (error.data) response.data = error.data;
       if (!response.data && error.message) response.data = error.message;
       return response;
@@ -50,7 +50,7 @@ module.exports = function (base) {
 
     Error(code, data) {
       const e = new Error();
-      e.code = code;
+      e.code = code.replace(' ', '_').toLowerCase();
       if (data) e.data = data;
       return e;
     },

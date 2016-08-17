@@ -43,7 +43,7 @@ module.exports = function (base) {
   const serviceBasePath = base.config.get('services:path');
 
   const getOperationUrl = (basePath, serviceName, serviceVersion, operationName, operationPath) =>
-    `${basePath}/${serviceName}/${serviceVersion}${operationPath !== undefined ? operationPath : '/' + operationName}`;
+    `${basePath}/${serviceName}/${serviceVersion}/${operationName}${operationPath !== undefined ? operationPath : ''}`;
   const getOperationFullName = (serviceName, serviceVersion, operationName) =>
     `${serviceName}:${serviceVersion}:${operationName}`;
   const splitOperationName = name => {
@@ -71,16 +71,17 @@ module.exports = function (base) {
 
   // Custom error responses
   server.ext('onPreResponse', (request, reply) => {
-
     const response = request.response;
     if (!response.isBoom) {
       return reply.continue();
     }
 
-    if (response.data) {
-      Object.assign(response.output.payload, response.data);
-      response.reformat();
-    }
+    response.output.payload = base.utils.genericResponse(null, {
+      code: response.output.payload.error,
+      data: {
+        statusCode: response.output.payload.statusCode
+      }
+    });
 
     return reply(response);
   });
