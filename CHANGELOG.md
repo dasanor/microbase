@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-MicroBase is in a pre-1.0 state. This means that its APIs and behavior 
-are subject to breaking changes without deprecation notices. Until 1.0, 
-version numbers will follow a [Semver][]-ish `0.y.z` format, where `y` 
-is incremented when new features or breaking changes are introduced, 
+MicroBase is in a pre-1.0 state. This means that its APIs and behavior
+are subject to breaking changes without deprecation notices. Until 1.0,
+version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
+is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
+
+## [0.7.1][] (2016-08-17)
+
+* Replaced good-console with hapi-good-winston to unify loggers.
+* New documentation layout.
+* Removed Boom.
+* Enhanced docs. Moving from aglio to markup.
 
 ## [0.7.0][] (2016-07-14)
 
@@ -46,7 +53,7 @@ and `z` is incremented for lesser changes or bug fixes.
 ## [0.4.0][] (2016-06-04)
 * Added local events service
 * Added Search service with Elasticsearch
-* Remove multiple crons per worker. 
+* Remove multiple crons per worker.
 * Added ability to launch a job on demand.
 * Allow rest urls calls in Services service.
 * Added doc/test scripts
@@ -61,8 +68,8 @@ and `z` is incremented for lesser changes or bug fixes.
 
 ## [0.3.1][] (2016-05-30)
 
-* JWT token verification. 
-* Token pass to downstream services. 
+* JWT token verification.
+* Token pass to downstream services.
 * CID creation.
 
 ## [0.3.0][] (2016-05-26)
