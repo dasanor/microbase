@@ -206,8 +206,8 @@
 			"description": null,
 			"order": [
 				"afc1d7bd-bf60-a4cf-0b15-df9589d3db03",
-				"aa8a35e0-9b48-b36a-5135-c52da3b6cf6b",
 				"bbd79686-8541-3157-220b-b04dd873a3ea",
+				"aa8a35e0-9b48-b36a-5135-c52da3b6cf6b",
 				"0ec274b1-fdbd-2afd-2f4c-c6060bd44164"
 			],
 			"folders": [],
@@ -220,7 +220,7 @@
 			"remoteLink": null,
 			"public": false,
 			"createdAt": "2016-04-13T16:32:08.000Z",
-			"updatedAt": 1468576971789,
+			"updatedAt": 1472494075876,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -269,7 +269,7 @@
 				{
 					"id": "aa8a35e0-9b48-b36a-5135-c52da3b6cf6b",
 					"headers": "Content-Type: application/json\nAuthorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew\n",
-					"url": "http://{{host}}:{{port1}}/services/taxes/v1/vat",
+					"url": "http://{{host}}:{{portExamplesTaxes}}/services/taxes/v1/vat",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -278,7 +278,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1468426124540,
+					"time": 1472494294428,
 					"name": "taxes:vat",
 					"description": "",
 					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9"
@@ -309,29 +309,21 @@
 					"write": true
 				},
 				{
-					"owner": "467243",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 303409736,
 					"id": "bbd79686-8541-3157-220b-b04dd873a3ea",
-					"name": "math:multiply",
-					"dataMode": "raw",
-					"data": "{\n  \"left\": 100,\n  \"right\": 0.21\n}",
-					"descriptionFormat": "html",
-					"description": "",
-					"headers": "Content-Type: application/json\n",
-					"method": "POST",
-					"pathVariables": {},
-					"url": "http://{{host}}:{{port2}}/services/math/v1/multiply",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portExamplesMath}}/services/math/v1/multiply",
 					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"left\": 100,\n  \"right\": 0.21\n}",
+					"dataMode": "raw",
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"createdAt": "2016-04-14T07:51:07.000Z",
-					"updatedAt": "2016-06-08T17:12:42.000Z",
-					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
-					"write": true,
-					"collection": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
-					"synced": true
+					"time": 1472494301175,
+					"name": "math:multiply",
+					"description": "",
+					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9"
 				}
 			]
 		},
@@ -836,7 +828,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1471616563761
+			"timestamp": 1472494220068
 		},
 		{
 			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
@@ -871,27 +863,27 @@
 					"hovered": false
 				},
 				{
-					"key": "categoryId",
+					"key": "portExamplesMath",
+					"value": "3001",
 					"type": "text",
-					"value": "undefined",
 					"enabled": true
 				},
 				{
-					"key": "cartId",
+					"key": "portExamplesTaxes",
+					"value": "3000",
 					"type": "text",
-					"value": "undefined",
 					"enabled": true
 				}
 			],
 			"team": null,
-			"timestamp": 1471616563768
+			"timestamp": 1472494315029
 		},
 		{
 			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
 			"name": "micro-localhost-gateway",
 			"values": [],
 			"team": null,
-			"timestamp": 1471616563786
+			"timestamp": 1472494357462
 		}
 	],
 	"headerPresets": [
@@ -948,6 +940,18 @@
 		},
 		{
 			"key": "portOauth",
+			"value": "80",
+			"type": "text",
+			"enabled": true
+		},
+		{
+			"key": "portExamplesMath",
+			"value": "80",
+			"type": "text",
+			"enabled": true
+		},
+		{
+			"key": "portExamplesTaxes",
 			"value": "80",
 			"type": "text",
 			"enabled": true

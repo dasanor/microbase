@@ -1,6 +1,7 @@
 {
   "services": {
     "name": "taxes",
-    "version": "v1"
+    "version": "v1",
+    "style": "RPC"
   }
 }

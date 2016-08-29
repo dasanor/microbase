@@ -1,6 +1,7 @@
 {
   "services": {
     "name": "math",
-    "version": "v1"
+    "version": "v1",
+    "style": "RPC"
   }
 }

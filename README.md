@@ -67,7 +67,7 @@ the additional infrastructure services needed (MongoDB, Consul).
 
 ```bash
 cd ecomm
-docker-compose up
+docker-compose up --build
 curl --request POST \
   --url http://localhost:80/services/catalog/v1/category \
   --header 'accept: application/json' \
@@ -96,7 +96,7 @@ microservices style architecture.
 ### Run the examples:
 ```bash
 cd examples
-docker-compose up
+docker-compose up --build
 ```
 The Consul services could be viewed at:
 ```
@@ -110,8 +110,9 @@ ie:
 ```bash
 curl --request POST \
   --url http://localhost:80/services/taxes/v1/vat \
-  --header 'cache-control: no-cache' \
+  --header 'accept: application/json' \
   --header 'content-type: application/json' \
+  --header 'authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew' \
   --data '{"net": "1000"}'
 ```
 
