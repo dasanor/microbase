@@ -1,9 +1,9 @@
 {
   "parent": "ROOT",
-  "title": "Elecrodomésticos"
+  "title": "Electrodomésticos"
 }
 {
-  "parent": "categoryIdByTitle(Elecrodomésticos)",
+  "parent": "categoryIdByTitle(Electrodomésticos)",
   "title": "Frigoríficos y Congeladores",
   "classifications": [
     {
