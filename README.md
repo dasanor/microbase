@@ -78,6 +78,26 @@ curl --request POST \
 
 The `authorizarion` header is based on the default security configuration. It should be changed in production.
 
+## Example data
+
+You could add example data using the 'insertData' script.
+ 
+```bash
+cd ecomm/sampleData/src
+NODE_ENV=docker node insertData.js Tax ./data/dataTaxes.json
+NODE_ENV=docker node insertData.js Category ./data/dataCategories.json
+NODE_ENV=docker node insertData.js Product ./data/dataProductsShoes.json
+NODE_ENV=docker node insertData.js Product ./data/dataProductsFridges.json
+```
+
+## Postman
+
+API use examples can be found in a [Postman](https://www.getpostman.com) export file:
+
+```bash
+ls -l "ecomm/Postman Collection.json"
+```
+
 # The framework
 
 Microbase is build on top of a a small framework developed as a Node.js 
