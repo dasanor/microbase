@@ -332,7 +332,18 @@ module.exports = function (base) {
     handler: (msg, reply) => {
       return reply({ answer: 'pong' });
     }
-  })
+  });
+
+  if (base.logger.isDebugEnabled()) {
+    service.add({
+      name:'micro:config',
+      method:'GET',
+      config:{},
+      handler:(msg, reply) => {
+        return reply({answer: base.config.get()});
+      }
+    });
+  }
 
   // session-cache to store authorization and CID
   var session = sessionCache('microbase');
