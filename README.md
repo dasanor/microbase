@@ -156,19 +156,39 @@ curl --request POST \
   module.exports = base;
   ```
 
-3. Implement the `operations/new/index.js`
+3. Configure the service in `config/defaults.json`
+
+   ```json
+   {
+     "services": {
+       "name": "cart",
+       "version": "v1",
+       "style": "RPC"
+     }
+   }
+   ```
+
+4. Create a `config/development.json` (to be used only in the local development environment)
+
+   ```json
+   {
+     "logger": {
+       "level": "debug"
+     }
+   }
+   ```
+
+5. Implement the `operations/new/index.js`
 
   ```javascript
   function opFactory(base) {
   
     const op = {
       name: 'new',
-      path: '/',
-      method: 'POST',
       handler: (msg, reply) => {
         // Implementation here. i.e.:
         // save(msg);
-        // reply('Cart saved').code(200);
+        reply(base.utils.genericResponse({ cart: msg }));
       }
     };
     return op;
@@ -178,24 +198,6 @@ curl --request POST \
   module.exports = opFactory;
   ```
 
-4. Configure the service in `config/defaults.json`
-   
-   ```json
-   {
-     "services": {
-       "name": "cart",
-       "version": "v1"
-     }
-   }
-   ```
-
-5. Create an empty `config/development.json` (to be used for the local development evironment)
-
-   ```json
-   {
-   }
-   ```
-    
 6. Start the application
 
   ```
@@ -206,10 +208,21 @@ curl --request POST \
 
   ```
   curl --request POST \
-    --url http://localhost:3000/services/cart/v1 \
+    --url http://localhost:3000/services/cart/v1/new \
     --header 'content-type: application/json' \
     --header 'accept: application/json' \
     --data '{user: '100'}'
+  ```
+
+8. Verify the response
+
+  ```
+  {
+    "ok": "true",
+    "cart": {
+      "user": "100"
+    }
+  }
   ```
 
 # Modules
