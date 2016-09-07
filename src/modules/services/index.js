@@ -336,7 +336,7 @@ module.exports = function (base) {
 
   if (base.logger.isDebugEnabled()) {
     service.add({
-      name:'micro:config',
+      name:'micro.config',
       method:'GET',
       config:{},
       handler:(msg, reply) => {
