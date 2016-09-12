@@ -200,13 +200,13 @@ curl --request POST \
 
 6. Start the application
 
-  ```
+  ```bash
   node index.js
   ```
 
 7. Access the service operations
 
-  ```
+  ```bash
   curl --request POST \
     --url http://localhost:3000/services/cart/v1/new \
     --header 'content-type: application/json' \
@@ -216,7 +216,7 @@ curl --request POST \
 
 8. Verify the response
 
-  ```
+  ```json
   {
     "ok": "true",
     "cart": {
