@@ -6,33 +6,53 @@ services:
     image: ncornag/micro-docker-lb
     ports:
     - 80:80
-    - 8500:8500
-
-  cart-service:
-    build: ./services/micro-cart-service
-    links:
-    - consul:gateway
-    depends_on:
-    - consul
-    - mongo
-
-  stock-service:
-    build: ./services/micro-stock-service
-    links:
-    - consul:gateway
-    depends_on:
-    - consul
-    - mongo
-
-  catalog-service:
-    build: ./services/micro-catalog-service
-    links:
-    - consul:gateway
-    depends_on:
-    - consul
-    - mongo
+    - 8501:8500
 
   mongo:
-    image: mongo:3.3
+    image: mongo:3
     ports:
     - 27018:27017
+
+  bus:
+    image: rabbitmq:3-management
+    ports:
+    - 15673:15672
+
+  elasticsearch:
+    image: elasticsearch:2
+    ports:
+    - 9201:9200
+    - 9301:9300
+
+  redis:
+    image: redis:3
+    ports:
+    - 6380:6379
+
+  stock-service:
+    build: ./micro-stock-service
+    links:
+    - consul:gateway
+    depends_on:
+    - consul
+    - mongo
+    - bus
+
+  catalog-service:
+    build: ./micro-catalog-service
+    links:
+    - consul:gateway
+    depends_on:
+    - consul
+    - mongo
+    - bus
+    - elasticsearch
+
+  cart-service:
+    build: ./micro-cart-service
+    links:
+    - consul:gateway
+    depends_on:
+    - consul
+    - mongo
+    - bus
