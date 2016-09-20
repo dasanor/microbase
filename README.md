@@ -58,16 +58,39 @@ project. For the most up to date ones refer to the original repositories:
 [Node](https://nodejs.org) 6.x is needed to run microbase.
 * [MongoDB](https://www.mongodb.com/) is used to store data.
 * [Elasticsearch](https://www.elastic.co/products/elasticsearch) indexes the product data.
-* [RabbitMQ](https://www.rabbitmq.com/) is the preferred choice for messaging. 
+* [RabbitMQ](https://www.rabbitmq.com/) is the preferred choice for messaging.
+
+* If you want to run a service locally (not with the docker-compose provided), clone the repo
+and run node.
+
+```bash
+mkdir /tmp/micro-repos
+cd /tmp/micro-repos
+git clone https://github.com/ncornag/micro-catalog-service.git
+cd micro-catalog-service/src
+node index.js
+```
+
+Each service has in his own ```development``` configuration, so each service will start in his own
+port.
+
+Keep in mind that the infrastructure services needs some configuration (i.e. the host name). Out
+ of the box you will need to add this to your ```hosts``` file:
+
+```bash
+127.0.0.1 gateway mongo elasticsearch bus redis
+```
 
 ## Run
 
-Theres is a docker compose file provided to run the whole services, plus
-the additional infrastructure services needed (MongoDB, Consul).
+Theres is a docker compose file provided to run the services, plus the additional infrastructure
+services needed (MongoDB, Consul).
+If you want to try, execute the ```run``` shell script with a folder as a parameter. It will
+ clode all the repos, build the necesary images and start the containers.
 
 ```bash
 cd ecomm
-docker-compose up --build
+./run.sh /tmp
 curl --request POST \
   --url http://localhost:80/services/catalog/v1/category \
   --header 'accept: application/json' \
