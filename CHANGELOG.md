@@ -44,8 +44,6 @@ and `z` is incremented for lesser changes or bug fixes.
 ## [0.5.0][] (2016-06-07)
 * Added sample data creation script
 * Refactored the events payload to add message type
-
-## [0.4.1][] (2016-06-06)
 * Remove security from ping operation
 * Updated readme
 * Updated ecomm submodules (from develop)
