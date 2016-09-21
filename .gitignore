@@ -3,3 +3,5 @@ ecomm/node_modules
 ecomm/docs/generated
 coverage.html
 .idea
+*.*~
+*.swp
