@@ -327,7 +327,7 @@ module.exports = function (base) {
  };
 
   // For given folder name each file exports an operation. Name resolved to filename if no one is provided
-  service.addOperationsFromFolder = function(folder, base){
+  service.addOperationsFromFolder = function (folder = base.config.get('services:defaultFolder')) {
     var rootPath = base.config.get('rootPath');
 
     glob(`${folder}/*.js`, {}, (err, files) => {
