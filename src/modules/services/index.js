@@ -330,13 +330,13 @@ module.exports = function (base) {
   service.addOperationsFromFolder = function (folder = base.config.get('services:defaultFolder')) {
     var rootPath = base.config.get('rootPath');
 
-    glob(`${folder}/*.js`, {}, (err, files) => {
+    glob(`${rootPath}/${folder}/*.js`, {}, (err, files) => {
       files.forEach( (file) => {
-      var operation = require(path.normalize(`./${rootPath}/${file}`))(base);
-      if (!operation.hasOwnProperty("name")){
-        operation.name = path.basename(file, '.js');
-      }
-      service.addOperation(operation);
+        var operation = require(file)(base);
+        if (!operation.hasOwnProperty("name")) {
+          operation.name = path.basename(file, '.js');
+        }
+        service.addOperation(operation);
       })
     });
 
