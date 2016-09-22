@@ -9,13 +9,26 @@ fi
 DEST=$1/micro
 ORIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-mkdir -p $DEST
+updateRepo() {
+  REPO=$1
+  cd $DEST
+  if [ -d "$REPO" ]; then
+    cd $REPO
+    echo Updating $REPO
+    git pull
+  else
+    echo Clonning $REPO
+    git clone --depth 1 https://github.com/ncornag/$REPO.git
+  fi
+}
 
+mkdir -p $DEST
 cp $ORIG/docker-compose.yml $DEST
 
-cd $DEST
-git clone --depth 1 https://github.com/ncornag/micro-catalog-service.git
-git clone --depth 1 https://github.com/ncornag/micro-stock-service.git
-git clone --depth 1 https://github.com/ncornag/micro-cart-service.git
+REPOS=( "micro-catalog-service" "micro-stock-service" "micro-cart-service" "micro-tax-service" "micro-promotion-service")
+for i in "${REPOS[@]}"
+do
+	updateRepo $i
+done
 
 docker-compose up --build
