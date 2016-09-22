@@ -19,6 +19,7 @@
     "catbox-memory": "^2.0.3",
     "cron": "^1.1.0",
     "elasticsearch": "^11.0.1",
+    "glob": "^7.1.0",
     "good": "^7.0.0",
     "hapi": "^13.4.0",
     "hapi-auth-jwt": "^4.0.0",
