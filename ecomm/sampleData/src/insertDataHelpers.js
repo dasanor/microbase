@@ -5,6 +5,7 @@ function helpers(base) {
   const headers = base.config.get('gateway:defaultHeaders');
 
   const productMapBySku = new Map();
+  const categoryMapByTitle = new Map();
   const timeout = 10000;
 
   const setProperty = function (obj, property, value, parent) {
@@ -22,18 +23,16 @@ function helpers(base) {
       return Promise.resolve();
     }
     return base.services.call({
-        name: 'catalog:listProducts',
-        method: 'GET',
-        path: `/product?sku=${sku}`,
+      name: 'catalog:product.list',
         headers: headers,
         timeout: timeout
-      }, {})
+    }, { sku: sku })
       .then((result) => {
-        if (result.data.length == 0) {
+        if (result.ok == false || result.data.length == 0) {
           if (retryTimes == 0) throw new Error(`Product not found '${sku}'`);
           return new Promise((resolve) => {
             setTimeout(() => {
-              resolve(productIdBySku(obj, property, sku, retryTimes - 1, retryTimeout));
+              resolve(productIdBySku(obj, property, sku, retryTimes - 1, retryTimeout, parent));
             }, retryTimeout);
           })
         }
@@ -42,22 +41,26 @@ function helpers(base) {
       });
   }
 
-  const categoryMapByTitle = new Map();
-  const categoryIdByTitle = function (obj, property, title, parent) {
+  const categoryIdByTitle = function (obj, property, title, retryTimes, retryTimeout, parent) {
     const existingCategory = categoryMapByTitle.get(title);
     if (existingCategory) {
       setProperty(obj, property, existingCategory, parent);
       return Promise.resolve();
     }
     return base.services.call({
-        name: 'catalog:getCategory',
-        method: 'GET',
-        path: `/category?title=${title}`,
+      name: 'catalog:category.list',
         headers: headers,
         timeout: timeout
-      }, {})
+    }, { title: title })
       .then(result => {
-        if (result.data.length == 0) throw new Error(`Category not found '${title}'`);
+        if (result.ok == false || result.data.length == 0) {
+          if (retryTimes == 0) throw new Error(`Category not found '${title}'`);
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(categoryIdByTitle(obj, property, title, retryTimes - 1, retryTimeout, parent));
+            }, retryTimeout);
+          })
+        }
         categoryMapByTitle.set(title, result.data[0].id);
         setProperty(obj, property, result.data[0].id, parent);
       });
@@ -96,9 +99,7 @@ function helpers(base) {
     return Promise.all(handleFunctions([], data))
       .then(() => {
         return base.services.call({
-          name: 'cart:createTax',
-          method: 'POST',
-          path: '/tax',
+          name: 'cart:tax.create',
           headers: headers,
           timeout: timeout
         }, data);
@@ -109,9 +110,7 @@ function helpers(base) {
     return Promise.all(handleFunctions([], data))
       .then(() => {
         return base.services.call({
-          name: 'catalog:createCategory',
-          method: 'POST',
-          path: '/category',
+          name: 'catalog:category.create',
           headers: headers,
           timeout: timeout
         }, data);
@@ -122,9 +121,7 @@ function helpers(base) {
     return Promise.all(handleFunctions([], data))
       .then(() => {
         return base.services.call({
-          name: 'catalog:createProduct',
-          method: 'POST',
-          path: '/product',
+          name: 'catalog:product.create',
           headers: headers,
           timeout: timeout
         }, data);

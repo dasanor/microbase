@@ -58,16 +58,39 @@ project. For the most up to date ones refer to the original repositories:
 [Node](https://nodejs.org) 6.x is needed to run microbase.
 * [MongoDB](https://www.mongodb.com/) is used to store data.
 * [Elasticsearch](https://www.elastic.co/products/elasticsearch) indexes the product data.
-* [RabbitMQ](https://www.rabbitmq.com/) is the preferred choice for messaging. 
+* [RabbitMQ](https://www.rabbitmq.com/) is the preferred choice for messaging.
+
+* If you want to run a service locally (not with the docker-compose provided), clone the repo
+and run node.
+
+```bash
+mkdir /tmp/micro-repos
+cd /tmp/micro-repos
+git clone https://github.com/ncornag/micro-catalog-service.git
+cd micro-catalog-service/src
+node index.js
+```
+
+Each service has in his own ```development``` configuration, so each service will start in his own
+port.
+
+Keep in mind that the infrastructure services needs some configuration (i.e. the host name). Out
+ of the box you will need to add this to your ```hosts``` file:
+
+```bash
+127.0.0.1 gateway mongo elasticsearch bus redis
+```
 
 ## Run
 
-Theres is a docker compose file provided to run the whole services, plus
-the additional infrastructure services needed (MongoDB, Consul).
+Theres is a docker compose file provided to run the services, plus the additional infrastructure
+services needed (MongoDB, Consul).
+If you want to try, execute the ```run``` shell script with a folder as a parameter. It will
+ clode all the repos, build the necesary images and start the containers.
 
 ```bash
 cd ecomm
-docker-compose up
+./run.sh /tmp
 curl --request POST \
   --url http://localhost:80/services/catalog/v1/category \
   --header 'accept: application/json' \
@@ -77,6 +100,26 @@ curl --request POST \
 ```
 
 The `authorizarion` header is based on the default security configuration. It should be changed in production.
+
+## Example data
+
+You could add example data using the 'insertData' script.
+ 
+```bash
+cd ecomm/sampleData/src
+NODE_ENV=docker node insertData.js Tax ./data/dataTaxes.json
+NODE_ENV=docker node insertData.js Category ./data/dataCategories.json
+NODE_ENV=docker node insertData.js Product ./data/dataProductsShoes.json
+NODE_ENV=docker node insertData.js Product ./data/dataProductsFridges.json
+```
+
+## Postman
+
+API use examples can be found in a [Postman](https://www.getpostman.com) export file:
+
+```bash
+ls -l "ecomm/Postman Collection.json"
+```
 
 # The framework
 
@@ -96,7 +139,7 @@ microservices style architecture.
 ### Run the examples:
 ```bash
 cd examples
-docker-compose up
+docker-compose up --build
 ```
 The Consul services could be viewed at:
 ```
@@ -110,8 +153,9 @@ ie:
 ```bash
 curl --request POST \
   --url http://localhost:80/services/taxes/v1/vat \
-  --header 'cache-control: no-cache' \
+  --header 'accept: application/json' \
   --header 'content-type: application/json' \
+  --header 'authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew' \
   --data '{"net": "1000"}'
 ```
 
@@ -135,19 +179,39 @@ curl --request POST \
   module.exports = base;
   ```
 
-3. Implement the `operations/new/index.js`
+3. Configure the service in `config/defaults.json`
+
+   ```json
+   {
+     "services": {
+       "name": "cart",
+       "version": "v1",
+       "style": "RPC"
+     }
+   }
+   ```
+
+4. Create a `config/development.json` (to be used only in the local development environment)
+
+   ```json
+   {
+     "logger": {
+       "level": "debug"
+     }
+   }
+   ```
+
+5. Implement the `operations/new/index.js`
 
   ```javascript
   function opFactory(base) {
   
     const op = {
       name: 'new',
-      path: '/',
-      method: 'POST',
       handler: (msg, reply) => {
         // Implementation here. i.e.:
         // save(msg);
-        // reply('Cart saved').code(200);
+        reply(base.utils.genericResponse({ cart: msg }));
       }
     };
     return op;
@@ -157,38 +221,31 @@ curl --request POST \
   module.exports = opFactory;
   ```
 
-4. Configure the service in `config/defaults.json`
-   
-   ```json
-   {
-     "services": {
-       "name": "cart",
-       "version": "v1"
-     }
-   }
-   ```
-
-5. Create an empty `config/development.json` (to be used for the local development evironment)
-
-   ```json
-   {
-   }
-   ```
-    
 6. Start the application
 
-  ```
+  ```bash
   node index.js
   ```
 
 7. Access the service operations
 
-  ```
+  ```bash
   curl --request POST \
-    --url http://localhost:3000/services/cart/v1 \
+    --url http://localhost:3000/services/cart/v1/new \
     --header 'content-type: application/json' \
     --header 'accept: application/json' \
     --data '{user: '100'}'
+  ```
+
+8. Verify the response
+
+  ```json
+  {
+    "ok": "true",
+    "cart": {
+      "user": "100"
+    }
+  }
   ```
 
 # Modules

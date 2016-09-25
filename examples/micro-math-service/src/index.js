@@ -1,6 +1,6 @@
 const base = require('microbase')();
 
 // Add operations
-base.services.addModule(require('./modules/math')(base));
+base.services.addOperationsFromFolder('operations', base);
 
 module.exports = base;

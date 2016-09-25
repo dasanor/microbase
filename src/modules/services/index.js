@@ -3,10 +3,12 @@ const Wreck = require('wreck');
 const AuthJWT = require('hapi-auth-jwt');
 const uuid = require('node-uuid').v4;
 const sessionCache = require('session-cache');
+const path = require('path');
 
 const goodWinston = require('hapi-good-winston').goodWinston;
 const logLvl = require('hapi-good-winston').logLvl;
 
+const glob = require('glob');
 // TODO: Refactor to split the service and the transports
 
 module.exports = function (base) {
@@ -287,7 +289,7 @@ module.exports = function (base) {
   const routesStyle = base.config.get('services:style');
 
   // Add operation method
-  service.add = function (op) {
+  service.addOperation = function (op) {
     const operationFullName = getOperationFullName(service.name, service.version, op.name);
     let operationUrl, operationMethod;
     if (routesStyle === 'REST') {
@@ -318,21 +320,48 @@ module.exports = function (base) {
   };
 
   // Add all the operations inside a module
-  service.addModule = function (module) {
+  service.addOperations = function (module) {
     for (var op of module) {
-      service.add(op);
+      service.addOperation(op);
     }
+ };
+
+  // For given folder name each file exports an operation. Name resolved to filename if no one is provided
+  service.addOperationsFromFolder = function (folder = base.config.get('services:defaultFolder')) {
+    var rootPath = base.config.get('rootPath');
+
+    glob(`${rootPath}/${folder}/*.js`, {}, (err, files) => {
+      files.forEach( (file) => {
+        var operation = require(file)(base);
+        if (!operation.hasOwnProperty("name")) {
+          operation.name = path.basename(file, '.js');
+        }
+        service.addOperation(operation);
+      })
+    });
+
   };
 
   // Add a ping operation to allow health checks and keep alives
-  service.add({
+  service.addOperation({
     name: 'ping',
     method: 'GET',
     config: {},
     handler: (msg, reply) => {
       return reply({ answer: 'pong' });
     }
-  })
+  });
+
+  if (base.logger.isDebugEnabled()) {
+    service.addOperation({
+      name:'micro.config',
+      method:'GET',
+      config:{},
+      handler:(msg, reply) => {
+        return reply({answer: base.config.get()});
+      }
+    });
+  }
 
   // session-cache to store authorization and CID
   var session = sessionCache('microbase');
