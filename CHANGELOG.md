@@ -8,6 +8,14 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.7.2][] (2016-09-25)
+
+* Load operations from folders, assuming the file name as the operation name.
+* Remove submodules. Add script to run in docker compose.
+* New "micro:config" to show effective service configuration
+* Updated ecomm example data to RPC.
+* Updated examples.
+
 ## [0.7.1][] (2016-08-17)
 
 * Replaced good-console with hapi-good-winston to unify loggers.
