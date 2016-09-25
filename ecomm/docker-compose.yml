@@ -1,58 +1,61 @@
-version: '2'
-
-services:
-
-  consul:
-    image: ncornag/micro-docker-lb
-    ports:
+gateway:
+  image: ncornag/micro-docker-nginx:2.0.0
+  ports:
     - 80:80
-    - 8501:8500
+  links:
+    - consul:consul
+  restart: always
 
-  mongo:
-    image: mongo:3
-    ports:
+consul:
+  image: consul:latest
+  ports:
+    - 8501:8500
+  restart: always
+  command: agent -log-level info -dev -client 0.0.0.0
+
+mongo:
+  image: mongo:3
+  ports:
     - 27018:27017
 
-  bus:
-    image: rabbitmq:3-management
-    ports:
+bus:
+  image: rabbitmq:3-management
+  ports:
     - 15673:15672
+    - 5673:5672
 
-  elasticsearch:
-    image: elasticsearch:2
-    ports:
-    - 9201:9200
-    - 9301:9300
+elasticsearch:
+  image: elasticsearch:2
+  ports:
+  - 9201:9200
+  - 9301:9300
 
-  redis:
-    image: redis:3
-    ports:
-    - 6380:6379
+redis:
+  image: redis:3
+  ports:
+  - 6380:6379
 
-  stock-service:
-    build: ./micro-stock-service
-    links:
-    - consul:gateway
-    depends_on:
-    - consul
-    - mongo
-    - bus
+stock-service:
+  build: ./micro-stock-service
+  links:
+  - gateway:gateway
+  - consul:consul
+  - mongo:mongo
+  - bus:bus
 
-  catalog-service:
-    build: ./micro-catalog-service
-    links:
-    - consul:gateway
-    depends_on:
-    - consul
-    - mongo
-    - bus
-    - elasticsearch
+catalog-service:
+  build: ./micro-catalog-service
+  links:
+  - gateway:gateway
+  - consul:consul
+  - mongo:mongo
+  - bus:bus
+  - elasticsearch:elasticsearch
 
-  cart-service:
-    build: ./micro-cart-service
-    links:
-    - consul:gateway
-    depends_on:
-    - consul
-    - mongo
-    - bus
+cart-service:
+  build: ./micro-cart-service
+  links:
+  - gateway:gateway
+  - consul:consul
+  - bus:bus
+  - mongo:mongo
