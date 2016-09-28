@@ -1,5 +1,5 @@
 gateway:
-  image: ncornag/micro-docker-nginx:2.0.0
+  image: ncornag/micro-docker-nginx
   ports:
     - 80:80
   links:
@@ -11,7 +11,7 @@ consul:
   ports:
     - 8501:8500
   restart: always
-  command: agent -log-level info -dev -client 0.0.0.0
+  command: agent -log-level info -dev -client 0.0.0.0 -bind 0.0.0.0
 
 mongo:
   image: mongo:3
