@@ -105,6 +105,47 @@ module.exports = function (base) {
         })
       }
 
+    },
+
+    Evaluator: class Evaluator {
+      constructor() {
+        this.ops = {};
+      }
+
+      indent(level) {
+        return '  '.repeat(level);
+      }
+
+      use(fn) {
+        if (typeof fn === 'function') {
+          this.ops.push(fn);
+        } else if (typeof fn === 'string') {
+          const config = base.config.get(fn);
+          Object.keys(config).forEach(mRoute => {
+            const m = base.utils.loadModule(`${fn}:${mRoute}`);
+            this.ops[m.name] = (m.fn);
+          });
+        }
+        return this;
+      }
+
+      evaluate(context, opContext, level, op) {
+        if (base.logger.isDebugEnabled()) {
+          base.logger.debug(this.indent(level), Object.keys(op)[0], JSON.stringify(op).substring(0, 160));
+        }
+        const result = this.ops[Object.keys(op)[0]](
+          context,
+          opContext,
+          level,
+          op,
+          this
+        );
+        if (base.logger.isDebugEnabled()) {
+          base.logger.debug(this.indent(level), 'result:', JSON.stringify(result).substring(0, 160));
+        }
+        return result;
+      }
+
     }
 
   };
