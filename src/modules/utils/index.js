@@ -40,11 +40,13 @@ module.exports = function (base) {
       if (error.name && error.name === 'MongoError' && (error.code === 11000 || error.code === 11001)) {
         return { error: 'duplicate_key', data: error.errmsg };
       }
-      //if (!(error.isBoom || error.statusCode === 404)) base.logger.error(error);
       const response = {};
       if (error.code) response.error = error.code.replace(' ', '_').toLowerCase();
       if (error.data) response.data = error.data;
       if (!response.data && error.message) response.data = error.message;
+      if (!error.code && error.stack) {
+        base.logger.error(error);
+      }
       return response;
     },
 
