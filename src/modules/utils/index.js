@@ -131,7 +131,7 @@ module.exports = function (base) {
 
       evaluate(context, opContext, level, op) {
         if (base.logger.isDebugEnabled()) {
-          base.logger.debug(this.indent(level), Object.keys(op)[0], JSON.stringify(op).substring(0, 160));
+          base.logger.debug('[evaluator]', this.indent(level), Object.keys(op)[0], JSON.stringify(op).substring(0, 160));
         }
         const result = this.ops[Object.keys(op)[0]](
           context,
@@ -141,7 +141,7 @@ module.exports = function (base) {
           this
         );
         if (base.logger.isDebugEnabled()) {
-          base.logger.debug(this.indent(level), 'result:', JSON.stringify(result).substring(0, 160));
+          base.logger.debug('[evaluator]', this.indent(level), 'result:', JSON.stringify(result).substring(0, 160));
         }
         return result;
       }
