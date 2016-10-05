@@ -39,13 +39,25 @@ project. For the most up to date ones refer to the original repositories:
 * Define max number of items per Product in Cart
 * Aggregate same products or add them as a single line each
 * Fast Cart calculation
-* Configurable Taxes
 * Abandonment handling
 
 [Stock Service](https://github.com/ncornag/micro-stock-service)
 
 * Warehose enabled
 * Reservation system available with expiration times
+
+[Tax Service](https://github.com/ncornag/micro-tax-service)
+
+* Net and gross calculations
+* Easily creation of custom taxes, based on Cart, Products and User data
+
+[Promotion Service](https://github.com/ncornag/micro-promotion-service)
+
+* Multiple promotions firing per cart
+* Per Product, Product Category, Order or User data firing
+* DSL to allow complex conditions, with "AND" and/or "ANY" nested conditions
+* Almost fullfilled promotion detection with optiona thresholds
+* Easily creation of custom firing conditions
 
 [Oauth Service](https://github.com/ncornag/micro-oauth-service)
 
