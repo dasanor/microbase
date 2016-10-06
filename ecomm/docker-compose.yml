@@ -59,3 +59,19 @@ cart-service:
   - consul:consul
   - bus:bus
   - mongo:mongo
+
+tax-service:
+  build: ./micro-tax-service
+  links:
+  - gateway:gateway
+  - consul:consul
+  - bus:bus
+  - mongo:mongo
+
+promotion-service:
+  build: ./micro-promotion-service
+  links:
+  - gateway:gateway
+  - consul:consul
+  - bus:bus
+  - mongo:mongo
