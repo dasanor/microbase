@@ -51,12 +51,12 @@
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"SksexGRPn4\",\n            \"quantity\": 2,\n            \"price\": \"100.00\"\n        },\n        {\n        \t\"id\": \"2\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 2,\n            \"price\": \"100.00\"\n        },\n        {\n        \t\"id\": \"3\",\n            \"productId\": \"BycbkfRDhV\",\n            \"quantity\": 2,\n            \"price\": \"100.00\"\n        }\n    ]\n}",
+					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"SksexGRPn4\",\n            \"quantity\": \"2\"\n        },\n        {\n        \t\"id\": \"2\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 2\n        },\n        {\n        \t\"id\": \"3\",\n            \"productId\": \"BycbkfRDhV\",\n            \"quantity\": 3\n        }\n    ]\n}",
 					"dataMode": "raw",
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1475480810127,
+					"time": 1475767254907,
 					"name": "promotion.cartPromotions",
 					"description": "",
 					"collectionId": "5655c800-d53e-8be0-016f-bcb922fa1390"
@@ -92,7 +92,7 @@
 				{
 					"id": "042ac497-e60f-6d4c-cf34-1b71e11077fd",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/tax.cartTaxes?cartId=H19PRsec",
+					"url": "http://{{host}}:{{portTax}}/services/tax/v1/tax.cartTaxes?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -101,18 +101,15 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1473760770928,
+					"time": 1475782728899,
 					"name": "tax.cartTaxes",
 					"description": "",
-					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4",
-					"owner": "467243",
-					"collection": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
+					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
 				},
 				{
 					"id": "75a921d2-2b82-6df8-88f3-9c03479ad60d",
-					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/tax.create",
+					"url": "http://{{host}}:{{portCart}}/services/tax/v1/tax.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -121,16 +118,10 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1471604403401,
+					"time": 1475782707679,
 					"name": "tax.create",
 					"description": "",
-					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 489639541,
-					"descriptionFormat": null,
-					"createdAt": "2016-06-16T08:12:39.000Z",
-					"updatedAt": "2016-08-19T11:00:03.000Z",
-					"collection": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
+					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
 				}
 			]
 		},
@@ -503,7 +494,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-05-08T20:27:42.000Z",
-			"updatedAt": 1475760966666,
+			"updatedAt": 1475764285746,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -969,7 +960,14 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1475764272804
+			"timestamp": 1475782650742
+		},
+		{
+			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
+			"name": "micro-localhost-gateway",
+			"values": [],
+			"team": null,
+			"timestamp": 1475782650748
 		},
 		{
 			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
@@ -1031,14 +1029,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1475764272808
-		},
-		{
-			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
-			"name": "micro-localhost-gateway",
-			"values": [],
-			"team": null,
-			"timestamp": 1475764272811
+			"timestamp": 1475783097260
 		}
 	],
 	"headerPresets": [
