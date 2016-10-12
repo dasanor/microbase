@@ -33,6 +33,7 @@
     "servicebus": "^2.0.2",
     "session-cache": "^0.2.0",
     "winston": "^2.2.0",
+    "winston-logstash": "^0.2.11",
     "wreck": "^7.2.1"
   },
   "devDependencies": {

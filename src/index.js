@@ -28,6 +28,9 @@ module.exports = function (options) {
   // Logger service
   base.logger = options.logger || require('./modules/logger')(base);
 
+  // Logstash depends on logger
+  base.logstash = options.logstash || require('./modules/logstash')(base);
+
   // Cache service
   base.cache = options.cache || require('./modules/cache')(base);
 

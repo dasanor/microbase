@@ -24,6 +24,7 @@ updateRepo() {
 
 mkdir -p $DEST
 cp $ORIG/docker-compose.yml $DEST
+cp -R $ORIG/dockerConf $DEST
 
 REPOS=( "micro-catalog-service" "micro-stock-service" "micro-cart-service" "micro-tax-service" "micro-promotion-service")
 for i in "${REPOS[@]}"
