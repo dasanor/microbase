@@ -7,9 +7,9 @@ module.exports = function (base) {
 
     extractErrors(error) {
       const errors = [];
-      for (field in error.errors) {
-        errors.push(`${field}: ${error.errors[field].message}`);
-      }
+      error.errors.forEach(error => {
+        errors.push(`payload${error.dataPath}: ${error.message}`);
+      });
       return errors;
     },
 
@@ -43,9 +43,10 @@ module.exports = function (base) {
       const response = {};
       if (error.code) response.error = error.code.replace(' ', '_').toLowerCase();
       if (error.data) response.data = error.data;
+      if (error.statusCode) response.statusCode = error.statusCode;
       if (!response.data && error.message) response.data = error.message;
-      if (!error.code && error.stack) {
-        base.logger.error(error);
+      if (error.stack) {
+        base.logger.error(error.stack);
       }
       return response;
     },
@@ -131,7 +132,7 @@ module.exports = function (base) {
 
       evaluate(context, opContext, level, op) {
         if (base.logger.isDebugEnabled()) {
-          base.logger.debug('[evaluator]', this.indent(level), Object.keys(op)[0], JSON.stringify(op).substring(0, 160));
+          base.logger.debug('[evaluator]' + this.indent(level), Object.keys(op)[0], JSON.stringify(op).substring(0, 160));
         }
         const result = this.ops[Object.keys(op)[0]](
           context,

@@ -43,17 +43,16 @@ module.exports = function (options) {
   // Search service
   base.search = options.search || require('./modules/search')(base);
 
+  // Transports
+  base.transports = {};
+  base.transports.http = (options.transports && options.transports.http)
+    ? options.transports.http : require('./modules/transports/http.js')(base);
+
   // Services service
   base.services = options.services || require('./modules/services')(base);
 
   // Workers service
   base.workers = options.workers || require('./modules/workers')(base);
-
-  // Initial operations
-  if (options.module) {
-    const module = options.module(base);
-    base.services.addModule(module);
-  }
 
   return base;
 };
