@@ -37,7 +37,6 @@ redis:
 
 logstash:
   image: logstash:2
-  expose:
   ports:
     - 28778:28777
   volumes:
