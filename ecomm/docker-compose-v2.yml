@@ -1,0 +1,130 @@
+version: '2'
+
+services:
+
+  consul:
+    image: consul:latest
+    ports:
+      - 8501:8500
+    restart: always
+    command: agent -log-level info -dev -client 0.0.0.0 -bind 0.0.0.0
+
+  gateway:
+    image: ncornag/micro-docker-nginx
+    ports:
+      - 80:80
+    links:
+      - consul
+    restart: always
+    depends_on:
+      - consul
+
+  mongo:
+    image: mongo:3
+    ports:
+      - 27018:27017
+
+  bus:
+    image: rabbitmq:3-management
+    ports:
+      - 15673:15672
+      - 5673:5672
+
+  elasticsearch:
+    image: elasticsearch:2
+    ports:
+      - 9201:9200
+      - 9301:9300
+
+  redis:
+    image: redis:3
+    ports:
+      - 6380:6379
+
+  logstash:
+    image: logstash:2
+    expose:
+    ports:
+      - 28778:28777
+    volumes:
+      - ./dockerConf/logstash:/config-dir
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+    command: logstash -f /config-dir/elastic.conf
+
+  kibana:
+    image: kibana:4
+    ports:
+      - 5602:5601
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+
+  stock-service:
+    build: ./micro-stock-service
+    links:
+      - gateway
+      - consul
+      - mongo
+      - bus
+    depends_on:
+      - consul
+      - mongo
+      - bus
+      - logstash
+
+  catalog-service:
+    build: ./micro-catalog-service
+    links:
+      - gateway
+      - consul
+      - mongo
+      - bus
+      - elasticsearch
+    depends_on:
+      - consul
+      - mongo
+      - bus
+      - logstash
+
+  cart-service:
+    build: ./micro-cart-service
+    links:
+      - gateway
+      - consul
+      - bus
+      - mongo
+    depends_on:
+      - consul
+      - mongo
+      - bus
+      - logstash
+
+  tax-service:
+    build: ./micro-tax-service
+    links:
+      - gateway
+      - consul
+      - bus
+      - mongo
+    depends_on:
+      - consul
+      - mongo
+      - bus
+      - logstash
+
+  promotion-service:
+    build: ./micro-promotion-service
+    links:
+      - gateway
+      - consul
+      - bus
+      - mongo
+    depends_on:
+      - consul
+      - mongo
+      - bus
+      - logstash

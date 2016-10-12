@@ -3,7 +3,7 @@ gateway:
   ports:
     - 80:80
   links:
-    - consul:consul
+    - consul
   restart: always
 
 consul:
@@ -33,64 +33,68 @@ elasticsearch:
 redis:
   image: redis:3
   ports:
-  - 6380:6379
+    - 6380:6379
 
 logstash:
   image: logstash:2
   expose:
   ports:
-  - 28778:28777
+    - 28778:28777
   volumes:
-  - ./dockerConf/logstash:/config-dir
+    - ./dockerConf/logstash:/config-dir
   links:
-  - elasticsearch:elasticsearch
+    - elasticsearch
   command: logstash -f /config-dir/elastic.conf
 
 kibana:
   image: kibana:4
   ports:
-  - 5601:5601
+    - 5601:5601
   links:
-  - elasticsearch:elasticsearch
+    - elasticsearch
 
 stock-service:
   build: ./micro-stock-service
   links:
-  - gateway:gateway
-  - consul:consul
-  - mongo:mongo
-  - bus:bus
+  - gateway
+  - consul
+  - mongo
+  - bus
+  - logstash
 
 catalog-service:
   build: ./micro-catalog-service
   links:
-  - gateway:gateway
-  - consul:consul
-  - mongo:mongo
-  - bus:bus
-  - elasticsearch:elasticsearch
+    - gateway
+    - consul
+    - mongo
+    - bus
+    - logstash
+    - elasticsearch
 
 cart-service:
   build: ./micro-cart-service
   links:
-  - gateway:gateway
-  - consul:consul
-  - bus:bus
-  - mongo:mongo
+    - gateway
+    - consul
+    - mongo
+    - bus
+    - logstash
 
 tax-service:
   build: ./micro-tax-service
   links:
-  - gateway:gateway
-  - consul:consul
-  - bus:bus
-  - mongo:mongo
-  - logstash:logstash
+    - gateway
+    - consul
+    - mongo
+    - bus
+    - logstash
 
 promotion-service:
   build: ./micro-promotion-service
   links:
-  - gateway:gateway
-  - consul:consul
-  - bus:bus
-  - mongo:mongo
+    - gateway
+    - consul
+    - mongo
+    - bus
+    - logstash
