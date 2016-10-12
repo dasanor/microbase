@@ -84,6 +84,14 @@ module.exports = function (base) {
 
   app.use(router);
 
+  // Error handler for 401s
+  app.use(function errorHandler(err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+      return res.status(401).json({ ok: false, error: 'invalid_token' });
+    }
+    next();
+  });
+
   // Log Errors
   app.use(expressWinston.errorLogger({
     transports: [
@@ -99,9 +107,11 @@ module.exports = function (base) {
 
   // Error handler
   app.use(function errorHandler(err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-      return res.status(401).json({ ok: false, error: 'invalid_token' });
-    }
+    // console.log('============================');
+    // console.log(err);
+    // if (err.name === 'UnauthorizedError') {
+    //   return res.status(401).json({ ok: false, error: 'invalid_token' });
+    // }
     if (err.status) res.statusCode = err.status;
     if (res.statusCode < 400) res.status(500);
     const error = { message: err.message };
