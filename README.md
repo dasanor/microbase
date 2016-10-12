@@ -374,6 +374,41 @@ In the application, use the `winston` interface:
 base.logger.info(`[server-http] running at: [${server.info.uri}${base.config.get('services:path')}]`);
 ```
 
+## logstash
+
+The service uses `logstash` to log messages to the console, microbase sends logs to logstash via `winston-logstash`.
+
+### Use
+
+In the application, use the the configuration:
+
+```
+"logstash": {
+  "port": 28777,
+  "host": "logstash",
+  "node_name": "node_tax"
+}
+```
+
+Basic logstash configuration file is stored `./ecomm/dockerConf/logstash/elastic.conf`
+
+```
+input {
+  tcp {
+    port => 28777
+    type=>"sample"
+  }
+}
+
+## Add your filters here
+
+output {
+  elasticsearch {
+    hosts => "elasticsearch:9200"
+  }
+}
+```
+
 ## events
 
 Simpe wrapper over the `EventEmitter` to send and listen to messages.
