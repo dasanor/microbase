@@ -8,6 +8,12 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.8.1][] (2016-10-12)
+
+* Don't log the stacktrace on 401 errors.
+* Added 'public' parameter to operations to bypass security.
+* Fixed logstash dependency and docker-compose file.
+
 ## [0.8.0][] (2016-10-12)
 
 * Switch from Hapi to Express.
