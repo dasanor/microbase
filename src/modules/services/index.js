@@ -98,8 +98,7 @@ module.exports = function (base) {
   // Add a ping operation to allow health checks and keep alives
   service.addOperation({
     name: 'micro.ping',
-    method: 'GET',
-    config: {},
+    public: true,
     handler: (msg, reply) => {
       return reply({ answer: 'pong' });
     }
@@ -108,8 +107,7 @@ module.exports = function (base) {
   if (base.logger.isDebugEnabled()) {
     service.addOperation({
       name: 'micro.config',
-      method: 'GET',
-      config: {},
+      public: true,
       handler: (msg, reply) => {
         return reply({ answer: base.config.get() });
       }

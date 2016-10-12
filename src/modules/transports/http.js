@@ -39,6 +39,9 @@ module.exports = function (base) {
     getGatewayBaseUrl = () => gatewayBaseUrl;
   }
 
+  // JWT secretKey
+  const jwtSecretKey = base.config.get('token:secretKey');
+
   // Helpers
   const getOperationUrl = (basePath, serviceName, serviceVersion, operationName, operationPath) =>
     `${basePath}/${serviceName}/${serviceVersion}/${operationName}${operationPath !== undefined ? operationPath : ''}`;
@@ -128,12 +131,13 @@ module.exports = function (base) {
   function use(operationFullName, op) {
     const operationMethod = routesStyle === 'REST' ? (op.method || 'post').toLowerCase() : 'all';
     const operationUrl = getOperationUrl(serviceBasePath, serviceName, serviceVersion, op.name, op.path);
+    // TODO: database tokens / scope
+    const securityFn = op.public === true ? (req, res, next) => next() : jwt({ secret: jwtSecretKey });
     base.logger.info(`[services] added ${routesStyle} service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
     // Add the route, mixing parameters and payload to call the handler
     router[operationMethod](
       operationUrl,
-      // TODO: database tokens / scope
-      jwt({ secret: base.config.get('token:secretKey') }),
+      securityFn,
       (req, res, next) => {
 
         // wrap the events from request and response
