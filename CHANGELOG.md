@@ -8,6 +8,18 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.8.0][] (2016-10-12)
+
+* Switch from Hapi to Express.
+* Refactored the services into Services/Transports/MIddlewares.
+* Added middlewares to the services (Cache/Validator).
+* Added request id and hostname to the log.
+* Patched Mongoose promises to work with the rid.
+* Added Yarn package manager configuration.
+* Added Logstash integration
+* Added 'Evaluator' to implement small JSON DSLs (in use for Promotions).
+* Use containerpilot for the ecomm services docker configuration.
+
 ## [0.7.2][] (2016-09-25)
 
 * Load operations from folders, assuming the file name as the operation name.
