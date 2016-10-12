@@ -1,58 +1,100 @@
-version: '2'
-
-services:
-
-  consul:
-    image: ncornag/micro-docker-lb
-    ports:
+gateway:
+  image: ncornag/micro-docker-nginx
+  ports:
     - 80:80
-    - 8501:8500
+  links:
+    - consul
+  restart: always
 
-  mongo:
-    image: mongo:3
-    ports:
+consul:
+  image: consul:latest
+  ports:
+    - 8501:8500
+  restart: always
+  command: agent -log-level info -dev -client 0.0.0.0 -bind 0.0.0.0
+
+mongo:
+  image: mongo:3
+  ports:
     - 27018:27017
 
-  bus:
-    image: rabbitmq:3-management
-    ports:
+bus:
+  image: rabbitmq:3-management
+  ports:
     - 15673:15672
+    - 5673:5672
 
-  elasticsearch:
-    image: elasticsearch:2
-    ports:
-    - 9201:9200
-    - 9301:9300
+elasticsearch:
+  image: elasticsearch:2
+  ports:
+  - 9201:9200
+  - 9301:9300
 
-  redis:
-    image: redis:3
-    ports:
+redis:
+  image: redis:3
+  ports:
     - 6380:6379
 
-  stock-service:
-    build: ./micro-stock-service
-    links:
-    - consul:gateway
-    depends_on:
-    - consul
-    - mongo
-    - bus
+logstash:
+  image: logstash:2
+  expose:
+  ports:
+    - 28778:28777
+  volumes:
+    - ./dockerConf/logstash:/config-dir
+  links:
+    - elasticsearch
+  command: logstash -f /config-dir/elastic.conf
 
-  catalog-service:
-    build: ./micro-catalog-service
-    links:
-    - consul:gateway
-    depends_on:
-    - consul
-    - mongo
-    - bus
+kibana:
+  image: kibana:4
+  ports:
+    - 5601:5601
+  links:
     - elasticsearch
 
-  cart-service:
-    build: ./micro-cart-service
-    links:
-    - consul:gateway
-    depends_on:
+stock-service:
+  build: ./micro-stock-service
+  links:
+  - gateway
+  - consul
+  - mongo
+  - bus
+  - logstash
+
+catalog-service:
+  build: ./micro-catalog-service
+  links:
+    - gateway
     - consul
     - mongo
     - bus
+    - logstash
+    - elasticsearch
+
+cart-service:
+  build: ./micro-cart-service
+  links:
+    - gateway
+    - consul
+    - mongo
+    - bus
+    - logstash
+
+tax-service:
+  build: ./micro-tax-service
+  links:
+    - gateway
+    - consul
+    - mongo
+    - bus
+    - logstash
+
+promotion-service:
+  build: ./micro-promotion-service
+  links:
+    - gateway
+    - consul
+    - mongo
+    - bus
+    - logstash

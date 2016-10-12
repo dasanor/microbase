@@ -8,9 +8,10 @@ module.exports = function (base) {
   const service = {
 
     create: (name, policyOptions) => {
-      proxy.create(name, policyOptions)
+      return proxy.create(name, policyOptions)
         .then(cache => {
           caches.set(name, cache);
+          return cache;
         });
     },
 

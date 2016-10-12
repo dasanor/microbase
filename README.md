@@ -39,13 +39,25 @@ project. For the most up to date ones refer to the original repositories:
 * Define max number of items per Product in Cart
 * Aggregate same products or add them as a single line each
 * Fast Cart calculation
-* Configurable Taxes
 * Abandonment handling
 
 [Stock Service](https://github.com/ncornag/micro-stock-service)
 
 * Warehose enabled
 * Reservation system available with expiration times
+
+[Tax Service](https://github.com/ncornag/micro-tax-service)
+
+* Net and gross calculations
+* Easily creation of custom taxes, based on Cart, Products and User data
+
+[Promotion Service](https://github.com/ncornag/micro-promotion-service)
+
+* Multiple promotions firing per cart
+* Per Product, Product Category, Order or User data firing
+* DSL to allow complex conditions, with "AND" and/or "ANY" nested conditions
+* Almost fullfilled promotion detection with optiona thresholds
+* Easily creation of custom firing conditions
 
 [Oauth Service](https://github.com/ncornag/micro-oauth-service)
 
@@ -360,6 +372,41 @@ In the application, use the `winston` interface:
 
 ```
 base.logger.info(`[server-http] running at: [${server.info.uri}${base.config.get('services:path')}]`);
+```
+
+## logstash
+
+The service uses `logstash` to log messages to the console, microbase sends logs to logstash via `winston-logstash`.
+
+### Use
+
+In the application, use the the configuration:
+
+```
+"logstash": {
+  "port": 28777,
+  "host": "logstash",
+  "node_name": "node_tax"
+}
+```
+
+Basic logstash configuration file is stored `./ecomm/dockerConf/logstash/elastic.conf`
+
+```
+input {
+  tcp {
+    port => 28777
+    type=>"sample"
+  }
+}
+
+## Add your filters here
+
+output {
+  elasticsearch {
+    hosts => "elasticsearch:9200"
+  }
+}
 ```
 
 ## events

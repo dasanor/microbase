@@ -2,27 +2,25 @@
 	"version": 1,
 	"collections": [
 		{
-			"id": "43874c95-c712-3cb2-06cc-a6210d715de9",
-			"name": "micro-stock",
+			"id": "5655c800-d53e-8be0-016f-bcb922fa1390",
+			"name": "micro-promotion",
 			"description": "",
 			"order": [
-				"e840eb49-84d6-d77b-cc72-43c8f68e848b",
-				"aa8aa4de-a169-7fb1-cafd-1a7eea9a65cd",
-				"43949291-5987-eee9-ed9a-cafb8c89cb98",
-				"81be0c52-e25c-154e-88f1-be6f21d4bda6",
-				"cf09d8ab-c35d-f20a-a34e-52346c0adbb6"
+				"05d5c1e4-9e79-8071-c0bd-a06671eaf7c5",
+				"993cd5c9-391c-2877-58ae-3f62969d457e"
 			],
 			"folders": [],
-			"timestamp": 0,
-			"synced": true,
-			"remote_id": "0",
+			"timestamp": 1474469818234,
+			"synced": false,
+			"remote_id": 0,
 			"owner": "467243",
 			"sharedWithTeam": false,
 			"subscribed": false,
-			"remoteLink": null,
+			"remoteLink": "",
+			"remoteLinkUpdatedAt": null,
 			"public": false,
-			"createdAt": "2016-05-14T18:39:37.000Z",
-			"updatedAt": 1469790703389,
+			"createdAt": 1474469818234,
+			"updatedAt": 1475765274363,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -30,89 +28,100 @@
 			"syncedPermissions": {},
 			"requests": [
 				{
-					"id": "43949291-5987-eee9-ed9a-cafb8c89cb98",
+					"id": "05d5c1e4-9e79-8071-c0bd-a06671eaf7c5",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.update?productId=HJ4g4fACrH&warehouseId=001",
+					"url": "http://{{host}}:{{portPromotion}}/services/promotion/v1/promotion.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{\n  \"quantityInStock\": 200,\n  \"quantityReserved\": 0\n}",
+					"data": "{ \n    \"title\" : \"Promotion 02\", \n    \"class\" : \"3x2\", \n    \"restrictions\" : {\n        \"period\" : {\n            \"from\" : \"2016-09-21T14:00:00.000+0000\", \n            \"until\" : \"2016-09-21T16:00:00.000+0000\"\n        }\n    }\n}",
 					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469797147811,
-					"name": "stock.update",
+					"time": 1474639997911,
+					"name": "promotion.create",
 					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+					"collectionId": "5655c800-d53e-8be0-016f-bcb922fa1390"
 				},
 				{
-					"id": "81be0c52-e25c-154e-88f1-be6f21d4bda6",
+					"id": "993cd5c9-391c-2877-58ae-3f62969d457e",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.reserve?productId=HJ4g4fACrH&warehouseId=001",
+					"url": "http://{{host}}:{{portPromotion}}/services/promotion/v1/promotion.cartPromotions?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{\n  \"quantity\": 1,\n  \"reserveStockForMinutes\": 1440\n}",
+					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"SksexGRPn4\",\n            \"quantity\": \"2\"\n        },\n        {\n        \t\"id\": \"2\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 2\n        },\n        {\n        \t\"id\": \"3\",\n            \"productId\": \"BycbkfRDhV\",\n            \"quantity\": 3\n        }\n    ]\n}",
 					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469797178884,
-					"name": "stock.reserve",
+					"time": 1475767254907,
+					"name": "promotion.cartPromotions",
 					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
-				},
+					"collectionId": "5655c800-d53e-8be0-016f-bcb922fa1390"
+				}
+			]
+		},
+		{
+			"id": "587fc559-3057-4ec7-4aaa-34a0204eacd4",
+			"name": "micro-tax",
+			"description": "",
+			"order": [
+				"75a921d2-2b82-6df8-88f3-9c03479ad60d",
+				"042ac497-e60f-6d4c-cf34-1b71e11077fd"
+			],
+			"folders": [],
+			"timestamp": 1475760957694,
+			"synced": false,
+			"remote_id": 0,
+			"owner": "467243",
+			"sharedWithTeam": false,
+			"subscribed": false,
+			"remoteLink": "",
+			"remoteLinkUpdatedAt": null,
+			"public": false,
+			"createdAt": 1475760957694,
+			"updatedAt": 1475760966696,
+			"write": true,
+			"published": false,
+			"favorite": false,
+			"permissions": {},
+			"syncedPermissions": {},
+			"requests": [
 				{
-					"id": "aa8aa4de-a169-7fb1-cafd-1a7eea9a65cd",
+					"id": "042ac497-e60f-6d4c-cf34-1b71e11077fd",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.info?productId=HJ4g4fACrH&warehouseId=001",
-					"preRequestScript": "",
-					"pathVariables": {},
-					"method": "GET",
-					"data": "{\n  \"warehouseId\": \"003\",\n  \"quantityInStock\": 200,\n  \"quantityReserved\": 0\n}",
-					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1469789327062,
-					"name": "stock.info",
-					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
-				},
-				{
-					"id": "cf09d8ab-c35d-f20a-a34e-52346c0adbb6",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.unreserve?reserveId=rJIzFlFd",
-					"preRequestScript": "",
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n  \"unreserveQuantity\": 1\n}",
-					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1469806909901,
-					"name": "stock.unreserve",
-					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
-				},
-				{
-					"id": "e840eb49-84d6-d77b-cc72-43c8f68e848b",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.create",
+					"url": "http://{{host}}:{{portTax}}/services/tax/v1/tax.cartTaxes?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{\n  \"productId\": \"0001\",\n  \"warehouseId\": \"002\",\n  \"quantityInStock\": 10000,\n  \"quantityReserved\": 0\n}",
+					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 2,\n            \"price\": \"100\"\n        }\n    ]\n}",
 					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469787392744,
-					"name": "stock.create",
+					"time": 1475782728899,
+					"name": "tax.cartTaxes",
 					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
+				},
+				{
+					"id": "75a921d2-2b82-6df8-88f3-9c03479ad60d",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portCart}}/services/tax/v1/tax.create",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n    \"code\": \"default1\",\n    \"class\": \"default\",\n    \"title\": \"IVA 21%\",\n    \"rate\": 21,\n    \"isPercentage\": true\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1475782707679,
+					"name": "tax.create",
+					"description": "",
+					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
 				}
 			]
 		},
@@ -201,7 +210,123 @@
 			]
 		},
 		{
+			"id": "43874c95-c712-3cb2-06cc-a6210d715de9",
+			"name": "micro-stock",
+			"description": "",
+			"order": [
+				"e840eb49-84d6-d77b-cc72-43c8f68e848b",
+				"aa8aa4de-a169-7fb1-cafd-1a7eea9a65cd",
+				"43949291-5987-eee9-ed9a-cafb8c89cb98",
+				"81be0c52-e25c-154e-88f1-be6f21d4bda6",
+				"cf09d8ab-c35d-f20a-a34e-52346c0adbb6"
+			],
+			"folders": [],
+			"timestamp": 0,
+			"synced": true,
+			"remote_id": "0",
+			"owner": "467243",
+			"sharedWithTeam": false,
+			"subscribed": false,
+			"remoteLink": null,
+			"public": false,
+			"createdAt": "2016-05-14T18:39:37.000Z",
+			"updatedAt": 1469790703389,
+			"write": true,
+			"published": false,
+			"favorite": false,
+			"permissions": {},
+			"syncedPermissions": {},
+			"requests": [
+				{
+					"id": "43949291-5987-eee9-ed9a-cafb8c89cb98",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.update",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"productId\": \"HJ4g4fACrH\",\n  \"warehouseId\": \"001\",\n  \"quantityInStock\": 200,\n  \"quantityReserved\": 0\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1473691473701,
+					"name": "stock.update",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				},
+				{
+					"id": "81be0c52-e25c-154e-88f1-be6f21d4bda6",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.reserve",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"productId\": \"HJ4g4fACrH\",\n  \"warehouseId\": \"001\",\n  \"quantity\": 1,\n  \"reserveStockForMinutes\": 1440\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1473691426702,
+					"name": "stock.reserve",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				},
+				{
+					"id": "aa8aa4de-a169-7fb1-cafd-1a7eea9a65cd",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.info?productId=HJ4g4fACrH&warehouseId=001",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "GET",
+					"data": "{\n  \"warehouseId\": \"003\",\n  \"quantityInStock\": 200,\n  \"quantityReserved\": 0\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1469789327062,
+					"name": "stock.info",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				},
+				{
+					"id": "cf09d8ab-c35d-f20a-a34e-52346c0adbb6",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.unreserve",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"reserveId\": \"rJIzFlFd\",\n  \"unreserveQuantity\": 1\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1473691448518,
+					"name": "stock.unreserve",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				},
+				{
+					"id": "e840eb49-84d6-d77b-cc72-43c8f68e848b",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.create",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"productId\": \"0001\",\n  \"warehouseId\": \"002\",\n  \"quantityInStock\": 10000,\n  \"quantityReserved\": 0\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1469787392744,
+					"name": "stock.create",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				}
+			]
+		},
+		{
 			"id": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
+			"owner": "467243",
 			"name": "micro",
 			"description": null,
 			"order": [
@@ -214,18 +339,22 @@
 			"timestamp": 0,
 			"synced": true,
 			"remote_id": "0",
-			"owner": "467243",
 			"sharedWithTeam": false,
 			"subscribed": false,
 			"remoteLink": null,
+			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-04-13T16:32:08.000Z",
-			"updatedAt": 1472494075876,
+			"updatedAt": "2016-08-29T18:11:40.000Z",
 			"write": true,
 			"published": false,
 			"favorite": false,
 			"permissions": {},
 			"syncedPermissions": {},
+			"lastUpdatedBy": "467243",
+			"lastRevision": 515252083,
+			"team": null,
+			"shared": false,
 			"requests": [
 				{
 					"owner": "467243",
@@ -268,6 +397,7 @@
 				},
 				{
 					"id": "aa8a35e0-9b48-b36a-5135-c52da3b6cf6b",
+					"owner": "467243",
 					"headers": "Content-Type: application/json\nAuthorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew\n",
 					"url": "http://{{host}}:{{portExamplesTaxes}}/services/taxes/v1/vat",
 					"preRequestScript": "",
@@ -277,11 +407,18 @@
 					"dataMode": "raw",
 					"tests": "",
 					"currentHelper": "normal",
-					"helperAttributes": {},
+					"helperAttributes": "{}",
 					"time": 1472494294428,
 					"name": "taxes:vat",
 					"description": "",
-					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9"
+					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
+					"lastUpdatedBy": "467243",
+					"lastRevision": 515263648,
+					"folder": null,
+					"collection": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
+					"descriptionFormat": "html",
+					"createdAt": "2016-04-14T08:25:12.000Z",
+					"updatedAt": "2016-08-29T18:11:33.000Z"
 				},
 				{
 					"owner": "467243",
@@ -310,6 +447,7 @@
 				},
 				{
 					"id": "bbd79686-8541-3157-220b-b04dd873a3ea",
+					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
 					"url": "http://{{host}}:{{portExamplesMath}}/services/math/v1/multiply",
 					"preRequestScript": "",
@@ -319,11 +457,18 @@
 					"dataMode": "raw",
 					"tests": "",
 					"currentHelper": "normal",
-					"helperAttributes": {},
+					"helperAttributes": "{}",
 					"time": 1472494301175,
 					"name": "math:multiply",
 					"description": "",
-					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9"
+					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
+					"lastUpdatedBy": "467243",
+					"lastRevision": 515263965,
+					"folder": null,
+					"collection": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
+					"descriptionFormat": "html",
+					"createdAt": "2016-07-15T10:02:52.000Z",
+					"updatedAt": "2016-08-29T18:11:40.000Z"
 				}
 			]
 		},
@@ -331,42 +476,14 @@
 			"id": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
 			"name": "micro-cart",
 			"description": "",
-			"order": [],
-			"folders": [
-				{
-					"owner": "467243",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 303409772,
-					"collection": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
-					"id": "db953bf6-6802-71e9-5839-a4f6d92b1dca",
-					"name": "carts",
-					"description": "Rest style calls\n",
-					"order": [
-						"be32f58a-a98b-2ae1-46b6-00574073f644",
-						"45a43c59-d46c-9c75-8440-61bf389ed581",
-						"afe1f8af-0663-c0c9-435e-51d11ec099ac",
-						"671e9550-24be-e6b8-7d2b-c9f35ad996cd",
-						"041ae5c8-9833-d800-3ca8-5e11e6197906"
-					],
-					"createdAt": "2016-06-08T17:12:41.000Z",
-					"updatedAt": "2016-06-08T17:12:43.000Z",
-					"write": true,
-					"collection_id": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
-				},
-				{
-					"id": "cfb06764-fe1b-ae0b-10a2-a17edcb70d0f",
-					"name": "taxes",
-					"description": "",
-					"write": true,
-					"order": [
-						"ead3b992-e956-fa01-f29f-ff19b57d6fe4"
-					],
-					"collection": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
-					"owner": "467243",
-					"collection_id": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
-				}
+			"order": [
+				"be32f58a-a98b-2ae1-46b6-00574073f644",
+				"45a43c59-d46c-9c75-8440-61bf389ed581",
+				"afe1f8af-0663-c0c9-435e-51d11ec099ac",
+				"671e9550-24be-e6b8-7d2b-c9f35ad996cd",
+				"041ae5c8-9833-d800-3ca8-5e11e6197906"
 			],
+			"folders": [],
 			"timestamp": 0,
 			"synced": true,
 			"remote_id": "0",
@@ -374,9 +491,10 @@
 			"sharedWithTeam": false,
 			"subscribed": false,
 			"remoteLink": null,
+			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-05-08T20:27:42.000Z",
-			"updatedAt": 1471518917031,
+			"updatedAt": 1475764285746,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -385,6 +503,7 @@
 			"requests": [
 				{
 					"id": "041ae5c8-9833-d800-3ca8-5e11e6197906",
+					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
 					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.removeEntry",
 					"preRequestScript": "",
@@ -398,10 +517,16 @@
 					"time": 1471603200861,
 					"name": "cart:removeEntry",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"lastUpdatedBy": "467243",
+					"lastRevision": 489584455,
+					"descriptionFormat": null,
+					"createdAt": "2016-06-08T17:12:42.000Z",
+					"updatedAt": "2016-08-19T10:40:01.000Z"
 				},
 				{
 					"id": "45a43c59-d46c-9c75-8440-61bf389ed581",
+					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
 					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.info?cartId=H19PRsec",
 					"preRequestScript": "",
@@ -415,10 +540,16 @@
 					"time": 1471360800904,
 					"name": "cart.info",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"lastUpdatedBy": "467243",
+					"lastRevision": 480200698,
+					"descriptionFormat": null,
+					"createdAt": "2016-06-08T17:12:43.000Z",
+					"updatedAt": "2016-08-16T15:20:01.000Z"
 				},
 				{
 					"id": "671e9550-24be-e6b8-7d2b-c9f35ad996cd",
+					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
 					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.addEntry?cartId=H19PRsec",
 					"preRequestScript": "",
@@ -432,10 +563,16 @@
 					"time": 1471507408386,
 					"name": "cart.addEntry (bulk)",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"lastUpdatedBy": "467243",
+					"lastRevision": 485588457,
+					"descriptionFormat": null,
+					"createdAt": "2016-06-26T18:52:52.000Z",
+					"updatedAt": "2016-08-18T08:03:40.000Z"
 				},
 				{
 					"id": "afe1f8af-0663-c0c9-435e-51d11ec099ac",
+					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
 					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.addEntry?cartId=H19PRsec",
 					"preRequestScript": "",
@@ -449,10 +586,16 @@
 					"time": 1471449728904,
 					"name": "cart.addEntry",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"lastUpdatedBy": "467243",
+					"lastRevision": 483758785,
+					"descriptionFormat": null,
+					"createdAt": "2016-06-08T17:12:43.000Z",
+					"updatedAt": "2016-08-17T16:02:09.000Z"
 				},
 				{
 					"id": "be32f58a-a98b-2ae1-46b6-00574073f644",
+					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
 					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.new",
 					"preRequestScript": "",
@@ -464,26 +607,14 @@
 					"currentHelper": "normal",
 					"helperAttributes": {},
 					"time": 1471360628906,
-					"name": "cart.create (anon)",
+					"name": "cart.new (anon)",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
-				},
-				{
-					"id": "ead3b992-e956-fa01-f29f-ff19b57d6fe4",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/tax.create",
-					"preRequestScript": "",
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n    \"code\": \"default1\",\n    \"class\": \"default\",\n    \"title\": \"IVA 21%\",\n    \"rate\": 21,\n    \"isPercentage\": true\n}",
-					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1471604403401,
-					"name": "tax.create",
-					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"lastUpdatedBy": "467243",
+					"lastRevision": 480191174,
+					"descriptionFormat": null,
+					"createdAt": "2016-05-08T20:33:22.000Z",
+					"updatedAt": "2016-08-16T15:17:09.000Z"
 				}
 			]
 		},
@@ -548,9 +679,10 @@
 			"sharedWithTeam": false,
 			"subscribed": false,
 			"remoteLink": "",
+			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-06-08T17:12:41.000Z",
-			"updatedAt": 1469787327729,
+			"updatedAt": 1474469843569,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -628,7 +760,7 @@
 				{
 					"id": "6a9e43e6-2e29-1e4c-d95b-4f6fb77e61fe",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.info?id=ROOT&withChildrens=true&recursive=true",
+					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.info?id=ROOT&withChildren=true&recursive=true",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "GET",
@@ -637,7 +769,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469619806948,
+					"time": 1475136972491,
 					"name": "category.info (with Childrens)",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -828,7 +960,14 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1472494220068
+			"timestamp": 1475782650742
+		},
+		{
+			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
+			"name": "micro-localhost-gateway",
+			"values": [],
+			"team": null,
+			"timestamp": 1475782650748
 		},
 		{
 			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
@@ -836,54 +975,61 @@
 			"values": [
 				{
 					"key": "portStock",
-					"value": "3000",
 					"type": "text",
-					"enabled": true,
-					"hovered": false
+					"value": "3000",
+					"enabled": true
 				},
 				{
 					"key": "portCart",
-					"value": "3001",
 					"type": "text",
-					"enabled": true,
-					"hovered": false
+					"value": "3001",
+					"enabled": true
 				},
 				{
 					"key": "portCatalog",
-					"value": "3002",
 					"type": "text",
-					"enabled": true,
-					"hovered": false
+					"value": "3002",
+					"enabled": true
+				},
+				{
+					"key": "portPromotion",
+					"type": "text",
+					"value": "3004",
+					"enabled": true
+				},
+				{
+					"key": "portTax",
+					"type": "text",
+					"value": "3003",
+					"enabled": true
 				},
 				{
 					"key": "portOauth",
-					"value": "4000",
 					"type": "text",
-					"enabled": true,
-					"hovered": false
+					"value": "4000",
+					"enabled": true
 				},
 				{
 					"key": "portExamplesMath",
-					"value": "3001",
 					"type": "text",
+					"value": "3001",
 					"enabled": true
 				},
 				{
 					"key": "portExamplesTaxes",
-					"value": "3000",
 					"type": "text",
+					"value": "3000",
+					"enabled": true
+				},
+				{
+					"key": "categoryId",
+					"type": "text",
+					"value": "undefined",
 					"enabled": true
 				}
 			],
 			"team": null,
-			"timestamp": 1472494315029
-		},
-		{
-			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
-			"name": "micro-localhost-gateway",
-			"values": [],
-			"team": null,
-			"timestamp": 1472494357462
+			"timestamp": 1475783097260
 		}
 	],
 	"headerPresets": [
@@ -910,50 +1056,62 @@
 	"globals": [
 		{
 			"key": "token",
-			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew",
 			"type": "text",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew",
 			"enabled": true
 		},
 		{
 			"key": "host",
-			"value": "localhost",
 			"type": "text",
+			"value": "localhost",
 			"enabled": true
 		},
 		{
 			"key": "portCart",
-			"value": "80",
 			"type": "text",
+			"value": "80",
 			"enabled": true
 		},
 		{
 			"key": "portCatalog",
-			"value": "80",
 			"type": "text",
+			"value": "80",
 			"enabled": true
 		},
 		{
 			"key": "portStock",
-			"value": "80",
 			"type": "text",
+			"value": "80",
 			"enabled": true
 		},
 		{
 			"key": "portOauth",
-			"value": "80",
 			"type": "text",
+			"value": "80",
 			"enabled": true
 		},
 		{
 			"key": "portExamplesMath",
-			"value": "80",
 			"type": "text",
+			"value": "80",
 			"enabled": true
 		},
 		{
 			"key": "portExamplesTaxes",
-			"value": "80",
 			"type": "text",
+			"value": "80",
+			"enabled": true
+		},
+		{
+			"key": "portPromotion",
+			"type": "text",
+			"value": "80",
+			"enabled": true
+		},
+		{
+			"key": "portTax",
+			"type": "text",
+			"value": "80",
 			"enabled": true
 		}
 	]

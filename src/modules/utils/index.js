@@ -7,9 +7,9 @@ module.exports = function (base) {
 
     extractErrors(error) {
       const errors = [];
-      for (field in error.errors) {
-        errors.push(`${field}: ${error.errors[field].message}`);
-      }
+      error.errors.forEach(error => {
+        errors.push(`payload${error.dataPath}: ${error.message}`);
+      });
       return errors;
     },
 
@@ -40,11 +40,14 @@ module.exports = function (base) {
       if (error.name && error.name === 'MongoError' && (error.code === 11000 || error.code === 11001)) {
         return { error: 'duplicate_key', data: error.errmsg };
       }
-      //if (!(error.isBoom || error.statusCode === 404)) base.logger.error(error);
       const response = {};
       if (error.code) response.error = error.code.replace(' ', '_').toLowerCase();
       if (error.data) response.data = error.data;
+      if (error.statusCode) response.statusCode = error.statusCode;
       if (!response.data && error.message) response.data = error.message;
+      if (error.stack) {
+        base.logger.error(error.stack);
+      }
       return response;
     },
 
@@ -101,6 +104,47 @@ module.exports = function (base) {
             }
           })(0);
         })
+      }
+
+    },
+
+    Evaluator: class Evaluator {
+      constructor() {
+        this.ops = {};
+      }
+
+      indent(level) {
+        return '  '.repeat(level);
+      }
+
+      use(fn) {
+        if (typeof fn === 'function') {
+          this.ops.push(fn);
+        } else if (typeof fn === 'string') {
+          const config = base.config.get(fn);
+          Object.keys(config).forEach(mRoute => {
+            const m = base.utils.loadModule(`${fn}:${mRoute}`);
+            this.ops[m.name] = (m.fn);
+          });
+        }
+        return this;
+      }
+
+      evaluate(context, opContext, level, op) {
+        if (base.logger.isDebugEnabled()) {
+          base.logger.debug('[evaluator]' + this.indent(level), Object.keys(op)[0], JSON.stringify(op).substring(0, 160));
+        }
+        const result = this.ops[Object.keys(op)[0]](
+          context,
+          opContext,
+          level,
+          op,
+          this
+        );
+        if (base.logger.isDebugEnabled()) {
+          base.logger.debug('[evaluator]', this.indent(level), 'result:', JSON.stringify(result).substring(0, 160));
+        }
+        return result;
       }
 
     }

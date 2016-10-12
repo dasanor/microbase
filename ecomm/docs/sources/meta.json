@@ -11,6 +11,8 @@
       {"url": "micro-catalog-service.html", "body": "Catalog"},
       {"url": "micro-stock-service.html", "body": "Stock"},
       {"url": "micro-cart-service.html", "body": "Cart"},
+      {"url": "micro-tax-service.html", "body": "Tax"},
+      {"url": "micro-promotion-service.html", "body": "Promotion"},
       {"url": "micro-oauth-service.html", "body": "Oauth"}
     ],
     "api": [

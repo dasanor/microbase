@@ -114,6 +114,11 @@ body.white .navbar-default {
 
 .navbar-default .navbar-nav > li > a {
 	color: #231F20;
+	border: solid 1px #ccc;
+	border-radius: 50px;
+	padding: 10px 15px;
+	margin-top: 5px;
+	margin-left: 10px;
 }
 
 .navbar-brand img {
@@ -218,10 +223,24 @@ i {
 	color: #39A060;
 }
 
-.footer {
-	height: 40px;
+.bg-white .download {
+	color: #95a5a6;
+	border: solid 1px #95a5a6;
 }
 
+.bg-white .download {
+	color: #FFF;
+	border: solid 1px #39A060;
+	background-color: #39A060;
+}
+
+.footer {
+	height: 80px;
+}
+
+.footer p {
+	margin-top: 20px;
+}
 .carousel-indicators {
 	bottom: -30px;
 }
@@ -230,8 +249,8 @@ i {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -60px; /* the bottom margin is the negative value of the footer's height */
-	padding-top: 60px;
+	margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+	padding-top: 100px;
 }
 .page-content > .container {
 	padding-top: 30px;

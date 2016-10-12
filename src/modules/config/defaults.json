@@ -9,12 +9,21 @@
       "request": "info"
     }
   },
+  "transports": {
+    "http": {
+      "host": "0.0.0.0",
+      "port": "3000",
+      "path": "/services",
+      "style": "RPC",
+      "logpattern": "[http] {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms"
+    }
+  },
   "services": {
-    "host": "0.0.0.0",
-    "port": "3000",
-    "path": "/services",
-    "style": "REST",
-    "defaultFolder": "operations"
+    "defaultFolder": "operations",
+    "wrappers": {
+      "validator": "./node_modules/microbase/modules/services/wrappers/validator",
+      "cache": "./node_modules/microbase/modules/services/wrappers/cache"
+    }
   },
   "gateway": {
     "host": "gateway",
