@@ -5,7 +5,7 @@ const ns = cls.getNamespace('microbase') || cls.createNamespace('microbase');
 
 function dbService(base) {
   if (!base.config.get('db')) {
-    base.logger.info(`[db-mongo] database properties not configured`);
+    base.logger.warn(`[db-mongo] database properties not configured`);
     return
   }
   const url = getMongoUrl(base.config.get('db'), true);
