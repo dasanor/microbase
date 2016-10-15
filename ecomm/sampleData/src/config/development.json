@@ -2,9 +2,6 @@
   "logger": {
     "level": "info"
   },
-  "services": {
-    "port": "3100"
-  },
   "gateway": {
     "gatewayUrlOverrride": "./config/gatewayUrlOverride"
   }

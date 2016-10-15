@@ -22,7 +22,7 @@ try {
 }
 
 // Instantiate microbase
-const base = require('micro-base')();
+const base = require('microbase')();
 const helper = require('./insertDataHelpers')(base);
 if (!helper[`insert${entityName}`]) {
   console.error(`Unrecognized entity '${entityName}'`);
