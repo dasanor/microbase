@@ -131,7 +131,7 @@ The aforementioned docker configuration starts several containers:
 
 This docker compose configuration is only for development and demos, not for production.
 In the unexpected case that you receive a `No available upstream servers at current route from consul`
-error trying to use the API, try to restart the consul and gateway servers:
+error or `502 Bad Gateway` error trying to use the API, try to restart the consul and gateway servers:
 
 ```bash
 docker restart micro_gateway_1
