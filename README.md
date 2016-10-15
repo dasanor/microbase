@@ -113,6 +113,31 @@ curl --request POST \
 
 The `authorizarion` header is based on the default security configuration. It should be changed in production.
 
+## Containers
+
+The aforementioned docker configuration starts several containers:
+
+* consul - The services registry. `http://localhost:8501`
+* gateway - The API endpoint. `http://localhost:80`
+* mongo - The database. `mongo://localhost:27018`
+* bus - RabbitMQ messaging. `http://localhost:15673`
+* elasticsearch - Search server. Logs aggregation server. `http://localhost:9201`
+* redis - Cache server. `redis://localhost:6380`
+* logstash - Logs redirection server. `localhost:5000`
+* logspout - Container logs redirection server.
+* kibana - Logs visualization server: `http://localhost:5602/`
+* *-service -  All the microbase ecomm services.
+
+
+This docker compose configuration is only for development and demos, not for production.
+In the unexpected case that you receive a `No available upstream servers at current route from consul`
+error trying to use the API, try to restart the consul and gateway servers:
+
+```bash
+docker restart micro_gateway_1
+docker restart micro_consul_1
+```
+
 ## Example data
 
 You could add example data using the 'insertData' script.
@@ -370,7 +395,7 @@ The service uses `Winston` to log messages to the console.
 
 In the application, use the `winston` interface:
 
-```
+```javascript
 base.logger.info(`[server-http] running at: [${server.info.uri}${base.config.get('services:path')}]`);
 ```
 
@@ -382,7 +407,7 @@ The service uses `logstash` to log messages to the console, microbase sends logs
 
 In the application, use the the configuration:
 
-```
+```json
 "logstash": {
   "port": 28777,
   "host": "logstash",
@@ -390,9 +415,9 @@ In the application, use the the configuration:
 }
 ```
 
-Basic logstash configuration file is stored `./ecomm/dockerConf/logstash/elastic.conf`
+Basic logstash configuration:
 
-```
+```json
 input {
   tcp {
     port => 28777
