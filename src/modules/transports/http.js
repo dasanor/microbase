@@ -144,11 +144,13 @@ module.exports = function (base) {
         ns.bindEmitter(req);
         ns.bindEmitter(res);
         ns.run(function () {
-          if (!req.headers['x-request-id']) {
-            // Create CID
-            req.headers['x-request-id'] = shortid.generate();
-            res.set('x-request-id', req.headers['x-request-id']);
+          const rid = shortid.generate();
+          if (req.headers['x-request-id']) {
+            req.headers['x-request-id'] = req.headers['x-request-id'] + ':' + rid;
+          } else {
+            req.headers['x-request-id'] = rid;
           }
+          res.set('x-request-id', req.headers['x-request-id']);
           // Store CID & Authorization token in the local storage
           ns.set('x-request-id', req.headers['x-request-id']);
           ns.set('authorization', req.headers['authorization']);
