@@ -29,6 +29,8 @@ services:
       - 27018:27017
     environment:
       - LOGSPOUT=ignore
+    volumes:
+      - ./dockerConf/mongo/data:/data/db
     depends_on:
       - consul
 
@@ -49,6 +51,8 @@ services:
       - 9301:9300
     environment:
       - LOGSPOUT=ignore
+    volumes:
+      - ./dockerConf/elasticsearch/data:/usr/share/elasticsearch/data
     depends_on:
       - consul
 
@@ -69,10 +73,11 @@ services:
     environment:
       - LOGSPOUT=ignore
     volumes:
-      - ./dockerConf/logstash:/config-dir
+      - ./dockerConf/logstash:/config
     links:
       - elasticsearch
-    command: logstash -f /config-dir/elastic.conf
+    restart: always
+    command: logstash -f /config/logstash.conf
 
   logspout:
     image: gliderlabs/logspout
@@ -83,6 +88,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     links:
       - logstash
+    restart: always
     depends_on:
       - logstash
 
