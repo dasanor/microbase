@@ -3,25 +3,28 @@ version: '2'
 services:
 
   consul:
-    image: consul:latest
-    ports:
-      - 8501:8500
-    environment:
-      - LOGSPOUT=ignore
-    restart: always
-    command: agent -log-level info -dev -client 0.0.0.0 -bind 0.0.0.0
+      image: consul:v0.7.0
+      restart: always
+      mem_limit: 128m
+      ports:
+        - 8501:8500
+      dns:
+         - 127.0.0.1
+      command: agent -log-level info -server -client=0.0.0.0 -bind 0.0.0.0 -bootstrap -ui
 
   gateway:
-    image: ncornag/micro-docker-nginx
-    ports:
-      - 80:80
-    environment:
-      - LOGSPOUT=ignore
-    links:
-      - consul
-    restart: always
-    depends_on:
-      - consul
+      image: ncornag/micro-docker-nginx
+      restart: always
+      mem_limit: 128m
+      environment:
+        - CONSUL=consul
+        - CONSUL_AGENT=1
+#        - CONSUL_SERVER=1
+      ports:
+#        - 8501:8500
+        - 80:80
+        - 443
+        - 9090 # so we can see telemetry
 
   mongo:
     image: mongo:3
@@ -31,8 +34,6 @@ services:
       - LOGSPOUT=ignore
     volumes:
       - ./dockerConf/mongo/data:/data/db
-    depends_on:
-      - consul
 
   bus:
     image: rabbitmq:3-management
@@ -41,8 +42,6 @@ services:
       - 5673:5672
     environment:
       - LOGSPOUT=ignore
-    depends_on:
-      - consul
 
   elasticsearch:
     image: elasticsearch:2
@@ -53,8 +52,6 @@ services:
       - LOGSPOUT=ignore
     volumes:
       - ./dockerConf/elasticsearch/data:/usr/share/elasticsearch/data
-    depends_on:
-      - consul
 
   redis:
     image: redis:3
@@ -62,8 +59,6 @@ services:
       - 6380:6379
     environment:
       - LOGSPOUT=ignore
-    depends_on:
-      - consul
 
   logstash:
     image: logstash:2
@@ -76,7 +71,6 @@ services:
       - ./dockerConf/logstash:/config
     links:
       - elasticsearch
-    restart: always
     command: logstash -f /config/logstash.conf
 
   logspout:
@@ -88,7 +82,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     links:
       - logstash
-    restart: always
     depends_on:
       - logstash
 
@@ -105,66 +98,66 @@ services:
 
   stock-service:
     build: ./micro-stock-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
     links:
       - gateway
-      - consul
       - mongo
       - bus
     depends_on:
-      - consul
       - mongo
       - bus
-      - logspout
 
   catalog-service:
     build: ./micro-catalog-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
     links:
       - gateway
-      - consul
       - mongo
       - bus
       - elasticsearch
     depends_on:
-      - consul
       - mongo
       - bus
-      - logspout
 
   cart-service:
     build: ./micro-cart-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
     links:
       - gateway
-      - consul
       - bus
       - mongo
     depends_on:
-      - consul
       - mongo
       - bus
-      - logspout
 
   tax-service:
     build: ./micro-tax-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
     links:
       - gateway
-      - consul
       - bus
       - mongo
     depends_on:
-      - consul
       - mongo
       - bus
-      - logspout
 
   promotion-service:
     build: ./micro-promotion-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
     links:
       - gateway
-      - consul
       - bus
       - mongo
     depends_on:
-      - consul
       - mongo
       - bus
-      - logspout
