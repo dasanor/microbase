@@ -1,26 +1,34 @@
+const os = require('os');
 const path = require('path');
 
 module.exports = function (options) {
   options = options || {};
-  /*
-   options = options || {
-   config: Configuration service,
-   logger: Logger service,
-   db:     Database service,
-   module: Initial operations from a module
-   };
-   */
   const base = {};
 
+  // Fake log
+  base.log = (level, msg) => {
+    const levels = {
+      debug: '\u001b[34mdebug\u001b[39m',
+      warn: '\u001b[33mwarn\u001b[39m',
+      info: '\u001b[32minfo\u001b[39m',
+      error: '\u001b[31merror\u001b[39m'
+    };
+    console.log(`${new Date().toISOString()} - ${levels[level]}: [${os.hostname()}] ${msg}`);
+  };
+
+  // Logs microbase start
+  base.version = require('./package.json').version;
+  base.log('info', `[main] Microbase ${base.version} starting`);
+
   // Configuration object
-  var rootPath = path.dirname(require.main.filename);
+  let rootPath = path.dirname(require.main.filename);
   if (rootPath.lastIndexOf('node_modules') != -1) {
     rootPath = rootPath.substr(0, rootPath.lastIndexOf('node_modules') - 1);
   }
   base.config = options.config || require('./modules/config')([
       `${rootPath}/config/${process.env.NODE_ENV || 'development'}.json`,
       `${rootPath}/config/defaults.json`
-    ]);
+    ], base);
 
   // Util service
   base.utils = options.utils || require('./modules/utils')(base);

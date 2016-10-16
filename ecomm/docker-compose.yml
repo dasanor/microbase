@@ -1,99 +1,163 @@
-gateway:
-  image: ncornag/micro-docker-nginx
-  ports:
-    - 80:80
-  links:
-    - consul
-  restart: always
+version: '2'
 
-consul:
-  image: consul:latest
-  ports:
-    - 8501:8500
-  restart: always
-  command: agent -log-level info -dev -client 0.0.0.0 -bind 0.0.0.0
+services:
 
-mongo:
-  image: mongo:3
-  ports:
-    - 27018:27017
+  consul:
+      image: consul:v0.7.0
+      restart: always
+      mem_limit: 128m
+      ports:
+        - 8501:8500
+      dns:
+         - 127.0.0.1
+      command: agent -log-level info -server -client=0.0.0.0 -bind 0.0.0.0 -bootstrap -ui
 
-bus:
-  image: rabbitmq:3-management
-  ports:
-    - 15673:15672
-    - 5673:5672
+  gateway:
+      image: ncornag/micro-docker-nginx
+      restart: always
+      mem_limit: 128m
+      environment:
+        - CONSUL=consul
+        - CONSUL_AGENT=1
+#        - CONSUL_SERVER=1
+      ports:
+#        - 8501:8500
+        - 80:80
+        - 443
+        - 9090 # so we can see telemetry
 
-elasticsearch:
-  image: elasticsearch:2
-  ports:
-  - 9201:9200
-  - 9301:9300
+  mongo:
+    image: mongo:3
+    ports:
+      - 27018:27017
+    environment:
+      - LOGSPOUT=ignore
+    volumes:
+      - ./dockerConf/mongo/data:/data/db
 
-redis:
-  image: redis:3
-  ports:
-    - 6380:6379
+  bus:
+    image: rabbitmq:3-management
+    ports:
+      - 15673:15672
+      - 5673:5672
+    environment:
+      - LOGSPOUT=ignore
 
-logstash:
-  image: logstash:2
-  ports:
-    - 28778:28777
-  volumes:
-    - ./dockerConf/logstash:/config-dir
-  links:
-    - elasticsearch
-  command: logstash -f /config-dir/elastic.conf
+  elasticsearch:
+    image: elasticsearch:2
+    ports:
+      - 9201:9200
+      - 9301:9300
+    environment:
+      - LOGSPOUT=ignore
+    volumes:
+      - ./dockerConf/elasticsearch/data:/usr/share/elasticsearch/data
 
-kibana:
-  image: kibana:4
-  ports:
-    - 5601:5601
-  links:
-    - elasticsearch
+  redis:
+    image: redis:3
+    ports:
+      - 6380:6379
+    environment:
+      - LOGSPOUT=ignore
 
-stock-service:
-  build: ./micro-stock-service
-  links:
-  - gateway
-  - consul
-  - mongo
-  - bus
-  - logstash
+  logstash:
+    image: logstash:2
+    ports:
+      - 5000:5000
+      - 5000:5000/udp
+    environment:
+      - LOGSPOUT=ignore
+    volumes:
+      - ./dockerConf/logstash:/config
+    links:
+      - elasticsearch
+    command: logstash -f /config/logstash.conf
 
-catalog-service:
-  build: ./micro-catalog-service
-  links:
-    - gateway
-    - consul
-    - mongo
-    - bus
-    - logstash
-    - elasticsearch
+  logspout:
+    image: gliderlabs/logspout
+    environment:
+      - ROUTE_URIS=syslog://logstash:5000
+      - LOGSPOUT=ignore
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    links:
+      - logstash
+    depends_on:
+      - logstash
 
-cart-service:
-  build: ./micro-cart-service
-  links:
-    - gateway
-    - consul
-    - mongo
-    - bus
-    - logstash
+  kibana:
+    image: kibana:4
+    ports:
+      - 5602:5601
+    environment:
+      - LOGSPOUT=ignore
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
 
-tax-service:
-  build: ./micro-tax-service
-  links:
-    - gateway
-    - consul
-    - mongo
-    - bus
-    - logstash
+  stock-service:
+    build: ./micro-stock-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
+    links:
+      - gateway
+      - mongo
+      - bus
+    depends_on:
+      - mongo
+      - bus
 
-promotion-service:
-  build: ./micro-promotion-service
-  links:
-    - gateway
-    - consul
-    - mongo
-    - bus
-    - logstash
+  catalog-service:
+    build: ./micro-catalog-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
+    links:
+      - gateway
+      - mongo
+      - bus
+      - elasticsearch
+    depends_on:
+      - mongo
+      - bus
+
+  cart-service:
+    build: ./micro-cart-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
+    links:
+      - gateway
+      - bus
+      - mongo
+    depends_on:
+      - mongo
+      - bus
+
+  tax-service:
+    build: ./micro-tax-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
+    links:
+      - gateway
+      - bus
+      - mongo
+    depends_on:
+      - mongo
+      - bus
+
+  promotion-service:
+    build: ./micro-promotion-service
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
+    links:
+      - gateway
+      - bus
+      - mongo
+    depends_on:
+      - mongo
+      - bus

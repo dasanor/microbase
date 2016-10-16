@@ -14,11 +14,10 @@
   "author": "Nicolás Cornaglia Schlieman",
   "license": "MIT",
   "dependencies": {
-    "boom": "^3.1.3",
     "csv-parse": "^1.1.1",
     "csv-stringify": "^1.0.4",
     "database-cleaner": "^0.13.0",
-    "micro-base": "^0.7.1",
+    "microbase": "^0.8.0",
     "moment": "^2.13.0",
     "mongoose-path-tree": "^1.3.5",
     "osmosis": "^1.0.1",

@@ -97,9 +97,10 @@ function helpers(base) {
 
   function insertTax(data) {
     return Promise.all(handleFunctions([], data))
-      .then(() => {
+      .then((r) => {
+        console.log(r, data);
         return base.services.call({
-          name: 'cart:tax.create',
+          name: 'tax:tax.create',
           headers: headers,
           timeout: timeout
         }, data);

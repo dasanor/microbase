@@ -2,7 +2,7 @@ const elasticsearch = require('elasticsearch');
 
 module.exports = function (base) {
   if (!base.config.get('search')) {
-    base.logger.info('[search] search properties not configured');
+    base.logger.warn('[search] search properties not configured');
     return;
   }
 
