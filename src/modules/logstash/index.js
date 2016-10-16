@@ -2,7 +2,7 @@ const winston = require('winston');
 
 module.exports = function (base) {
   if (!base.config.get('logstash')) {
-    base.logger.warn('[logstash] database properties not configured');
+    base.logger.warn('[logstash] logstash properties not configured');
     return;
   }
   const logstashConfig = base.config.get('logstash');

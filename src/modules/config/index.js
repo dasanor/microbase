@@ -1,13 +1,11 @@
-const os = require("os");
 const path = require('path');
 const fs = require('fs');
 const conf = require('nconf');
 
-module.exports = function (stores) {
+module.exports = function (stores, base) {
 
   stores = stores || {};
 
-  const hostName = os.hostname();
   const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
   const basePath = path.normalize(__dirname + '/../..');
   let rootPath = path.dirname(require.main.filename);
@@ -17,7 +15,7 @@ module.exports = function (stores) {
   // add framework defaults
   stores.push(basePath + '/modules/config/defaults.json');
 
-  console.log('%s - \u001b[32minfo\u001b[39m: [%s][] [config] using [%s] configuration', new Date().toISOString(), hostName, env);
+  base.log('info', `[config] using [${env}] configuration`);
 
   conf.env('_');
   conf.argv();
@@ -28,14 +26,14 @@ module.exports = function (stores) {
       file = rootPath + '/' + file;
     }
     file = path.normalize(file);
-    console.log('%s - \u001b[32minfo\u001b[39m: [%s][] [config] using file [%s]', new Date().toISOString(), hostName, file);
+    base.log('debug', `[config] using file [${file}]`);
     try {
       if (!fs.existsSync(file)) {
         throw new Error('File doesn\'t exist');
       }
       conf.use('z' + i++, { type: 'file', file: file });
     } catch (e) {
-      console.log('%s - \u001b[31merror\u001b[39m: [%s][] [config] file [%s] error [%s]', new Date().toISOString(), hostName, file, e.message);
+      base.log('error', `[config] file [${file}] error [${e.message}]`);
     }
   });
 
