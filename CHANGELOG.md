@@ -8,6 +8,16 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.8.2][] (2016-10-16)
+
+* Enhance startup logging.
+* Added new RID to the previous to improve the traceability.
+* Upgraded docker-compose file to v2.
+* Added logspout to send the containers output to elasticsearch.
+* Refactored ecomm docker-compose data folders.
+* Enhance logging
+* Upgrade sample data scripts to v0.8
+
 ## [0.8.1][] (2016-10-12)
 
 * Don't log the stacktrace on 401 errors.
