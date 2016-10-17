@@ -1,0 +1,3 @@
+COLOR \x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]
+RID ([a-zA-Z0-9:\-_])*
+PREFIX %{TIMESTAMP_ISO8601:m_timestamp} - %{COLOR}%{LOGLEVEL:m_loglevel}%{COLOR}: \[%{WORD:m_host}\] (\[%{WORD:m_service_name}:%{WORD:m_service_version}\] )?(\[%{RID:m_rid}\] )?\[%{WORD:m_module}\]
