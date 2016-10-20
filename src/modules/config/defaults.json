@@ -15,7 +15,10 @@
       "port": "3000",
       "path": "/services",
       "style": "RPC",
-      "logpattern": "[http] {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms"
+      "logpattern": "[http] {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
+      "cors": {
+        "origin": "*"
+      }
     }
   },
   "services": {

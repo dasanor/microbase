@@ -7,6 +7,7 @@ const shortid = require('shortid');
 const cls = require('continuation-local-storage');
 const jwt = require('express-jwt');
 const Wreck = require('wreck');
+const cors = require('cors');
 
 module.exports = function (base) {
 
@@ -65,6 +66,11 @@ module.exports = function (base) {
 
   const app = express();
 
+  // CORS
+  const corsOrigin = base.config.get('transports.http.cors.origin');
+  app.options('*', cors({ origin: corsOrigin }));
+  app.use(cors({ origin: corsOrigin }));
+
   app.use(bodyParser.json());                         // for parsing application/json
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   //app.use(multer());                                  // for parsing multipart/form-data
@@ -89,6 +95,7 @@ module.exports = function (base) {
 
   // Error handler for 401s
   app.use(function errorHandler(err, req, res, next) {
+    console.log(err);
     if (err.name === 'UnauthorizedError') {
       return res.status(401).json({ ok: false, error: 'invalid_token' });
     }
