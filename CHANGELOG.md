@@ -8,6 +8,15 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.8.3][] (2016-10-23)
+
+* Updated api docs.
+* Updated ecomm postman collection
+* Fix extractErrors.
+* Added CORS protection.
+* Added db port to sampleData docker config.
+* Updated logstash configuration for docker-compose.
+
 ## [0.8.2][] (2016-10-16)
 
 * Enhance startup logging.
