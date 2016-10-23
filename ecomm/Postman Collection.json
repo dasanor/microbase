@@ -96,12 +96,12 @@
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 2,\n            \"price\": \"100\"\n        }\n    ]\n}",
+					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 0,\n            \"price\": 100\n        }\n    ]\n}",
 					"dataMode": "raw",
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1475782728899,
+					"time": 1476200299995,
 					"name": "tax.cartTaxes",
 					"description": "",
 					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
@@ -130,6 +130,7 @@
 			"name": "elasticsearch",
 			"description": "",
 			"order": [
+				"00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
 				"703a1c10-8dc0-7038-af0f-715106f7a74f",
 				"4ad70d79-f495-d9ba-ad35-26acd58fe815",
 				"c1374ebd-b85e-020d-a24f-5882c083a2a3"
@@ -142,15 +143,34 @@
 			"sharedWithTeam": false,
 			"subscribed": false,
 			"remoteLink": "",
+			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": 1465836740698,
-			"updatedAt": 1465901722050,
+			"updatedAt": 1476355573780,
 			"write": true,
 			"published": false,
 			"favorite": false,
 			"permissions": {},
 			"syncedPermissions": {},
 			"requests": [
+				{
+					"id": "00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
+					"headers": "",
+					"url": "http://localhost:9200/_cat/indices?v",
+					"preRequestScript": null,
+					"pathVariables": {},
+					"method": "GET",
+					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
+					"dataMode": "raw",
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1476355256692,
+					"name": "generic:indices",
+					"description": "",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"responses": []
+				},
 				{
 					"id": "4ad70d79-f495-d9ba-ad35-26acd58fe815",
 					"headers": "",
@@ -172,7 +192,7 @@
 				{
 					"id": "703a1c10-8dc0-7038-af0f-715106f7a74f",
 					"headers": "",
-					"url": "http://localhost:9200/products/product/_search?q=B1LVBB7o4",
+					"url": "http://localhost:9200/products/product/_search?q=*",
 					"preRequestScript": null,
 					"pathVariables": {},
 					"method": "POST",
@@ -181,7 +201,7 @@
 					"tests": null,
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1465891375269,
+					"time": 1476355569515,
 					"name": "products:search",
 					"description": "",
 					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
@@ -494,7 +514,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-05-08T20:27:42.000Z",
-			"updatedAt": 1475764285746,
+			"updatedAt": 1477236548638,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -503,26 +523,20 @@
 			"requests": [
 				{
 					"id": "041ae5c8-9833-d800-3ca8-5e11e6197906",
-					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.removeEntry",
+					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.removeFromCart",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{\n    \"cartId\": \"H19PRsec\",\n    \"entryId\": \"HyKJgQX9\"\n}",
+					"data": "{\n    \"cartId\": \"H19PRsec\",\n    \"itemId\": \"HytaSIc1e\",\n    \"quantity\": 2\n}",
 					"dataMode": "raw",
 					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1471603200861,
-					"name": "cart:removeEntry",
+					"time": 1477236533845,
+					"name": "cart:removeFromCart",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 489584455,
-					"descriptionFormat": null,
-					"createdAt": "2016-06-08T17:12:42.000Z",
-					"updatedAt": "2016-08-19T10:40:01.000Z"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
 				{
 					"id": "45a43c59-d46c-9c75-8440-61bf389ed581",
@@ -549,9 +563,8 @@
 				},
 				{
 					"id": "671e9550-24be-e6b8-7d2b-c9f35ad996cd",
-					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.addEntry?cartId=H19PRsec",
+					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.addToCart?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -560,44 +573,32 @@
 					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1471507408386,
-					"name": "cart.addEntry (bulk)",
+					"time": 1477235193353,
+					"name": "cart.addToCart (bulk)",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 485588457,
-					"descriptionFormat": null,
-					"createdAt": "2016-06-26T18:52:52.000Z",
-					"updatedAt": "2016-08-18T08:03:40.000Z"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
 				{
 					"id": "afe1f8af-0663-c0c9-435e-51d11ec099ac",
-					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.addEntry?cartId=H19PRsec",
+					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.addToCart?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{ \n    \"items\" :[\n        {\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 1,\n            \"warehouseId\": \"001\"\n        }\n    ]\n}",
+					"data": "{ \n    \"items\" :[\n        {\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 3,\n            \"warehouseId\": \"001\"\n        }\n    ]\n}",
 					"dataMode": "raw",
 					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1471449728904,
-					"name": "cart.addEntry",
+					"time": 1477234066318,
+					"name": "cart.addToCart",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 483758785,
-					"descriptionFormat": null,
-					"createdAt": "2016-06-08T17:12:43.000Z",
-					"updatedAt": "2016-08-17T16:02:09.000Z"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
 				{
 					"id": "be32f58a-a98b-2ae1-46b6-00574073f644",
-					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.new",
+					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -606,15 +607,10 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"cartId\", data.cart.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1471360628906,
-					"name": "cart.new (anon)",
+					"time": 1477235165232,
+					"name": "cart.create (anon)",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 480191174,
-					"descriptionFormat": null,
-					"createdAt": "2016-05-08T20:33:22.000Z",
-					"updatedAt": "2016-08-16T15:17:09.000Z"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				}
 			]
 		},
@@ -810,7 +806,7 @@
 				},
 				{
 					"id": "9ce028c9-c88e-ac56-396f-820886965069",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\nCache-Control: no-store1\n",
 					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.info?id=Skrg4fR0HS",
 					"preRequestScript": "",
 					"pathVariables": {},
@@ -820,7 +816,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469693342072,
+					"time": 1476198256688,
 					"name": "product.info",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -960,14 +956,27 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1475782650742
+			"timestamp": 1477238017499
 		},
 		{
 			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
 			"name": "micro-localhost-gateway",
-			"values": [],
+			"values": [
+				{
+					"key": "categoryId",
+					"type": "text",
+					"value": "undefined",
+					"enabled": true
+				},
+				{
+					"key": "cartId",
+					"type": "text",
+					"value": "B1e_24Zxyg",
+					"enabled": true
+				}
+			],
 			"team": null,
-			"timestamp": 1475782650748
+			"timestamp": 1477238017512
 		},
 		{
 			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
@@ -1029,7 +1038,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1475783097260
+			"timestamp": 1477238451014
 		}
 	],
 	"headerPresets": [

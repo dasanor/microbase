@@ -10,7 +10,7 @@ DEST=$1/micro
 ORIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 updateRepo() {
-  REPO=$1
+  REPO=micro-$1-service
   cd $DEST
   if [ -d "$REPO" ]; then
     cd $REPO
@@ -23,10 +23,10 @@ updateRepo() {
 }
 
 mkdir -p $DEST
-cp $ORIG/docker-compose.yml $DEST
+cp $ORIG/docker-compose*.yml $DEST
 cp -R $ORIG/dockerConf $DEST
 
-REPOS=( "micro-catalog-service" "micro-stock-service" "micro-cart-service" "micro-tax-service" "micro-promotion-service")
+REPOS=( "catalog" "stock" "cart" "tax" "promotion")
 for i in "${REPOS[@]}"
 do
 	updateRepo $i

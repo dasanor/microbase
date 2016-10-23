@@ -7,6 +7,7 @@ const shortid = require('shortid');
 const cls = require('continuation-local-storage');
 const jwt = require('express-jwt');
 const Wreck = require('wreck');
+const cors = require('cors');
 
 module.exports = function (base) {
 
@@ -65,6 +66,11 @@ module.exports = function (base) {
 
   const app = express();
 
+  // CORS
+  const corsOrigin = base.config.get('transports.http.cors.origin');
+  app.options('*', cors({ origin: corsOrigin }));
+  app.use(cors({ origin: corsOrigin }));
+
   app.use(bodyParser.json());                         // for parsing application/json
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   //app.use(multer());                                  // for parsing multipart/form-data
@@ -89,6 +95,7 @@ module.exports = function (base) {
 
   // Error handler for 401s
   app.use(function errorHandler(err, req, res, next) {
+    console.log(err);
     if (err.name === 'UnauthorizedError') {
       return res.status(401).json({ ok: false, error: 'invalid_token' });
     }
@@ -124,7 +131,7 @@ module.exports = function (base) {
 
   // HTTP server listen
   app.listen(base.config.get('transports:http:port'), base.config.get('transports:http:host'), function () {
-    base.logger.info(`[http] running at ${this.address().address}:${this.address().port}${base.config.get('services:path')}`);
+    base.logger.info(`[http] running at ${this.address().address}:${this.address().port}${base.config.get('transports:http:path')}`);
   });
 
   // Add operation method
@@ -133,7 +140,7 @@ module.exports = function (base) {
     const operationUrl = getOperationUrl(serviceBasePath, serviceName, serviceVersion, op.name, op.path);
     // TODO: database tokens / scope
     const securityFn = op.public === true ? (req, res, next) => next() : jwt({ secret: jwtSecretKey });
-    base.logger.info(`[services] added ${routesStyle} service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
+    base.logger.info(`[http] added ${routesStyle} service [${operationFullName}] in [${operationMethod}][${operationUrl}]`);
     // Add the route, mixing parameters and payload to call the handler
     router[operationMethod](
       operationUrl,
@@ -180,7 +187,7 @@ module.exports = function (base) {
 
     return new Promise((resolve, reject) => {
       const operationUrl = getOperationUrl(getGatewayBaseUrl(serviceName, serviceVersion, operationName) + gatewayBasePath, serviceName, serviceVersion, operationName, config.path);
-      if (base.logger.isDebugEnabled()) base.logger.debug(`[services] calling [${operationMethod}] ${operationUrl} with ${JSON.stringify(msg)}`);
+      if (base.logger.isDebugEnabled()) base.logger.debug(`[http] calling [${operationMethod}] ${operationUrl} with ${JSON.stringify(msg)}`);
       wreck.request(
         operationMethod,
         operationUrl,

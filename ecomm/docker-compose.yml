@@ -8,8 +8,6 @@ services:
       mem_limit: 128m
       ports:
         - 8501:8500
-      dns:
-         - 127.0.0.1
       command: agent -log-level info -server -client=0.0.0.0 -bind 0.0.0.0 -bootstrap -ui
 
   gateway:
@@ -24,14 +22,12 @@ services:
 #        - 8501:8500
         - 80:80
         - 443
-        - 9090 # so we can see telemetry
+        - 9090 # containerpilot telemetry
 
   mongo:
     image: mongo:3
     ports:
       - 27018:27017
-    environment:
-      - LOGSPOUT=ignore
     volumes:
       - ./dockerConf/mongo/data:/data/db
 
@@ -40,16 +36,12 @@ services:
     ports:
       - 15673:15672
       - 5673:5672
-    environment:
-      - LOGSPOUT=ignore
 
   elasticsearch:
     image: elasticsearch:2
     ports:
       - 9201:9200
       - 9301:9300
-    environment:
-      - LOGSPOUT=ignore
     volumes:
       - ./dockerConf/elasticsearch/data:/usr/share/elasticsearch/data
 
@@ -57,33 +49,20 @@ services:
     image: redis:3
     ports:
       - 6380:6379
-    environment:
-      - LOGSPOUT=ignore
 
   logstash:
     image: logstash:2
     ports:
-      - 5000:5000
-      - 5000:5000/udp
-    environment:
-      - LOGSPOUT=ignore
+      - 12201:12201
+      - 12201:12201/udp
+    expose:
+      - 5000
+      - 12201
     volumes:
       - ./dockerConf/logstash:/config
     links:
       - elasticsearch
     command: logstash -f /config/logstash.conf
-
-  logspout:
-    image: gliderlabs/logspout
-    environment:
-      - ROUTE_URIS=syslog://logstash:5000
-      - LOGSPOUT=ignore
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    links:
-      - logstash
-    depends_on:
-      - logstash
 
   kibana:
     image: kibana:4
@@ -97,23 +76,23 @@ services:
       - elasticsearch
 
   stock-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
     build: ./micro-stock-service
-    environment:
-      - CONSUL=gateway
-      - CONSUL_AGENT=1
     links:
       - gateway
-      - mongo
       - bus
+      - mongo
     depends_on:
       - mongo
       - bus
 
   catalog-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
     build: ./micro-catalog-service
-    environment:
-      - CONSUL=gateway
-      - CONSUL_AGENT=1
     links:
       - gateway
       - mongo
@@ -124,10 +103,10 @@ services:
       - bus
 
   cart-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
     build: ./micro-cart-service
-    environment:
-      - CONSUL=gateway
-      - CONSUL_AGENT=1
     links:
       - gateway
       - bus
@@ -137,10 +116,10 @@ services:
       - bus
 
   tax-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
     build: ./micro-tax-service
-    environment:
-      - CONSUL=gateway
-      - CONSUL_AGENT=1
     links:
       - gateway
       - bus
@@ -150,10 +129,10 @@ services:
       - bus
 
   promotion-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
     build: ./micro-promotion-service
-    environment:
-      - CONSUL=gateway
-      - CONSUL_AGENT=1
     links:
       - gateway
       - bus

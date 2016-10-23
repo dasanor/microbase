@@ -6,8 +6,15 @@ module.exports = function (base) {
 
     extractErrors(error) {
       const errors = [];
-      error.errors.forEach(error => {
-        errors.push(`payload${error.dataPath}: ${error.message}`);
+      Object.keys(error.errors).forEach(key => {
+        const eObj = error.errors[key];
+        if (eObj.dataPath) {
+          // Schema validation
+          errors.push(`payload${eObj.dataPath}: ${eObj.message}`);
+        } else {
+          // Mongoose Validation
+          errors.push(`${key}: ${eObj.message}`);
+        }
       });
       return errors;
     },
@@ -51,8 +58,9 @@ module.exports = function (base) {
     },
 
     Error(code, data) {
-      const e = new Error();
-      e.code = code.replace(' ', '_').toLowerCase();
+      const e = {
+        code: code.replace(' ', '_').toLowerCase()
+      };
       if (data) e.data = data;
       return e;
     },

@@ -31,10 +31,10 @@
       {"url": "api/stock.update.html", "body": "stock.update"},
       {"url": "api/stock.reserve.html", "body": "stock.reserve"},
       {"url": "api/stock.unreserve.html", "body": "stock.unreserve"},
-      {"url": "api/cart.new.html", "body": "cart.new"},
+      {"url": "api/cart.create.html", "body": "cart.create"},
       {"url": "api/cart.info.html", "body": "cart.info"},
-      {"url": "api/cart.addEntry.html", "body": "cart.addEntry"},
-      {"url": "api/cart.removeEntry.html", "body": "cart.removeEntry"},
+      {"url": "api/cart.addToCart.html", "body": "cart.addToCart"},
+      {"url": "api/cart.removeFromCart.html", "body": "cart.removeFromCart"},
       {"url": "api/tax.create.html", "body": "tax.create"},
       {"url": "api/tax.cartTaxes.html", "body": "tax.cartTaxes"}
     ]

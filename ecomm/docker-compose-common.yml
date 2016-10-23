@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+
+  service:
+    environment:
+      - CONSUL=gateway
+      - CONSUL_AGENT=1
+    mem_limit: 128m
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
