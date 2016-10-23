@@ -124,7 +124,6 @@ The aforementioned docker configuration starts several containers:
 * elasticsearch - Search server. Logs aggregation server. `http://localhost:9201`
 * redis - Cache server. `redis://localhost:6380`
 * logstash - Logs redirection server. `localhost:5000`
-* logspout - Container logs redirection server.
 * kibana - Logs visualization server: `http://localhost:5602/`
 * *-service -  All the microbase ecomm services.
 
