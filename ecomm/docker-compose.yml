@@ -3,26 +3,21 @@ version: '2'
 services:
 
   consul:
-      image: consul:v0.7.0
-      restart: always
-      mem_limit: 128m
-      ports:
-        - 8501:8500
-      command: agent -log-level info -server -client=0.0.0.0 -bind 0.0.0.0 -bootstrap -ui
+    image: progrium/consul:latest
+    restart: always
+    mem_limit: 128m
+    ports:
+      - 8501:8500
+    command: -server -bootstrap-expect 1 -ui-dir /ui
 
   gateway:
-      image: ncornag/micro-docker-nginx
-      restart: always
-      mem_limit: 128m
-      environment:
-        - CONSUL=consul
-        - CONSUL_AGENT=1
-#        - CONSUL_SERVER=1
-      ports:
-#        - 8501:8500
+    image: ncornag/micro-docker-nginx
+    restart: always
+    mem_limit: 128m
+    links:
+      - consul:consul
+    ports:
         - 80:80
-        - 443
-        - 9090 # containerpilot telemetry
 
   mongo:
     image: mongo:3
@@ -68,8 +63,6 @@ services:
     image: kibana:4
     ports:
       - 5602:5601
-    environment:
-      - LOGSPOUT=ignore
     links:
       - elasticsearch
     depends_on:
@@ -81,6 +74,7 @@ services:
       service: service
     build: ./micro-stock-service
     links:
+      - consul
       - gateway
       - bus
       - mongo
@@ -94,6 +88,7 @@ services:
       service: service
     build: ./micro-catalog-service
     links:
+      - consul
       - gateway
       - mongo
       - bus
@@ -108,6 +103,7 @@ services:
       service: service
     build: ./micro-cart-service
     links:
+      - consul
       - gateway
       - bus
       - mongo
@@ -121,6 +117,7 @@ services:
       service: service
     build: ./micro-tax-service
     links:
+      - consul
       - gateway
       - bus
       - mongo
@@ -134,6 +131,7 @@ services:
       service: service
     build: ./micro-promotion-service
     links:
+      - consul
       - gateway
       - bus
       - mongo

@@ -4,9 +4,9 @@ services:
 
   service:
     environment:
-      - CONSUL=gateway
-      - CONSUL_AGENT=1
+      - CONSUL=consul
     mem_limit: 128m
+    restart: always
     logging:
       driver: gelf
       options:
