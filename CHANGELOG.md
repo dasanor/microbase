@@ -8,6 +8,11 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.8.4][] (2016-10-26)
+
+* Changed the compose setup to fix restarts fails with consul.
+* Added AMQP transport to services.
+
 ## [0.8.3][] (2016-10-23)
 
 * Updated api docs.
