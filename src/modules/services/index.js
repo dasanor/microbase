@@ -6,11 +6,25 @@ module.exports = function (base) {
   const service = {
     name: base.config.get('services:name'),
     version: base.config.get('services:version'),
-    operations: new Map()
+    operations: new Map(),
+    splitOperationName: name => {
+      const s = name.split(':');
+      let serviceName, serviceVersion = 'v1', operationName;
+      if (s.length === 1) {
+        serviceName = operationName = s[0];
+      } else if (s.length === 2) {
+        serviceName = s[0];
+        operationName = s[1];
+      } else {
+        serviceName = s[0];
+        serviceVersion = s[1];
+        operationName = s[2];
+      }
+      return { serviceName, serviceVersion, operationName };
+    },
+    getOperationFullName: (serviceName, serviceVersion, operationName) =>
+      `${serviceName}:${serviceVersion}:${operationName}`
   };
-
-  const getOperationFullName = (serviceName, serviceVersion, operationName) =>
-    `${serviceName}:${serviceVersion}:${operationName}`;
 
   // Add wrappers
   const wrappersFns = new Map();
@@ -62,10 +76,11 @@ module.exports = function (base) {
 
   // Add operation method
   service.addOperation = function (op, transports = ['http']) {
-    const operationFullName = getOperationFullName(service.name, service.version, op.name);
+    const operationFullName = service.getOperationFullName(service.name, service.version, op.name);
     base.logger.info(`[services] added service [${operationFullName}]`);
     service.operations.set(operationFullName, addWrappers(op));
-    transports.forEach(transport => {
+    const usedTransports = op.transports || transports;
+    usedTransports.forEach(transport => {
       base.transports[transport].use(operationFullName, op);
     })
   };
@@ -91,6 +106,7 @@ module.exports = function (base) {
 
   // Add proxy to transport call
   service.call = function (config, msg) {
+    const { serviceName, serviceVersion, operationName } = service.splitOperationName(config.name);
     const transport = config.transport || 'http';
     return base.transports[transport].call(config, msg);
   };

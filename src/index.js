@@ -55,6 +55,8 @@ module.exports = function (options) {
   base.transports = {};
   base.transports.http = (options.transports && options.transports.http)
     ? options.transports.http : require('./modules/transports/http.js')(base);
+  base.transports.amqp = (options.transports && options.transports.amqp)
+    ? options.transports.amqp : require('./modules/transports/amqp.js')(base);
 
   // Services service
   base.services = options.services || require('./modules/services')(base);

@@ -19,6 +19,9 @@
       "cors": {
         "origin": "*"
       }
+    },
+    "amqp": {
+      "url": "amqp://bus"
     }
   },
   "services": {

@@ -47,7 +47,7 @@ module.exports = function (base) {
         return { error: 'duplicate_key', data: error.errmsg };
       }
       const response = {};
-      if (error.code) response.error = error.code.replace(' ', '_').toLowerCase();
+      if (error.code) response.error = error.code.replace(/ /g, '_').toLowerCase();
       if (error.data) response.data = error.data;
       if (error.statusCode) response.statusCode = error.statusCode;
       if (!response.data && error.message) response.data = error.message;
@@ -59,7 +59,7 @@ module.exports = function (base) {
 
     Error(code, data) {
       const e = {
-        code: code.replace(' ', '_').toLowerCase()
+        code: code.replace(/ /g, '_').toLowerCase()
       };
       if (data) e.data = data;
       return e;
