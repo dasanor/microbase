@@ -79,7 +79,8 @@ module.exports = function (base) {
     const operationFullName = service.getOperationFullName(service.name, service.version, op.name);
     base.logger.info(`[services] added service [${operationFullName}]`);
     service.operations.set(operationFullName, addWrappers(op));
-    transports.forEach(transport => {
+    const usedTransports = op.transports || transports;
+    usedTransports.forEach(transport => {
       base.transports[transport].use(operationFullName, op);
     })
   };
