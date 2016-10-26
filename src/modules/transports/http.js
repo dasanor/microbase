@@ -46,23 +46,6 @@ module.exports = function (base) {
   // Helpers
   const getOperationUrl = (basePath, serviceName, serviceVersion, operationName, operationPath) =>
     `${basePath}/${serviceName}/${serviceVersion}/${operationName}${operationPath !== undefined ? operationPath : ''}`;
-  const splitOperationName = name => {
-    const s = name.split(':');
-    let serviceName, serviceVersion = 'v1', operationName;
-    if (s.length === 1) {
-      serviceName = operationName = s[0];
-    } else if (s.length === 2) {
-      serviceName = s[0];
-      operationName = s[1];
-    } else {
-      serviceName = s[0];
-      serviceVersion = s[1];
-      operationName = s[2];
-    }
-    return { serviceName, serviceVersion, operationName };
-  };
-
-  // TODO: call external services
 
   const app = express();
 
@@ -182,7 +165,7 @@ module.exports = function (base) {
       authorization: ns.get('authorization')
     };
     Object.assign(headers, config.headers);
-    const { serviceName, serviceVersion, operationName } = splitOperationName(config.name);
+    const { serviceName, serviceVersion, operationName } = base.services.splitOperationName(config.name);
     const operationMethod = config.method || 'POST';
 
     return new Promise((resolve, reject) => {
