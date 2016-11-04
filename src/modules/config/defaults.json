@@ -26,6 +26,11 @@
   },
   "services": {
     "defaultFolder": "operations",
+    "defaultTransports": [
+      "http",
+      "amqp"
+    ],
+    "defaultCallTransport": "amqp",
     "wrappers": {
       "validator": "./node_modules/microbase/modules/services/wrappers/validator",
       "cache": "./node_modules/microbase/modules/services/wrappers/cache"

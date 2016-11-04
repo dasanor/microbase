@@ -40,6 +40,9 @@ module.exports = function (base) {
     subscribe: (channel, handler) => {
       const names = channel.split('.');
       channels[names[0]].subscribe(channel, handler);
+    },
+    engine: (name) => {
+      engines[name];
     }
   };
 
