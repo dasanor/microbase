@@ -32,4 +32,8 @@ do
 	updateRepo $i
 done
 
+docker-compose down
+docker rmi ncornag/micro-docker-service:latest
+docker rmi ncornag/micro-docker-ngnix:latest
+#docker rm $(docker ps -a -q -f name=micro_)
 docker-compose up --build

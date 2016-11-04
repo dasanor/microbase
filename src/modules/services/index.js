@@ -75,7 +75,8 @@ module.exports = function (base) {
   }
 
   // Add operation method
-  service.addOperation = function (op, transports = ['http']) {
+  const defaultTransports = base.config.get('services:defaultTransports');
+  service.addOperation = function (op, transports = defaultTransports) {
     const operationFullName = service.getOperationFullName(service.name, service.version, op.name);
     base.logger.info(`[services] added service [${operationFullName}]`);
     service.operations.set(operationFullName, addWrappers(op));
@@ -105,15 +106,17 @@ module.exports = function (base) {
   };
 
   // Add proxy to transport call
+  const defaultCallTransport = base.config.get('services:defaultCallTransport');
   service.call = function (config, msg) {
     const { serviceName, serviceVersion, operationName } = service.splitOperationName(config.name);
-    const transport = config.transport || 'http';
+    const transport = config.transport || defaultCallTransport;
     return base.transports[transport].call(config, msg);
   };
 
   // Add a ping operation to allow health checks and keep alives
   service.addOperation({
     name: 'micro.ping',
+    transports: ['http'],
     public: true,
     handler: (msg, reply) => {
       return reply({ answer: 'pong' });
@@ -123,6 +126,7 @@ module.exports = function (base) {
   if (base.logger.isDebugEnabled()) {
     service.addOperation({
       name: 'micro.config',
+      transports: ['http'],
       public: true,
       handler: (msg, reply) => {
         return reply({ answer: base.config.get() });

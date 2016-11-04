@@ -21,7 +21,8 @@ module.exports = function (base /* , engineConfig */) {
     subscribe: (channel, handler) => {
       const names = channel.split('.');
       bus.on(names[0], handler);
-    }
+    },
+    engine: bus
   };
 
 };

@@ -3,6 +3,7 @@ const Wreck = require('wreck');
 module.exports = function (base) {
   return {
     handler: function (options) {
+      base.cache.create(options.name, options.options);
       return function (params, reply, request, next) {
         // Verify the no-cache/no-store headers to bypass the cache
         let noStore = false;
