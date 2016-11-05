@@ -32,7 +32,6 @@
     "monq": "^0.3.4",
     "nconf": "^0.8.4",
     "object-hash": "^1.1.2",
-    "servicebus": "^2.0.2",
     "shimmer": "^1.1.0",
     "winston": "^2.2.0",
     "winston-logstash": "^0.2.11",
