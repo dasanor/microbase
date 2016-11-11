@@ -9,13 +9,17 @@
     "level": 0,
     "services": [
       {"url": "micro-catalog-service.html", "body": "Catalog"},
-      {"url": "micro-stock-service.html", "body": "Stock"},
       {"url": "micro-cart-service.html", "body": "Cart"},
-      {"url": "micro-tax-service.html", "body": "Tax"},
+      {"url": "micro-oauth-service.html", "body": "Oauth"},
       {"url": "micro-promotion-service.html", "body": "Promotion"},
-      {"url": "micro-oauth-service.html", "body": "Oauth"}
+      {"url": "micro-stock-service.html", "body": "Stock"},
+      {"url": "micro-tax-service.html", "body": "Tax"}
     ],
     "api": [
+      {"url": "api/cart.addToCart.html", "body": "cart.addToCart"},
+      {"url": "api/cart.create.html", "body": "cart.create"},
+      {"url": "api/cart.info.html", "body": "cart.info"},
+      {"url": "api/cart.removeFromCart.html", "body": "cart.removeFromCart"},
       {"url": "api/category.create.html", "body": "category.create"},
       {"url": "api/category.info.html", "body": "category.info"},
       {"url": "api/category.list.html", "body": "category.list"},
@@ -28,15 +32,15 @@
       {"url": "api/product.update.html", "body": "product.update"},
       {"url": "api/stock.create.html", "body": "stock.create"},
       {"url": "api/stock.info.html", "body": "stock.info"},
-      {"url": "api/stock.update.html", "body": "stock.update"},
       {"url": "api/stock.reserve.html", "body": "stock.reserve"},
       {"url": "api/stock.unreserve.html", "body": "stock.unreserve"},
-      {"url": "api/cart.create.html", "body": "cart.create"},
-      {"url": "api/cart.info.html", "body": "cart.info"},
-      {"url": "api/cart.addToCart.html", "body": "cart.addToCart"},
-      {"url": "api/cart.removeFromCart.html", "body": "cart.removeFromCart"},
+      {"url": "api/stock.update.html", "body": "stock.update"},
+      {"url": "api/tax.cartTaxes.html", "body": "tax.cartTaxes"},
       {"url": "api/tax.create.html", "body": "tax.create"},
-      {"url": "api/tax.cartTaxes.html", "body": "tax.cartTaxes"}
+      {"url": "api/tax.info.html", "body": "tax.info"},
+      {"url": "api/tax.list.html", "body": "tax.list"},
+      {"url": "api/tax.remove.html", "body": "tax.remove"},
+      {"url": "api/tax.update.html", "body": "tax.update"}
     ]
   }
 }
