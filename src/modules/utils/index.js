@@ -129,9 +129,9 @@ module.exports = function (base) {
           this.ops.push(fn);
         } else if (typeof fn === 'string') {
           const config = base.config.get(fn);
-          Object.keys(config).forEach(mRoute => {
-            const m = base.utils.loadModule(`${fn}:${mRoute}`);
-            this.ops[m.name] = m.fn;
+          Object.keys(config).forEach(name => {
+            const m = base.utils.loadModule(`${fn}:${name}`);
+            this.ops[name] = m.fn;
             if (m.alias) {
               m.alias.forEach(alias => {
                 this.ops[alias] = m.fn;
