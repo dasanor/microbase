@@ -55,8 +55,8 @@ project. For the most up to date ones refer to the original repositories:
 
 * Multiple promotions firing per cart
 * Per Product, Product Category, Order or User data firing
-* DSL to allow complex conditions, with "AND" and/or "ANY" nested conditions
-* Almost fullfilled promotion detection with optiona thresholds
+* DSL to allow complex conditions, with "ALL" and/or "ANY" nested conditions
+* Almost fullfilled promotion detection with optional thresholds
 * Easily creation of custom firing conditions
 
 [Oauth Service](https://github.com/ncornag/micro-oauth-service)
