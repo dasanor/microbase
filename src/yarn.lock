@@ -1491,9 +1491,9 @@ mongoose@^4.4.16:
     regexp-clone "0.0.1"
     sliced "1.0.1"
 
-monq@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/monq/-/monq-0.3.4.tgz#d88e48713f9fb6046c1e4adad2229d4118713745"
+monq:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/monq/-/monq-0.3.5.tgz#53fb2c6b897e71ed23932dab2de519a7c67392ae"
   dependencies:
     mongojs "^2.1.0"
 

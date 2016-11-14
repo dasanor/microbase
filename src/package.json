@@ -29,7 +29,7 @@
     "express-winston": "^2.0.0",
     "glob": "^7.1.0",
     "mongoose": "^4.4.16",
-    "monq": "^0.3.4",
+    "monq": "^0.3.5",
     "nconf": "^0.8.4",
     "object-hash": "^1.1.2",
     "shimmer": "^1.1.0",
