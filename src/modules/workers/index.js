@@ -20,7 +20,7 @@ function workers(base) {
     base.logger.info(`[workers] job [${job.worker}] created [${job.when ? job.when : ''}]`);
     const jobHandler = require(`${base.config.get('rootPath')}/${job.handler}`)(base);
 
-    const worker = jobs.worker([job.worker]);
+    const worker = jobs.worker([job.worker], {});
     worker.register({
       [job.worker]: jobHandler
     });
