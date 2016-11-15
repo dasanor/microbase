@@ -6,7 +6,7 @@ then
   exit 1
 fi
 
-./install.sh $1
+./install.sh $1 1
 
 DEST=$1/micro
 

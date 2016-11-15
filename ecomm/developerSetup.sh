@@ -10,18 +10,23 @@ PWD=`pwd`
 MICROBASE=$PWD/../;
 DEST=$1/micro;
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+
 ./install.sh $1
 
-echo "Installing in directory $MICROBASE"
+echo -e "${BLUE}Starting project installation...${NC}"
 cd $DEST
 
 for MICRO in `find . -type d -name "micro-*"`
 do
   echo "-----------------------";
-  echo "⚡ Installing module $MICRO..."
+  echo -e "⚡ Installing module ${GREEN}$MICRO${NC}..."
   echo " - Pulling from repo $DEST/$MICRO"
   cd $DEST/$MICRO;
-  git pull;
   MODULE=$DEST/$MICRO/src;
   cd $MODULE;
   echo " - Installing module with yarn $MODULE"
@@ -33,10 +38,12 @@ do
 done
 
 echo "-----------------------";
-echo "⚡ Installing Microbase..."
+echo -e "⚡ Installing ${GREEN}Microbase${NC}..."
 cd $MICROBASE/src;
 git pull;
 yarn;
 echo "-----------------------";
 
 cd $PWD
+
+echo -e "${BLUE}Installation Finished!${NC}"

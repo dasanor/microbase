@@ -27,6 +27,9 @@ docker-compose --file docker-compose-dev.yml up
 ###Miscellaneous
 
 *Aliases*
+
+Set up aliases on `.bash_profile` or `.zshrc` 
+
 ```
 export MICROBASE_HOME='<project folder>/micro';
 alias micro-tool='cd $MICROBASE_HOME;docker-compose --file docker-compose-dev.yml up';
@@ -38,7 +41,7 @@ alias micro-stock-service='export NODE_ENV=development;cd $MICROBASE_HOME/micro-
 alias micro-tax-service='export NODE_ENV=development;cd $MICROBASE_HOME/micro-tax-service/src;node .'
 ```
 
-*itermocil*
+*Itermocil*
 
 https://github.com/TomAnthony/itermocil
 
