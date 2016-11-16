@@ -8,7 +8,7 @@ fi
 
 PWD=`pwd`
 MICROBASE=$PWD/../;
-DEST=$1/micro;
+DEST=$1;
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -30,7 +30,7 @@ do
   MODULE=$DEST/$MICRO/src;
   cd $MODULE;
   echo " - Installing module with yarn $MODULE"
-  yarn;
+  yarn --pure-lockfile;
   MODULEMB=$MODULE/node_modules/microbase
   rm -rf $MODULEMB;
   echo " - Creating link to microbase for development"
@@ -41,7 +41,7 @@ echo "-----------------------";
 echo -e "⚡ Installing ${GREEN}Microbase${NC}..."
 cd $MICROBASE/src;
 git pull;
-yarn;
+yarn --pure-lockfile;
 echo "-----------------------";
 
 cd $PWD

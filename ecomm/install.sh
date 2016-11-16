@@ -11,7 +11,7 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-DEST=$1/micro
+DEST=$1
 ORIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 updateRepo() {

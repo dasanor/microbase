@@ -8,7 +8,7 @@ fi
 
 ./install.sh $1 1
 
-DEST=$1/micro
+DEST=$1
 
 cd $DEST
 
