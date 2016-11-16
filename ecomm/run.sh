@@ -6,31 +6,11 @@ then
   exit 1
 fi
 
-DEST=$1/micro
-ORIG="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+./install.sh $1 1
 
-updateRepo() {
-  REPO=micro-$1-service
-  cd $DEST
-  if [ -d "$REPO" ]; then
-    cd $REPO
-    echo Updating $REPO
-    git pull
-  else
-    echo Clonning $REPO
-    git clone --depth 1 https://github.com/ncornag/$REPO.git
-  fi
-}
+DEST=$1
 
-mkdir -p $DEST
-cp $ORIG/docker-compose*.yml $DEST
-cp -R $ORIG/dockerConf $DEST
-
-REPOS=( "catalog" "stock" "cart" "tax" "promotion")
-for i in "${REPOS[@]}"
-do
-	updateRepo $i
-done
+cd $DEST
 
 docker-compose down
 docker rmi ncornag/micro-docker-service:latest
