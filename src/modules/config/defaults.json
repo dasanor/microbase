@@ -18,6 +18,12 @@
       "logpattern": "[http] {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms",
       "cors": {
         "origin": "*"
+      },
+      "monitors": {
+        "datadog": {
+          "enabled": true,
+          "module": "./node_modules/microbase/modules/transports/http/monitors/datadog.js"
+        }
       }
     },
     "amqp": {

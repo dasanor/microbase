@@ -74,6 +74,16 @@ module.exports = function (base) {
     meta: false
   }));
 
+  // Load external monitors
+  const monitorsBaseKey = 'transports:http:monitors';
+  Object.keys(base.config.get(monitorsBaseKey)).forEach(monitorName => {
+    if (base.config.get(`${monitorsBaseKey}:${monitorName}:enabled`)) {
+      const m = base.utils.loadModule(`${monitorsBaseKey}:${monitorName}:module`);
+      base.logger.info(`[http] activating monitor '${monitorName}'`);
+      m(app);
+    }
+  });
+
   app.use(router);
 
   // Error handler for 401s
