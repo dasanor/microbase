@@ -21,7 +21,7 @@
       },
       "monitors": {
         "datadog": {
-          "enabled": true,
+          "enabled": false,
           "module": "./node_modules/microbase/modules/transports/http/monitors/datadog.js"
         }
       }
