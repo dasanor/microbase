@@ -27,11 +27,11 @@ module.exports = function (base) {
         return null;
       }
       if (name.startsWith('.')) {
-        const modulePath = `${base.config.get('rootPath')}/${name}`;
+        const modulePath = require('path').normalize(`${base.config.get('rootPath')}/${name}`);
         try {
           return require(modulePath)(base)
         } catch (e) {
-          base.logger.error(`[services] module '${key}:${modulePath}' not found`)
+          base.logger.error(`[services] module '${key}:${modulePath}' not found`);
           return false;
         }
       } else {
