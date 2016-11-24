@@ -129,10 +129,22 @@ function helpers(base) {
       })
   }
 
+  function insertPromotion(data) {
+    return Promise.all(handleFunctions([], data))
+      .then(() => {
+        return base.services.call({
+          name: 'promotion:promotion.create',
+          headers: headers,
+          timeout: timeout
+        }, data);
+      })
+  }
+
   return {
     insertTax,
     insertCategory,
-    insertProduct
+    insertProduct,
+    insertPromotion
   };
 }
 
