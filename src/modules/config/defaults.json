@@ -36,7 +36,7 @@
       "http",
       "amqp"
     ],
-    "defaultCallTransport": "amqp",
+    "defaultCallTransport": "http",
     "wrappers": {
       "validator": "./node_modules/microbase/modules/services/wrappers/validator",
       "cache": "./node_modules/microbase/modules/services/wrappers/cache"
