@@ -27,11 +27,11 @@ module.exports = function (base) {
         return null;
       }
       if (name.startsWith('.')) {
-        const modulePath = `${base.config.get('rootPath')}/${name}`;
+        const modulePath = require('path').normalize(`${base.config.get('rootPath')}/${name}`);
         try {
           return require(modulePath)(base)
         } catch (e) {
-          base.logger.error(`[services] module '${key}:${modulePath}' not found`)
+          base.logger.error(`[services] module '${key}:${modulePath}' not found`);
           return false;
         }
       } else {
@@ -129,9 +129,14 @@ module.exports = function (base) {
           this.ops.push(fn);
         } else if (typeof fn === 'string') {
           const config = base.config.get(fn);
-          Object.keys(config).forEach(mRoute => {
-            const m = base.utils.loadModule(`${fn}:${mRoute}`);
-            this.ops[m.name] = (m.fn);
+          Object.keys(config).forEach(name => {
+            const m = base.utils.loadModule(`${fn}:${name}`);
+            this.ops[name] = m.fn;
+            if (m.alias) {
+              m.alias.forEach(alias => {
+                this.ops[alias] = m.fn;
+              });
+            }
           });
         }
         return this;

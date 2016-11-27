@@ -1,0 +1,1 @@
+{"title": "10% if you buy 3 'Combi fridges'", "class": "default", "active": true, "priority": 100, "if": { "category": { "id": "categoryIdByTitle(Frigoríficos combi)", "quantity": 3, "lowestPrice": true } }, "then": { "category": { "id": "categoryIdByTitle(Frigoríficos combi)", "quantity": 3, "discount": { "rate": 10, "isPercentaje": true } } } }

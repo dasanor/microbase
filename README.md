@@ -55,8 +55,8 @@ project. For the most up to date ones refer to the original repositories:
 
 * Multiple promotions firing per cart
 * Per Product, Product Category, Order or User data firing
-* DSL to allow complex conditions, with "AND" and/or "ANY" nested conditions
-* Almost fullfilled promotion detection with optiona thresholds
+* DSL to allow complex conditions, with "ALL" and/or "ANY" nested conditions
+* Almost fullfilled promotion detection with optional thresholds
 * Easily creation of custom firing conditions
 
 [Oauth Service](https://github.com/ncornag/micro-oauth-service)
@@ -72,7 +72,7 @@ project. For the most up to date ones refer to the original repositories:
 * [Elasticsearch](https://www.elastic.co/products/elasticsearch) indexes the product data.
 * [RabbitMQ](https://www.rabbitmq.com/) is the preferred choice for messaging.
 
-* If you want to run a service locally (not with the docker-compose provided), clone the repo
+* If you want to run a service locally (not with the docker-compose provided), clone a repo
 and run node.
 
 ```bash
@@ -87,22 +87,28 @@ Each service has in his own ```development``` configuration, so each service wil
 port.
 
 Keep in mind that the infrastructure services needs some configuration (i.e. the host name). Out
- of the box you will need to add this to your ```hosts``` file:
+ of the box you will need to add this to your `hosts` file:
 
 ```bash
 127.0.0.1 gateway mongo elasticsearch bus redis
 ```
 
-## Run
+## Quick run
 
-Theres is a docker compose file provided to run the services, plus the additional infrastructure
-services needed (MongoDB, Consul).
-If you want to try, execute the ```run``` shell script with a folder as a parameter. It will
- clode all the repos, build the necesary images and start the containers.
+There is a docker compose file provided to run the ecomm services and the additional infrastructure
+ services (NGINX, MongoDB, Consul). Clone the repo and execute the `run` shell script with a
+ folder as a parameter. It will clone the services the repos, build the necesary
+ images and start the containers.
 
 ```bash
-cd ecomm
-./run.sh /tmp
+git clone https://github.com/ncornag/microbase.git
+cd microbase/ecomm
+./run.sh /tmp/micro
+```
+
+Test the installation using `curl`:
+
+```bash
 curl --request POST \
   --url http://localhost:80/services/catalog/v1/category \
   --header 'accept: application/json' \
@@ -112,6 +118,8 @@ curl --request POST \
 ```
 
 The `authorizarion` header is based on the default security configuration. It should be changed in production.
+
+More info about running the ecomm stack [here](./ecomm/README.md)
 
 ## Containers
 
@@ -147,6 +155,7 @@ NODE_ENV=docker node insertData.js Tax ./data/dataTaxes.json
 NODE_ENV=docker node insertData.js Category ./data/dataCategories.json
 NODE_ENV=docker node insertData.js Product ./data/dataProductsShoes.json
 NODE_ENV=docker node insertData.js Product ./data/dataProductsFridges.json
+NODE_ENV=docker node insertData.js Promotion ./data/dataPromotions.json
 ```
 
 ## Postman

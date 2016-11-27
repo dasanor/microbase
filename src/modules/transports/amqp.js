@@ -33,7 +33,7 @@ module.exports = function (base) {
         headers['authorization'] = payload._headers['authorization'];
         delete payload._headers;
       }
-      base.logger.info(`[amqp] ${operationFullName} with ${JSON.stringify(payload)}`);
+      base.logger.info(`[amqp] ${operationFullName} ${JSON.stringify(payload)}`);
       return new Promise((resolve, reject) => {
         ns.run(function () {
           ns.set('x-request-id', headers['x-request-id']);

@@ -2,7 +2,6 @@ const path = require('path');
 const glob = require('glob');
 
 module.exports = function (base) {
-
   const service = {
     name: base.config.get('services:name'),
     version: base.config.get('services:version'),
@@ -29,23 +28,24 @@ module.exports = function (base) {
   // Add wrappers
   const wrappersFns = new Map();
   const wrappers = [];
-  const config = base.config.get('services:wrappers');
-  Object.keys(config).forEach(wrapperName => {
-    const m = base.utils.loadModule(`services:wrappers:${wrapperName}`);
+  const wrappersBaseKey = 'services:wrappers';
+  Object.keys(base.config.get(wrappersBaseKey)).forEach(wrapperName => {
+    base.logger.info(`[services] loading wrapper '${wrapperName}'`);
+    const m = base.utils.loadModule(`${wrappersBaseKey}:${wrapperName}`);
     wrappers.push(wrapperName);
     wrappersFns.set(wrapperName, m);
   });
 
   // Add wrappers to operations
-  function addWrappers(op) {
+  function addWrappers(operationFullName, op) {
     // Loop the wrappers
     for (let w = wrappers.length; w > 0; w--) {
       const wrapperName = wrappers[w - 1];
-      if (op[wrapperName]) {
+      if (op[wrapperName] || wrapperName.indexOf('system-') == 0) {
         // Apply the wrapper if we have a configuration
         const wrapper = wrappersFns.get(wrapperName);
         const originalFn = op.handler;
-        const handler = wrapper.handler(op[wrapperName]);
+        const handler = wrapper.handler(op[wrapperName] || { operationFullName });
         op.handler = function (params, reply, request) {
           handler(params, reply, request, function next(newReply) {
 
@@ -79,7 +79,7 @@ module.exports = function (base) {
   service.addOperation = function (op, transports = defaultTransports) {
     const operationFullName = service.getOperationFullName(service.name, service.version, op.name);
     base.logger.info(`[services] added service [${operationFullName}]`);
-    service.operations.set(operationFullName, addWrappers(op));
+    service.operations.set(operationFullName, addWrappers(operationFullName, op));
     const usedTransports = op.transports || transports;
     usedTransports.forEach(transport => {
       base.transports[transport].use(operationFullName, op);

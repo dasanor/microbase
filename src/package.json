@@ -1,6 +1,6 @@
 {
   "name": "microbase",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "Ecommerce platform to develop store backends.",
   "main": "index.js",
   "scripts": {
@@ -29,11 +29,11 @@
     "express-winston": "^2.0.0",
     "glob": "^7.1.0",
     "mongoose": "^4.4.16",
-    "monq": "^0.3.4",
+    "monq": "^0.3.5",
     "nconf": "^0.8.4",
     "object-hash": "^1.1.2",
-    "servicebus": "^2.0.2",
     "shimmer": "^1.1.0",
+    "shortid": "^2.2.6",
     "winston": "^2.2.0",
     "winston-logstash": "^0.2.11",
     "wreck": "^7.2.1"

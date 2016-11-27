@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+
+  mongo:
+    image: mongo:3
+    ports:
+      - 27017:27017
+    volumes:
+      - ./dockerConf/mongo/data:/data/db
+
+  bus:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  elasticsearch:
+    image: elasticsearch:2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./dockerConf/elasticsearch/data:/usr/share/elasticsearch/data
+
+  redis:
+    image: redis:3
+    ports:
+      - 6379:6379

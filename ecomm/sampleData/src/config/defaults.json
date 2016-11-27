@@ -2,7 +2,11 @@
   "services": {
     "name": "sampledata",
     "version": "v1",
-    "style": "RPC"
+    "style": "RPC",
+    "defaultTransports": [
+      "http"
+    ],
+    "defaultCallTransport": "http"
   },
   "transport": {
     "http": {
