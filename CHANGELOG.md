@@ -8,6 +8,26 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.8.6][] (2016-11-27)
+
+* Changed default interprocess calls to http.
+* Added load test to measure a user navigation.
+* Normalised module path before loading.
+* Added Promotions sample data
+* Added http monitor modules. Datadog as example.
+* Enhanced the ecomm installation documentation. Refactored the folders created.
+* Improving setup process.
+* Added scripts for development installation.
+* Get rule names from config.
+* Updated the docs.
+* Added alias to the DSL functions evaluator.
+* Adding default options to monq for launching the workers.
+* Update sampleData dependencies.
+* Added Promotions sample data. 
+* Added amqp log patterns to logstash.
+* Enhanced docker-compose runner.
+* Fix cache creation.
+
 ## [0.8.5][] (2016-11-04)
 
 * Switch to amq library for the bus and the AMQP transport.
