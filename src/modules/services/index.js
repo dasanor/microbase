@@ -29,11 +29,11 @@ module.exports = function (base) {
   const inMiddlewaresFns = new Map();
   const inMiddlewares = [];
   const inMiddlewaresBaseKey = 'services:inMiddlewares';
-  Object.keys(base.config.get(inMiddlewaresBaseKey)).forEach(wrapperName => {
-    base.logger.info(`[services] loading wrapper '${wrapperName}'`);
-    const m = base.utils.loadModule(`${inMiddlewaresBaseKey}:${wrapperName}`);
-    inMiddlewares.push(wrapperName);
-    inMiddlewaresFns.set(wrapperName, m);
+  Object.keys(base.config.get(inMiddlewaresBaseKey)).forEach(middlewareName => {
+    base.logger.info(`[services] loading in middleware '${middlewareName}'`);
+    inMiddlewares.push(middlewareName);
+    const m = base.utils.loadModule(`${inMiddlewaresBaseKey}:${middlewareName}`);
+    inMiddlewaresFns.set(middlewareName, m);
   });
 
   // Add middlewares to operations
@@ -104,13 +104,30 @@ module.exports = function (base) {
     });
   };
 
-  // Add proxy to transport call
+  // Default transport for out calls
   const defaultOutTransport = base.config.get('services:defaultOutTransport');
-  service.call = function (config, msg) {
-    const { serviceName, serviceVersion, operationName } = service.splitOperationName(config.name);
-    const transport = config.transport || defaultOutTransport;
-    return base.transports[transport].call(config, msg);
-  };
+
+  // Call transport out middleware
+  function callTransportOutMiddleware(context, next) {
+    const transport = context.config.transport || defaultOutTransport;
+    base.transports[transport]
+      .call(context.config, context.msg)
+      .then(response => {
+        context.response = response;
+        next();
+      })
+      .catch(error => next(error));
+  }
+
+  // Create the out calls chain
+  const callChain = new base.utils.Chain().use('services:outMiddlewares');
+  callChain.use(callTransportOutMiddleware);
+
+  // Call other services
+  service.call = (config, msg) =>
+    callChain
+      .exec({ config, msg })
+      .then(context => context.response);
 
   // Add a ping operation to allow health checks and keep alives
   service.addOperation({

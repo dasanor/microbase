@@ -42,7 +42,6 @@
     },
     "defaultOutTransport": "http",
     "outMiddlewares": {
-      "circuitbreaker": "./node_modules/microbase/modules/services/outMiddlewares/circuitBreaker"
     }
   },
   "gateway": {
