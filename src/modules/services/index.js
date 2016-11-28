@@ -25,27 +25,26 @@ module.exports = function (base) {
       `${serviceName}:${serviceVersion}:${operationName}`
   };
 
-  // Add wrappers
-  const wrappersFns = new Map();
-  const wrappers = [];
-  const wrappersBaseKey = 'services:wrappers';
-  Object.keys(base.config.get(wrappersBaseKey)).forEach(wrapperName => {
+  // Add inMiddlewares
+  const inMiddlewaresFns = new Map();
+  const inMiddlewares = [];
+  const inMiddlewaresBaseKey = 'services:inMiddlewares';
+  Object.keys(base.config.get(inMiddlewaresBaseKey)).forEach(wrapperName => {
     base.logger.info(`[services] loading wrapper '${wrapperName}'`);
-    const m = base.utils.loadModule(`${wrappersBaseKey}:${wrapperName}`);
-    wrappers.push(wrapperName);
-    wrappersFns.set(wrapperName, m);
+    const m = base.utils.loadModule(`${inMiddlewaresBaseKey}:${wrapperName}`);
+    inMiddlewares.push(wrapperName);
+    inMiddlewaresFns.set(wrapperName, m);
   });
 
-  // Add wrappers to operations
-  function addWrappers(operationFullName, op) {
-    // Loop the wrappers
-    for (let w = wrappers.length; w > 0; w--) {
-      const wrapperName = wrappers[w - 1];
-      if (op[wrapperName] || wrapperName.indexOf('system-') == 0) {
-        // Apply the wrapper if we have a configuration
-        const wrapper = wrappersFns.get(wrapperName);
+  // Add middlewares to operations
+  function addInMiddlewares(operationFullName, op) {
+    for (let w = inMiddlewares.length; w > 0; w--) {
+      const middlewareName = inMiddlewares[w - 1];
+      if (op[middlewareName] || middlewareName.indexOf('system-') == 0) {
+        // Apply the middleware if we have a configuration or is a system one
+        const middleware = inMiddlewaresFns.get(middlewareName);
         const originalFn = op.handler;
-        const handler = wrapper.handler(op[wrapperName] || { operationFullName });
+        const handler = middleware.handler(op[middlewareName] || { operationFullName });
         op.handler = function (params, reply, request) {
           handler(params, reply, request, function next(newReply) {
 
@@ -79,7 +78,7 @@ module.exports = function (base) {
   service.addOperation = function (op, transports = defaultTransports) {
     const operationFullName = service.getOperationFullName(service.name, service.version, op.name);
     base.logger.info(`[services] added service [${operationFullName}]`);
-    service.operations.set(operationFullName, addWrappers(operationFullName, op));
+    service.operations.set(operationFullName, addInMiddlewares(operationFullName, op));
     const usedTransports = op.transports || transports;
     usedTransports.forEach(transport => {
       base.transports[transport].use(operationFullName, op);
@@ -106,10 +105,10 @@ module.exports = function (base) {
   };
 
   // Add proxy to transport call
-  const defaultCallTransport = base.config.get('services:defaultCallTransport');
+  const defaultOutTransport = base.config.get('services:defaultOutTransport');
   service.call = function (config, msg) {
     const { serviceName, serviceVersion, operationName } = service.splitOperationName(config.name);
-    const transport = config.transport || defaultCallTransport;
+    const transport = config.transport || defaultOutTransport;
     return base.transports[transport].call(config, msg);
   };
 
