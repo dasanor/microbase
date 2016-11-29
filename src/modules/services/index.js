@@ -132,7 +132,7 @@ module.exports = function (base) {
       const options = {
         name: context.config.name,
         statInterval: 2500,
-        threshold: 0.5,
+        threshold: 0.25,
         circuitDuration: 5000,
         timeout: 250,
         waitThreshold: 3
@@ -140,16 +140,18 @@ module.exports = function (base) {
 
       Object.assign(options, context.config.circuitbreaker || {});
 
-      const sourceFallback = context => ({ ok: false, error: 'circuitbreaker_fallback', data: context.config.name });
-      options.fallback = function (context) {
-        return new Promise((resolve, reject) => {
-          ns.run(function () {
-            ns.set('x-request-id', context.headers['x-request-id']);
-            ns.set('authorization', context.headers['authorization']);
-            resolve(sourceFallback(context));
+      if (options.fallback) {
+        const sourceFn = options.fallback;
+        options.fallback = function (context) {
+          return new Promise((resolve, reject) => {
+            ns.run(function () {
+              ns.set('x-request-id', context.headers['x-request-id']);
+              ns.set('authorization', context.headers['authorization']);
+              resolve(sourceFn(context));
+            });
           });
-        });
-      };
+        };
+      }
       circuit = new Brakes(promiseCall(transport), options);
 
       circuit.on('circuitOpen', () => {
@@ -157,8 +159,17 @@ module.exports = function (base) {
       });
 
       circuit.on('circuitClosed', () => {
-        base.logger.info(`[service] Circuit breaker closed for ${context.config.name}`);
+        base.logger.warn(`[service] Circuit breaker closed for ${context.config.name}`);
       });
+
+      // circuit.on('timeout', (e) => {
+      //   base.logger.warn(`[service] timeout for ${context.config.name} ${e}`);
+      // });
+      // circuit.on('snapshot', (s) => {
+      //   if (s.stats.failed !== 0 || s.stats.timedOut !== 0) {
+      //     base.logger.warn(`[service] stats for ${context.config.name} f:${s.stats.failed} + to:${s.stats.timedOut} / s:${s.stats.successful} l:${s.stats.latencyMean}`);
+      //   }
+      // });
 
       circuits[context.config.name] = circuit;
     }
@@ -168,7 +179,7 @@ module.exports = function (base) {
     };
     circuit.exec(context)
       .then(response => {
-        if (response.ok === false && response.error !== 'circuitbreaker_fallback') {
+        if (response.ok === false && response.error !== 'circuitbreaker') {
           return next(base.utils.Error(response.error, response.data));
         }
         context.response = response;
@@ -178,7 +189,14 @@ module.exports = function (base) {
         ns.run(function () {
           ns.set('x-request-id', context.headers['x-request-id']);
           ns.set('authorization', context.headers['authorization']);
-          context.response = { ok: false, error: 'circuitbreaker_fallback', data: error.code };
+          context.response = {
+            ok: false,
+            error: 'circuitbreaker',
+            data: {
+              code: error.code || error.constructor.name.toLowerCase(),
+              service: context.config.name
+            }
+          };
           next();
         });
       });
