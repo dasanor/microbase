@@ -48,16 +48,6 @@
             <stringProp name="Argument.value"></stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="timesAddToCart" elementType="Argument">
-            <stringProp name="Argument.name">timesAddToCart</stringProp>
-            <stringProp name="Argument.value">2</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
-          <elementProp name="navigationCount" elementType="Argument">
-            <stringProp name="Argument.name">navigationCount</stringProp>
-            <stringProp name="Argument.value">2</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
@@ -720,7 +710,7 @@ if (cats==&quot;&quot;) {
         </hashTree>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Navigate pages" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">${navigationCount}</stringProp>
+          <stringProp name="LoopController.loops">${__Random(3, 7)}</stringProp>
         </LoopController>
         <hashTree>
           <BSFSampler guiclass="TestBeanGUI" testclass="BSFSampler" testname="Generate randoms" enabled="true">
@@ -775,7 +765,7 @@ vars.put(&apos;navCatId&apos;, cats[rPos]);
         </hashTree>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Add n items to the cart" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">${timesAddToCart}</stringProp>
+          <stringProp name="LoopController.loops">${__Random(2, 5)}</stringProp>
         </LoopController>
         <hashTree>
           <BSFSampler guiclass="TestBeanGUI" testclass="BSFSampler" testname="Generate randoms" enabled="true">
@@ -840,7 +830,7 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
         </hashTree>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Navigate pages" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">${navigationCount}</stringProp>
+          <stringProp name="LoopController.loops">${__Random(3, 7)}</stringProp>
         </LoopController>
         <hashTree>
           <BSFSampler guiclass="TestBeanGUI" testclass="BSFSampler" testname="Generate randoms" enabled="true">
@@ -895,7 +885,7 @@ vars.put(&apos;navCatId&apos;, cats[rPos]);
         </hashTree>
         <LoopController guiclass="LoopControlPanel" testclass="LoopController" testname="Add n items to the cart" enabled="true">
           <boolProp name="LoopController.continue_forever">true</boolProp>
-          <stringProp name="LoopController.loops">${timesAddToCart}</stringProp>
+          <stringProp name="LoopController.loops">${__Random(2, 5)}</stringProp>
         </LoopController>
         <hashTree>
           <BSFSampler guiclass="TestBeanGUI" testclass="BSFSampler" testname="Generate randoms" enabled="true">
@@ -962,7 +952,6 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
       <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
-          <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
             <latency>true</latency>
@@ -989,7 +978,6 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
           </value>
         </objProp>
         <objProp>
-          <name></name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
             <latency>true</latency>
@@ -1021,7 +1009,6 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
       <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
-          <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
             <latency>true</latency>
@@ -1048,7 +1035,6 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
           </value>
         </objProp>
         <objProp>
-          <name></name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
             <latency>true</latency>
@@ -1082,7 +1068,6 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
       <ResultCollector guiclass="GraphVisualizer" testclass="ResultCollector" testname="Graph Results" enabled="false">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
-          <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
             <latency>true</latency>
@@ -1109,7 +1094,6 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
           </value>
         </objProp>
         <objProp>
-          <name></name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
             <latency>true</latency>
@@ -1141,7 +1125,6 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
         <boolProp name="ResultCollector.error_logging">true</boolProp>
         <objProp>
-          <name>saveConfig</name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
             <latency>true</latency>
@@ -1168,7 +1151,6 @@ vars.put(&apos;rQuantity&apos;, rQuantity);
           </value>
         </objProp>
         <objProp>
-          <name></name>
           <value class="SampleSaveConfiguration">
             <time>true</time>
             <latency>true</latency>
