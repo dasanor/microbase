@@ -204,6 +204,21 @@ module.exports = function (base) {
     }
   });
 
+  // Add the monitoring hystrix streams
+  const globalStats = Brakes.getGlobalStats();
+  service.addOperation({
+    name: 'micro.hystrix',
+    transports: ['http'],
+    public: true,
+    handler: (msg, reply, req, res) => {
+      res.setHeader('Content-Type', 'text/event-stream;charset=UTF-8');
+      res.setHeader('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      globalStats.getHystrixStream().pipe(res);
+      return;
+    }
+  });
+
   if (base.logger.isDebugEnabled()) {
     service.addOperation({
       name: 'micro.config',

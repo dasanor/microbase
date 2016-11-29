@@ -88,7 +88,6 @@ module.exports = function (base) {
 
   // Error handler for 401s
   app.use(function errorHandler(err, req, res, next) {
-    console.log(err);
     if (err.name === 'UnauthorizedError') {
       return res.status(401).json({ ok: false, error: 'invalid_token' });
     }
@@ -110,11 +109,6 @@ module.exports = function (base) {
 
   // Error handler
   app.use(function errorHandler(err, req, res, next) {
-    // console.log('============================');
-    // console.log(err);
-    // if (err.name === 'UnauthorizedError') {
-    //   return res.status(401).json({ ok: false, error: 'invalid_token' });
-    // }
     if (err.status) res.statusCode = err.status;
     if (res.statusCode < 400) res.status(500);
     const error = { message: err.message };
@@ -161,7 +155,7 @@ module.exports = function (base) {
           // Call the handler
           return op.handler(payload, (response) => {
             return res.status(response.statusCode || 200).json(response);
-          }, req);
+          }, req, res);
 
         });
       });
