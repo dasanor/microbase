@@ -182,6 +182,10 @@ bl@~0.4.1:
   dependencies:
     readable-stream "~1.0.2"
 
+bluebird@^3.4.6:
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
+
 bluebird@2.10.2:
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.10.2.tgz#024a5517295308857f14f91f1106fc3b555f446b"
@@ -220,6 +224,12 @@ brace-expansion@^1.0.0:
   dependencies:
     balanced-match "^0.4.1"
     concat-map "0.0.1"
+
+brakes:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/brakes/-/brakes-2.5.1.tgz#a1a368f9a89965494faa0af24d8ee52514728151"
+  dependencies:
+    bluebird "^3.4.6"
 
 bson@~0.5.4, bson@~0.5.5:
   version "0.5.5"

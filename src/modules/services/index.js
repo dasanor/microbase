@@ -1,7 +1,12 @@
 const path = require('path');
 const glob = require('glob');
+const Brakes = require('brakes');
+const cls = require('continuation-local-storage');
 
 module.exports = function (base) {
+
+  const ns = cls.getNamespace('microbase') || cls.createNamespace('microbase');
+
   const service = {
     name: base.config.get('services:name'),
     version: base.config.get('services:version'),
@@ -24,6 +29,9 @@ module.exports = function (base) {
     getOperationFullName: (serviceName, serviceVersion, operationName) =>
       `${serviceName}:${serviceVersion}:${operationName}`
   };
+
+  // Circuit breakers for out calls
+  const circuits = {};
 
   // Add inMiddlewares
   const inMiddlewaresFns = new Map();
@@ -109,14 +117,71 @@ module.exports = function (base) {
 
   // Call transport out middleware
   function callTransportOutMiddleware(context, next) {
+    // Promise call
+    const promiseCall =
+      transport =>
+        function (data) {
+          return base.transports[transport]
+            .call(data.config, data.msg);
+        };
+
     const transport = context.config.transport || defaultOutTransport;
-    base.transports[transport]
-      .call(context.config, context.msg)
+    let circuit = circuits[context.config.name];
+    if (!circuit) {
+      // TODO: move this values to the config file
+      const options = {
+        name: context.config.name,
+        statInterval: 2500,
+        threshold: 0.5,
+        circuitDuration: 5000,
+        timeout: 250,
+        waitThreshold: 3
+      };
+
+      Object.assign(options, context.config.circuitbreaker || {});
+
+      const sourceFallback = context => ({ ok: false, error: 'circuitbreaker_fallback', data: context.config.name });
+      options.fallback = function (context) {
+        return new Promise((resolve, reject) => {
+          ns.run(function () {
+            ns.set('x-request-id', context.headers['x-request-id']);
+            ns.set('authorization', context.headers['authorization']);
+            resolve(sourceFallback(context));
+          });
+        });
+      };
+      circuit = new Brakes(promiseCall(transport), options);
+
+      circuit.on('circuitOpen', () => {
+        base.logger.error(`[service] Circuit breaker opened for ${context.config.name}`);
+      });
+
+      circuit.on('circuitClosed', () => {
+        base.logger.info(`[service] Circuit breaker closed for ${context.config.name}`);
+      });
+
+      circuits[context.config.name] = circuit;
+    }
+    context.headers = {
+      'x-request-id': ns.get('x-request-id'),
+      'authorization': ns.get('authorization')
+    };
+    circuit.exec(context)
       .then(response => {
+        if (response.ok === false && response.error !== 'circuitbreaker_fallback') {
+          return next(base.utils.Error(response.error, response.data));
+        }
         context.response = response;
-        next();
+        return next();
       })
-      .catch(error => next(error));
+      .catch(error => {
+        ns.run(function () {
+          ns.set('x-request-id', context.headers['x-request-id']);
+          ns.set('authorization', context.headers['authorization']);
+          context.response = { ok: false, error: 'circuitbreaker_fallback', data: error.code };
+          next();
+        });
+      });
   }
 
   // Create the out calls chain
