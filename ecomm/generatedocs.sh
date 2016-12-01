@@ -15,6 +15,7 @@ cp $DEST/micro-stock-service/README.md docs/sources/micro-stock-service.md
 cp $DEST/micro-cart-service/README.md docs/sources/micro-cart-service.md
 cp $DEST/micro-tax-service/README.md docs/sources/micro-tax-service.md
 cp $DEST/micro-promotion-service/README.md docs/sources/micro-promotion-service.md
+cp $DEST/micro-promotion-service/Examples.md docs/sources/Examples.md
 cp $DEST/micro-oauth-service/README.md docs/sources/micro-oauth-service.md
 
 cp -R $DEST/micro-catalog-service/src/docs/api docs/sources
