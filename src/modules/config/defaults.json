@@ -38,6 +38,7 @@
     ],
     "inMiddlewares": {
       "validator": "./node_modules/microbase/modules/services/inMiddlewares/validator",
+      "eventEmitter": "./node_modules/microbase/modules/services/inMiddlewares/eventEmitter",
       "cache": "./node_modules/microbase/modules/services/inMiddlewares/cache"
     },
     "defaultOutTransport": "http",
