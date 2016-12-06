@@ -34,7 +34,7 @@ module.exports = function (base) {
   const remoteCallsTimeout = base.config.get('gateway:timeout');
   let getGatewayBaseUrl;
   if (gatewayUrlOverrride) {
-    getGatewayBaseUrl = base.utils.loadModule('gateway:gatewayUrlOverrride');
+    getGatewayBaseUrl = base.utils.loadModule('gateway:gatewayUrlOverrride').module;
   } else {
     const gatewayBaseUrl = `http://${gatewayHost}:${gatewayPort}`;
     getGatewayBaseUrl = () => gatewayBaseUrl;
@@ -78,7 +78,7 @@ module.exports = function (base) {
   const monitorsBaseKey = 'transports:http:monitors';
   Object.keys(base.config.get(monitorsBaseKey)).forEach(monitorName => {
     if (base.config.get(`${monitorsBaseKey}:${monitorName}:enabled`)) {
-      const m = base.utils.loadModule(`${monitorsBaseKey}:${monitorName}:module`);
+      const m = base.utils.loadModule(`${monitorsBaseKey}:${monitorName}:module`).module;
       base.logger.info(`[http] activating monitor '${monitorName}'`);
       m(app);
     }

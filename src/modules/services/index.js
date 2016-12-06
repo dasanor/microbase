@@ -1,5 +1,4 @@
 const path = require('path');
-const glob = require('glob');
 const Brakes = require('brakes');
 const cls = require('continuation-local-storage');
 
@@ -36,19 +35,19 @@ module.exports = function (base) {
   // Add inMiddlewares
   const inMiddlewaresFns = new Map();
   const inMiddlewares = [];
-  const inMiddlewaresBaseKey = 'services:inMiddlewares';
-  Object.keys(base.config.get(inMiddlewaresBaseKey)).forEach(middlewareName => {
+
+  base.utils.loadModulesFromKey('services:inMiddlewares').forEach(inMiddleware => {
+    const middlewareName = inMiddleware.keys[inMiddleware.keys.length - 1];
     base.logger.info(`[services] loading in middleware '${middlewareName}'`);
     inMiddlewares.push(middlewareName);
-    const m = base.utils.loadModule(`${inMiddlewaresBaseKey}:${middlewareName}`);
-    inMiddlewaresFns.set(middlewareName, m);
+    inMiddlewaresFns.set(middlewareName, inMiddleware.module);
   });
 
   // Add middlewares to operations
   function addInMiddlewares(operationFullName, op) {
     for (let w = inMiddlewares.length; w > 0; w--) {
       const middlewareName = inMiddlewares[w - 1];
-      if (op[middlewareName] || middlewareName.indexOf('system-') == 0) {
+      if (op[middlewareName] || middlewareName.indexOf('system-') === 0) {
         // Apply the middleware if we have a configuration or is a system one
         const middleware = inMiddlewaresFns.get(middlewareName);
         const originalFn = op.handler;
@@ -101,14 +100,12 @@ module.exports = function (base) {
   };
 
   // For given folder name each file exports an operation. Name resolved to filename if no one is provided
-  service.addOperationsFromFolder = function (folder = base.config.get('services:defaultFolder'), transports) {
-    const rootPath = base.config.get('rootPath');
-    glob(`${rootPath}/${folder}/*.js`, {}, (err, files) => {
-      files.forEach((file) => {
-        const operation = require(file)(base);
-        operation.name = operation.name || path.basename(file, '.js');
-        service.addOperation(operation, transports);
-      })
+  const defaultOperationsFolder = base.config.get('services:defaultFolder')
+  service.addOperationsFromFolder = (folder = defaultOperationsFolder, transports) => {
+    const modules = base.utils.loadModulesFromFolder(folder);
+    modules.forEach(operation => {
+      operation.module.name = operation.module.name || path.basename(operation.file, '.js');
+      service.addOperation(operation.module, transports);
     });
   };
 
