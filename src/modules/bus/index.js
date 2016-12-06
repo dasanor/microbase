@@ -41,9 +41,7 @@ module.exports = function (base) {
       const names = channel.split('.');
       channels[names[0]].subscribe(channel, handler);
     },
-    engine: (name) => {
-      engines[name];
-    }
+    engine: (name) => engines[name]
   };
 
 };

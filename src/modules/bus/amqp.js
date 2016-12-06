@@ -13,7 +13,7 @@ module.exports = function (base, engineConfig) {
   const exchanges = {};
   const queues = {};
   const configUrl = engineConfig.url;
-  base.logger.info(`[bus] amqp engine started in [${configUrl}]`);
+  base.logger.info(`[bus-amqp] engine started in [${configUrl}]`);
 
   // TODO: add auth parameters
   const parsedUrl = url.parse(configUrl);
@@ -91,7 +91,7 @@ module.exports = function (base, engineConfig) {
       }
       const words = channel.split('.');
       const exchangeName = words[0];
-      base.logger.debug(`[amqp] subscribed to ${channel} in ${exchangeName}`);
+      if (base.logger.isDebugEnabled()) base.logger.debug(`[bus-amqp] subscribed to ${channel} in ${exchangeName}`);
       const exchange = this.getExchange(exchangeName, words.length !== 1 ? topicsExchangeOptions : pubsubExchangeOptions);
       const queue = this.getQueue('', queueOptions || pubsubQueueOptions, exchangeName, words.length !== 1 ? channel : undefined);
       return queue.consume(consumeOptions || defaultConsumeOptions, function (message) {
