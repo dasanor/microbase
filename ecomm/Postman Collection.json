@@ -2,6 +2,50 @@
 	"version": 1,
 	"collections": [
 		{
+			"id": "2fcc112b-e782-b626-885f-9702d2227a48",
+			"name": "micro-recomendation",
+			"description": "",
+			"order": [
+				"e0b83dd1-1897-8d54-4d37-a4c296233733"
+			],
+			"folders": [],
+			"timestamp": 1481281693856,
+			"synced": false,
+			"remote_id": 0,
+			"owner": "467243",
+			"sharedWithTeam": false,
+			"subscribed": false,
+			"remoteLink": "",
+			"remoteLinkUpdatedAt": null,
+			"public": false,
+			"createdAt": 1481281693856,
+			"updatedAt": 1481281812244,
+			"write": true,
+			"published": false,
+			"favorite": false,
+			"permissions": {},
+			"syncedPermissions": {},
+			"requests": [
+				{
+					"id": "e0b83dd1-1897-8d54-4d37-a4c296233733",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portRecomendation}}/services/recomendation/v1/recomendation.alsoviewed?productId=Skrg4fR0HS",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 0,\n            \"price\": 100\n        }\n    ]\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1481282209018,
+					"name": "recomendation.alsoviewed",
+					"description": "",
+					"collectionId": "2fcc112b-e782-b626-885f-9702d2227a48"
+				}
+			]
+		},
+		{
 			"id": "5655c800-d53e-8be0-016f-bcb922fa1390",
 			"name": "micro-promotion",
 			"description": "",
@@ -51,12 +95,12 @@
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"SksexGRPn4\",\n            \"quantity\": \"2\"\n        },\n        {\n        \t\"id\": \"2\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 2\n        },\n        {\n        \t\"id\": \"3\",\n            \"productId\": \"BycbkfRDhV\",\n            \"quantity\": 3\n        }\n    ]\n}",
+					"data": "{ \n    \"items\" :[\n        {\n        \t\"id\": \"1\",\n            \"productId\": \"SksexGRPn4\",\n            \"quantity\": 2,\n            \"price\": 10.00\n        },\n        {\n        \t\"id\": \"2\",\n            \"productId\": \"By2ZWfAPnV\",\n            \"quantity\": 2,\n            \"price\": 20.00\n        },\n        {\n        \t\"id\": \"3\",\n            \"productId\": \"BycbkfRDhV\",\n            \"quantity\": 3,\n            \"price\": 30.00\n        }\n    ]\n}",
 					"dataMode": "raw",
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1475767254907,
+					"time": 1478946753710,
 					"name": "promotion.cartPromotions",
 					"description": "",
 					"collectionId": "5655c800-d53e-8be0-016f-bcb922fa1390"
@@ -82,7 +126,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": 1475760957694,
-			"updatedAt": 1475760966696,
+			"updatedAt": 1481281734143,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -122,110 +166,6 @@
 					"name": "tax.create",
 					"description": "",
 					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
-				}
-			]
-		},
-		{
-			"id": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-			"name": "elasticsearch",
-			"description": "",
-			"order": [
-				"00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
-				"703a1c10-8dc0-7038-af0f-715106f7a74f",
-				"4ad70d79-f495-d9ba-ad35-26acd58fe815",
-				"c1374ebd-b85e-020d-a24f-5882c083a2a3"
-			],
-			"folders": [],
-			"timestamp": 1465836740698,
-			"synced": false,
-			"remote_id": 0,
-			"owner": "467243",
-			"sharedWithTeam": false,
-			"subscribed": false,
-			"remoteLink": "",
-			"remoteLinkUpdatedAt": null,
-			"public": false,
-			"createdAt": 1465836740698,
-			"updatedAt": 1476355573780,
-			"write": true,
-			"published": false,
-			"favorite": false,
-			"permissions": {},
-			"syncedPermissions": {},
-			"requests": [
-				{
-					"id": "00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
-					"headers": "",
-					"url": "http://localhost:9200/_cat/indices?v",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "GET",
-					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
-					"dataMode": "raw",
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1476355256692,
-					"name": "generic:indices",
-					"description": "",
-					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-					"responses": []
-				},
-				{
-					"id": "4ad70d79-f495-d9ba-ad35-26acd58fe815",
-					"headers": "",
-					"url": "http://localhost:9200/products",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "DELETE",
-					"data": null,
-					"dataMode": "params",
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1465836851565,
-					"name": "products:removeindex",
-					"description": "",
-					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-					"responses": []
-				},
-				{
-					"id": "703a1c10-8dc0-7038-af0f-715106f7a74f",
-					"headers": "",
-					"url": "http://localhost:9200/products/product/_search?q=*",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
-					"dataMode": "raw",
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1476355569515,
-					"name": "products:search",
-					"description": "",
-					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-					"responses": []
-				},
-				{
-					"id": "c1374ebd-b85e-020d-a24f-5882c083a2a3",
-					"headers": "",
-					"url": "http://localhost:9200/products/product/_mapping",
-					"pathVariables": {},
-					"preRequestScript": null,
-					"method": "GET",
-					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-					"data": null,
-					"dataMode": "params",
-					"name": "products:mapping",
-					"description": "",
-					"descriptionFormat": "html",
-					"time": 1465901722021,
-					"version": 2,
-					"responses": [],
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {}
 				}
 			]
 		},
@@ -341,6 +281,110 @@
 					"name": "stock.create",
 					"description": "",
 					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				}
+			]
+		},
+		{
+			"id": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+			"name": "elasticsearch",
+			"description": "",
+			"order": [
+				"00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
+				"703a1c10-8dc0-7038-af0f-715106f7a74f",
+				"4ad70d79-f495-d9ba-ad35-26acd58fe815",
+				"c1374ebd-b85e-020d-a24f-5882c083a2a3"
+			],
+			"folders": [],
+			"timestamp": 1465836740698,
+			"synced": false,
+			"remote_id": 0,
+			"owner": "467243",
+			"sharedWithTeam": false,
+			"subscribed": false,
+			"remoteLink": "",
+			"remoteLinkUpdatedAt": null,
+			"public": false,
+			"createdAt": 1465836740698,
+			"updatedAt": 1476355573780,
+			"write": true,
+			"published": false,
+			"favorite": false,
+			"permissions": {},
+			"syncedPermissions": {},
+			"requests": [
+				{
+					"id": "00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
+					"headers": "",
+					"url": "http://localhost:9200/_cat/indices?v",
+					"preRequestScript": null,
+					"pathVariables": {},
+					"method": "GET",
+					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
+					"dataMode": "raw",
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1476355256692,
+					"name": "generic:indices",
+					"description": "",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"responses": []
+				},
+				{
+					"id": "4ad70d79-f495-d9ba-ad35-26acd58fe815",
+					"headers": "",
+					"url": "http://localhost:9200/products",
+					"preRequestScript": null,
+					"pathVariables": {},
+					"method": "DELETE",
+					"data": null,
+					"dataMode": "params",
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1465836851565,
+					"name": "products:removeindex",
+					"description": "",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"responses": []
+				},
+				{
+					"id": "703a1c10-8dc0-7038-af0f-715106f7a74f",
+					"headers": "",
+					"url": "http://localhost:9200/products/product/_search?q=*",
+					"preRequestScript": null,
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
+					"dataMode": "raw",
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1476355569515,
+					"name": "products:search",
+					"description": "",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"responses": []
+				},
+				{
+					"id": "c1374ebd-b85e-020d-a24f-5882c083a2a3",
+					"headers": "",
+					"url": "http://localhost:9200/products/product/_mapping",
+					"pathVariables": {},
+					"preRequestScript": null,
+					"method": "GET",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"data": null,
+					"dataMode": "params",
+					"name": "products:mapping",
+					"description": "",
+					"descriptionFormat": "html",
+					"time": 1465901722021,
+					"version": 2,
+					"responses": [],
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {}
 				}
 			]
 		},
@@ -501,7 +545,8 @@
 				"45a43c59-d46c-9c75-8440-61bf389ed581",
 				"afe1f8af-0663-c0c9-435e-51d11ec099ac",
 				"671e9550-24be-e6b8-7d2b-c9f35ad996cd",
-				"041ae5c8-9833-d800-3ca8-5e11e6197906"
+				"041ae5c8-9833-d800-3ca8-5e11e6197906",
+				"48921e81-c492-e2f5-4ea3-51779e018a68"
 			],
 			"folders": [],
 			"timestamp": 0,
@@ -514,7 +559,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-05-08T20:27:42.000Z",
-			"updatedAt": 1477236548638,
+			"updatedAt": 1479116452701,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -534,7 +579,7 @@
 					"currentHelper": "normal",
 					"helperAttributes": {},
 					"time": 1477236533845,
-					"name": "cart:removeFromCart",
+					"name": "cart.removeFromCart",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
@@ -560,6 +605,23 @@
 					"descriptionFormat": null,
 					"createdAt": "2016-06-08T17:12:43.000Z",
 					"updatedAt": "2016-08-16T15:20:01.000Z"
+				},
+				{
+					"id": "48921e81-c492-e2f5-4ea3-51779e018a68",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.calculateCart?cartId=H19PRsec",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{ \n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1479116554462,
+					"name": "cart.calculateCart",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
 				{
 					"id": "671e9550-24be-e6b8-7d2b-c9f35ad996cd",
@@ -705,16 +767,16 @@
 				{
 					"id": "3889f8c3-5c7e-fe77-0ba6-5b2aa00808ac",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.update?id=HkKeao6E",
+					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.update?id=Skrg4fR0HS",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{\n    \"title\": \"New title\"\n}",
+					"data": "{\n    \"title\": \"Zapatillas de running de hombre Gel Noosa Tri 11 Asics\"\n}",
 					"dataMode": "raw",
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469787300166,
+					"time": 1478276522517,
 					"name": "product:update",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -956,7 +1018,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1477238017499
+			"timestamp": 1481279659786
 		},
 		{
 			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
@@ -971,12 +1033,12 @@
 				{
 					"key": "cartId",
 					"type": "text",
-					"value": "B1e_24Zxyg",
+					"value": "r1lNEYw0ge",
 					"enabled": true
 				}
 			],
 			"team": null,
-			"timestamp": 1477238017512
+			"timestamp": 1481279659803
 		},
 		{
 			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
@@ -1001,15 +1063,27 @@
 					"enabled": true
 				},
 				{
+					"key": "portTax",
+					"type": "text",
+					"value": "3003",
+					"enabled": true
+				},
+				{
 					"key": "portPromotion",
 					"type": "text",
 					"value": "3004",
 					"enabled": true
 				},
 				{
-					"key": "portTax",
+					"key": "portCustomer",
 					"type": "text",
-					"value": "3003",
+					"value": "3005",
+					"enabled": true
+				},
+				{
+					"key": "portRecomendation",
+					"type": "text",
+					"value": "3006",
 					"enabled": true
 				},
 				{
@@ -1035,10 +1109,16 @@
 					"type": "text",
 					"value": "undefined",
 					"enabled": true
+				},
+				{
+					"key": "cartId",
+					"type": "text",
+					"value": "HyvYROObg",
+					"enabled": true
 				}
 			],
 			"team": null,
-			"timestamp": 1477238451014
+			"timestamp": 1481282285194
 		}
 	],
 	"headerPresets": [
@@ -1119,6 +1199,18 @@
 		},
 		{
 			"key": "portTax",
+			"type": "text",
+			"value": "80",
+			"enabled": true
+		},
+		{
+			"key": "portRecomendation",
+			"type": "text",
+			"value": "80",
+			"enabled": true
+		},
+		{
+			"key": "portCustomer",
 			"type": "text",
 			"value": "80",
 			"enabled": true
