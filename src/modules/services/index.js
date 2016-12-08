@@ -104,8 +104,10 @@ module.exports = function (base) {
   service.addOperationsFromFolder = (folder = defaultOperationsFolder, transports) => {
     const modules = base.utils.loadModulesFromFolder(folder);
     modules.forEach(operation => {
-      operation.module.name = operation.module.name || path.basename(operation.file, '.js');
-      service.addOperation(operation.module, transports);
+      if (operation.module) {
+        operation.module.name = operation.module.name || path.basename(operation.file, '.js');
+        service.addOperation(operation.module, transports);
+      }
     });
   };
 

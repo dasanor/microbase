@@ -26,8 +26,16 @@ module.exports = function (base) {
     loadModulesFromFolder(folder) {
       const modules = [];
       glob.sync(`${rootPath}/${folder}/*.js`).forEach(file => {
+        const asKey = folder.replace(/[/\\]/g, ':') + ':' + path.basename(file, '.js');
+        const asValue = base.config.get(asKey);
+        let module;
+        if (!asValue) {
+          module = require(file)(base, file);
+        } else {
+          module = (this.loadModule(asKey) || {}).module;
+        }
         modules.push({
-          module: require(file)(base, file),
+          module,
           file
         });
       });
@@ -64,6 +72,7 @@ module.exports = function (base) {
         };
       } catch (e) {
         base.logger.error(`[modules] module '${key}:${modulePath}' not found`);
+        return null;
       }
     },
 
