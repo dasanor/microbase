@@ -10,8 +10,10 @@
     "services": [
       {"url": "micro-catalog-service.html", "body": "Catalog"},
       {"url": "micro-cart-service.html", "body": "Cart"},
+      {"url": "micro-customer-service.html", "body": "Customer"},
       {"url": "micro-oauth-service.html", "body": "Oauth"},
       {"url": "micro-promotion-service.html", "body": "Promotion"},
+      {"url": "micro-recomendation-service.html", "body": "Recomendation"},
       {"url": "micro-stock-service.html", "body": "Stock"},
       {"url": "micro-tax-service.html", "body": "Tax"}
     ],
