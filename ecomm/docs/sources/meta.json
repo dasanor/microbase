@@ -34,6 +34,7 @@
       {"url": "api/product.update.html", "body": "product.update"},
       {"url": "api/promotion.create.html", "body": "promotion.create"},
       {"url": "api/promotion.cartPromotions.html", "body": "promotion.cartPromotions"},
+      {"url": "api/recommendation.alsoviewed.html", "body": "recommendation.alsoviewed"},
       {"url": "api/stock.create.html", "body": "stock.create"},
       {"url": "api/stock.info.html", "body": "stock.info"},
       {"url": "api/stock.reserve.html", "body": "stock.reserve"},
