@@ -13,7 +13,7 @@
       {"url": "micro-customer-service.html", "body": "Customer"},
       {"url": "micro-oauth-service.html", "body": "Oauth"},
       {"url": "micro-promotion-service.html", "body": "Promotion"},
-      {"url": "micro-recomendation-service.html", "body": "Recomendation"},
+      {"url": "micro-recommendation-service.html", "body": "Recommendation"},
       {"url": "micro-stock-service.html", "body": "Stock"},
       {"url": "micro-tax-service.html", "body": "Tax"}
     ],

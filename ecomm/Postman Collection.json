@@ -3,7 +3,7 @@
 	"collections": [
 		{
 			"id": "2fcc112b-e782-b626-885f-9702d2227a48",
-			"name": "micro-recomendation",
+			"name": "micro-recommendation",
 			"description": "",
 			"order": [
 				"e0b83dd1-1897-8d54-4d37-a4c296233733"
@@ -19,7 +19,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": 1481281693856,
-			"updatedAt": 1481281812244,
+			"updatedAt": 1481580203394,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -29,7 +29,7 @@
 				{
 					"id": "e0b83dd1-1897-8d54-4d37-a4c296233733",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portRecomendation}}/services/recomendation/v1/recomendation.alsoviewed?productId=Skrg4fR0HS",
+					"url": "http://{{host}}:{{portRecommendation}}/services/recommendation/v1/recommendation.alsoviewed?productId=Skrg4fR0HS",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -38,8 +38,8 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1481282209018,
-					"name": "recomendation.alsoviewed",
+					"time": 1481580322841,
+					"name": "recommendation.alsoviewed",
 					"description": "",
 					"collectionId": "2fcc112b-e782-b626-885f-9702d2227a48"
 				}
@@ -975,12 +975,12 @@
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
-					"data": "{\n    \"sku\": \"0004\",\n    \"status\": \"DRAFT\",\n    \"title\": \"Product 004 title\",\n    \"description\": \"Product 004 description\",\n    \"categories\": [\"ROOT\"],\n    \"price\": 100.00,\n    \"salePrice\": \"99.99\",\n    \"medias\": [\n        {\"id\": \"100x100\", \"url\": \"http://placehold.it/100x100\"},\n        {\"id\": \"350x150\", \"url\": \"http://placehold.it/350x150\"}\n    ]\n}",
+					"data": "{\n    \"sku\": \"1001\",\n    \"status\": \"DRAFT\",\n    \"title\": \"Product 004 title\",\n    \"description\": \"Product 004 description\",\n    \"categories\": [\"ROOT\"],\n\t\"prices\": [\n\t\t{\n\t\t\t\"amount\": 99.99,\n\t\t\t\"currency\": \"EUR\",\n\t\t\t\"country\": \"ES\",\n\t\t\t\"validFrom\": \"2016-01-01T00:00:00+0000\",\n\t\t\t\"validUntil\": \"2017-12-31T23:59:59+0000\"\n\t\t}\n\t],\n    \"medias\": [\n        {\"id\": \"100x100\", \"url\": \"http://placehold.it/100x100\"},\n        {\"id\": \"350x150\", \"url\": \"http://placehold.it/350x150\"}\n    ]\n}",
 					"dataMode": "raw",
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469641211787,
+					"time": 1481398861586,
 					"name": "product.create",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -1007,6 +1007,98 @@
 	],
 	"environments": [
 		{
+			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
+			"name": "micro-localhost",
+			"values": [
+				{
+					"key": "portStock",
+					"type": "text",
+					"value": "3000",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portCart",
+					"type": "text",
+					"value": "3001",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portCatalog",
+					"type": "text",
+					"value": "3002",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portTax",
+					"type": "text",
+					"value": "3003",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portPromotion",
+					"type": "text",
+					"value": "3004",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portCustomer",
+					"type": "text",
+					"value": "3005",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portRecommendation",
+					"type": "text",
+					"value": "3006",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portOauth",
+					"type": "text",
+					"value": "4000",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portExamplesMath",
+					"type": "text",
+					"value": "3001",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "portExamplesTaxes",
+					"type": "text",
+					"value": "3000",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "categoryId",
+					"type": "text",
+					"value": "undefined",
+					"enabled": true,
+					"warning": ""
+				},
+				{
+					"key": "cartId",
+					"type": "text",
+					"value": "HyvYROObg",
+					"enabled": true,
+					"warning": ""
+				}
+			],
+			"team": null,
+			"timestamp": 1481580244461
+		},
+		{
 			"id": "80676599-01e8-4dde-a289-6374b3539fc8",
 			"name": "micro-rancher-ec2",
 			"values": [
@@ -1018,7 +1110,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1481279659786
+			"timestamp": 1481618057711
 		},
 		{
 			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
@@ -1038,87 +1130,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1481279659803
-		},
-		{
-			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
-			"name": "micro-localhost",
-			"values": [
-				{
-					"key": "portStock",
-					"type": "text",
-					"value": "3000",
-					"enabled": true
-				},
-				{
-					"key": "portCart",
-					"type": "text",
-					"value": "3001",
-					"enabled": true
-				},
-				{
-					"key": "portCatalog",
-					"type": "text",
-					"value": "3002",
-					"enabled": true
-				},
-				{
-					"key": "portTax",
-					"type": "text",
-					"value": "3003",
-					"enabled": true
-				},
-				{
-					"key": "portPromotion",
-					"type": "text",
-					"value": "3004",
-					"enabled": true
-				},
-				{
-					"key": "portCustomer",
-					"type": "text",
-					"value": "3005",
-					"enabled": true
-				},
-				{
-					"key": "portRecomendation",
-					"type": "text",
-					"value": "3006",
-					"enabled": true
-				},
-				{
-					"key": "portOauth",
-					"type": "text",
-					"value": "4000",
-					"enabled": true
-				},
-				{
-					"key": "portExamplesMath",
-					"type": "text",
-					"value": "3001",
-					"enabled": true
-				},
-				{
-					"key": "portExamplesTaxes",
-					"type": "text",
-					"value": "3000",
-					"enabled": true
-				},
-				{
-					"key": "categoryId",
-					"type": "text",
-					"value": "undefined",
-					"enabled": true
-				},
-				{
-					"key": "cartId",
-					"type": "text",
-					"value": "HyvYROObg",
-					"enabled": true
-				}
-			],
-			"team": null,
-			"timestamp": 1481282285194
+			"timestamp": 1481618057723
 		}
 	],
 	"headerPresets": [
@@ -1147,73 +1159,85 @@
 			"key": "token",
 			"type": "text",
 			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "host",
 			"type": "text",
 			"value": "localhost",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portCart",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portCatalog",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portStock",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portOauth",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portExamplesMath",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portExamplesTaxes",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portPromotion",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portTax",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
-			"key": "portRecomendation",
+			"key": "portRecommendation",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		},
 		{
 			"key": "portCustomer",
 			"type": "text",
 			"value": "80",
-			"enabled": true
+			"enabled": true,
+			"warning": ""
 		}
 	]
 }

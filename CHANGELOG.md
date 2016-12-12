@@ -8,6 +8,18 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.9.0][] (2016-12-12)
+
+* Refactored loadModules utilities, to allow load from keys and folders and overwrite option to loadFromFolder.
+* New “eventEmmiter” IN Middleware.
+* Refactor the circuitbreaker to correctly report the errors.
+* Added hystrix compatible stats stream for the circuitbreaker
+* eComm
+  * Added Recommendation and Customer to the ecomm documentation.
+  * Updated Postman collection with Recommendation calls.
+  * Updated API docs.
+  * Enhanced the LoadTest plan to be more realistic, adding PDP views.
+
 ## [0.8.6][] (2016-11-27)
 
 * Changed default interprocess calls to http.

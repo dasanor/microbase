@@ -17,7 +17,7 @@ cp $DEST/micro-cart-service/README.md docs/sources/micro-cart-service.md
 cp $DEST/micro-tax-service/README.md docs/sources/micro-tax-service.md
 cp $DEST/micro-promotion-service/README.md docs/sources/micro-promotion-service.md
 cp $DEST/micro-promotion-service/Examples.md docs/sources/Examples.md
-cp $DEST/micro-recomendation-service/README.md docs/sources/micro-recomendation-service.md
+cp $DEST/micro-recommendation-service/README.md docs/sources/micro-recommendation-service.md
 cp $DEST/micro-oauth-service/README.md docs/sources/micro-oauth-service.md
 
 cp -R $DEST/micro-catalog-service/src/docs/api docs/sources
@@ -26,7 +26,7 @@ cp -R $DEST/micro-stock-service/src/docs/api docs/sources
 cp -R $DEST/micro-cart-service/src/docs/api docs/sources
 cp -R $DEST/micro-tax-service/src/docs/api docs/sources
 cp -R $DEST/micro-promotion-service/src/docs/api docs/sources
-cp -R $DEST/micro-recomendation-service/src/docs/api docs/sources
+cp -R $DEST/micro-recommendation-service/src/docs/api docs/sources
 cp -R $DEST/micro-oauth-service/src/docs/api docs/sources
 
 npm run doc
