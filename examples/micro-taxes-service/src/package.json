@@ -14,7 +14,7 @@
   "author": "Nicolás Cornaglia Schlieman",
   "license": "MIT",
   "dependencies": {
-    "microbase": "^0.7.0"
+    "microbase": "0.9.0"
   },
   "devDependencies": {
     "eslint": "^2.9.0",
