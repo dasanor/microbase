@@ -34,7 +34,7 @@ module.exports = function (base) {
   const remoteCallsTimeout = base.config.get('gateway:timeout');
   let getGatewayBaseUrl;
   if (gatewayUrlOverrride) {
-    getGatewayBaseUrl = base.utils.loadModule('gateway:gatewayUrlOverrride');
+    getGatewayBaseUrl = base.utils.loadModule('gateway:gatewayUrlOverrride').module;
   } else {
     const gatewayBaseUrl = `http://${gatewayHost}:${gatewayPort}`;
     getGatewayBaseUrl = () => gatewayBaseUrl;
@@ -78,7 +78,7 @@ module.exports = function (base) {
   const monitorsBaseKey = 'transports:http:monitors';
   Object.keys(base.config.get(monitorsBaseKey)).forEach(monitorName => {
     if (base.config.get(`${monitorsBaseKey}:${monitorName}:enabled`)) {
-      const m = base.utils.loadModule(`${monitorsBaseKey}:${monitorName}:module`);
+      const m = base.utils.loadModule(`${monitorsBaseKey}:${monitorName}:module`).module;
       base.logger.info(`[http] activating monitor '${monitorName}'`);
       m(app);
     }
@@ -88,7 +88,6 @@ module.exports = function (base) {
 
   // Error handler for 401s
   app.use(function errorHandler(err, req, res, next) {
-    console.log(err);
     if (err.name === 'UnauthorizedError') {
       return res.status(401).json({ ok: false, error: 'invalid_token' });
     }
@@ -110,11 +109,6 @@ module.exports = function (base) {
 
   // Error handler
   app.use(function errorHandler(err, req, res, next) {
-    // console.log('============================');
-    // console.log(err);
-    // if (err.name === 'UnauthorizedError') {
-    //   return res.status(401).json({ ok: false, error: 'invalid_token' });
-    // }
     if (err.status) res.statusCode = err.status;
     if (res.statusCode < 400) res.status(500);
     const error = { message: err.message };
@@ -161,7 +155,7 @@ module.exports = function (base) {
           // Call the handler
           return op.handler(payload, (response) => {
             return res.status(response.statusCode || 200).json(response);
-          }, req);
+          }, req, res);
 
         });
       });

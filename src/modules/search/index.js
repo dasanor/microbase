@@ -6,10 +6,19 @@ module.exports = function (base) {
     return;
   }
 
+  const logLevelsConversion = {
+    silly: 'debug',
+    debug: 'debug',
+    verbose: 'trace',
+    info: 'info',
+    warn: 'warning',
+    error: 'error'
+  };
+
   const host = base.config.get('search:host');
   var client = new elasticsearch.Client({
     host: host,
-    log: base.config.get('logger:level')
+    log: logLevelsConversion[base.config.get('logger:level')]
   });
 
   base.logger.info(`[search] initialized in '${host}'`);

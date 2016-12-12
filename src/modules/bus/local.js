@@ -20,6 +20,7 @@ module.exports = function (base /* , engineConfig */) {
     },
     subscribe: (channel, handler) => {
       const names = channel.split('.');
+      if (base.logger.isDebugEnabled()) base.logger.debug(`[bus-local] subscribed to ${names[0]}`);
       bus.on(names[0], handler);
     },
     engine: bus

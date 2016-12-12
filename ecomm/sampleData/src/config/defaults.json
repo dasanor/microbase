@@ -6,7 +6,7 @@
     "defaultTransports": [
       "http"
     ],
-    "defaultCallTransport": "http"
+    "defaultOutTransport": "http"
   },
   "transport": {
     "http": {

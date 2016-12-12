@@ -18,12 +18,12 @@ quantity | yes | Number | 1               | The quantity of product to remove fr
 
 Returns the complete cart:
 
-```javascript
+```json
 {
   "ok": true,
   "cart": {
     "id": "H19PRsec",
-    "userId": "anonymous",
+    "customerId": "ANON",
     "expirationTime": "2016-08-23T15:16:50.407Z",
     "tax": 2062,
     "beforeTax": 9820.05,
@@ -43,7 +43,10 @@ Returns the complete cart:
         "id": "Hypqnvqyx",
         "productId": "By2ZWfAPnV",
         "quantity": 1,
-        "price": 577.65,
+        "price" : {
+         "amount": 577.65,
+         "currency": "EUR"
+        },
         "title": "001004721736835 - Frigorífico combi Samsung RB31FEJNCSS/EF No Frost (Samsung)",
         "reserves": [
           {

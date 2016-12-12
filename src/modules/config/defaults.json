@@ -36,10 +36,13 @@
       "http",
       "amqp"
     ],
-    "defaultCallTransport": "http",
-    "wrappers": {
-      "validator": "./node_modules/microbase/modules/services/wrappers/validator",
-      "cache": "./node_modules/microbase/modules/services/wrappers/cache"
+    "inMiddlewares": {
+      "validator": "./node_modules/microbase/modules/services/inMiddlewares/validator",
+      "eventEmitter": "./node_modules/microbase/modules/services/inMiddlewares/eventEmitter",
+      "cache": "./node_modules/microbase/modules/services/inMiddlewares/cache"
+    },
+    "defaultOutTransport": "http",
+    "outMiddlewares": {
     }
   },
   "gateway": {

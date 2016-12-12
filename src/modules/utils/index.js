@@ -1,6 +1,10 @@
 const hash = require('object-hash');
+const glob = require('glob');
+const path = require('path');
 
 module.exports = function (base) {
+
+  const rootPath = base.config.get('rootPath');
 
   const service = {
 
@@ -19,23 +23,56 @@ module.exports = function (base) {
       return errors;
     },
 
+    loadModulesFromFolder(folder) {
+      const modules = [];
+      glob.sync(`${rootPath}/${folder}/*.js`).forEach(file => {
+        const asKey = folder.replace(/[/\\]/g, ':') + ':' + path.basename(file, '.js');
+        const asValue = base.config.get(asKey);
+        let module;
+        if (!asValue) {
+          module = require(file)(base, file);
+        } else {
+          module = (this.loadModule(asKey) || {}).module;
+        }
+        modules.push({
+          module,
+          file
+        });
+      });
+      return modules;
+    },
+
+    loadModulesFromKey(key) {
+      const baseConfig = base.config.get(key);
+      const modules = [];
+      Object.keys(baseConfig).forEach(moduleKey => {
+        modules.push(this.loadModule(`${key}:${moduleKey}`));
+      });
+      return modules;
+    },
+
     loadModule(key) {
-      if (base.logger.isDebugEnabled()) base.logger.debug(`[services] loading module from '${key}'`);
+      if (base.logger.isDebugEnabled()) base.logger.debug(`[modules] loading module from '${key}'`);
       const name = base.config.get(key);
       if (!name) {
-        base.logger.warn(`[services] module '${key}' not found`);
+        base.logger.warn(`[modules] module '${key}' not found`);
         return null;
       }
+      let modulePath;
       if (name.startsWith('.')) {
-        const modulePath = require('path').normalize(`${base.config.get('rootPath')}/${name}`);
-        try {
-          return require(modulePath)(base)
-        } catch (e) {
-          base.logger.error(`[services] module '${key}:${modulePath}' not found`);
-          return false;
-        }
+        modulePath = path.normalize(`${rootPath}/${name}`);
       } else {
-        return require(name)(base);
+        modulePath = name;
+      }
+      try {
+        return {
+          module: require(modulePath)(base, key.split(':')),
+          keys: key.split(':'),
+          path: modulePath
+        };
+      } catch (e) {
+        base.logger.error(`[modules] module '${key}:${modulePath}' not found`);
+        return null;
       }
     },
 
@@ -51,17 +88,21 @@ module.exports = function (base) {
       if (error.data) response.data = error.data;
       if (error.statusCode) response.statusCode = error.statusCode;
       if (!response.data && error.message) response.data = error.message;
+      if (error.log) {
+        base.logger.error(`${error.code} ${JSON.stringify(error.data)}`);
+      }
       if (error.stack) {
         base.logger.error(error.stack);
       }
       return response;
     },
 
-    Error(code, data) {
+    Error(code, data, log) {
       const e = {
         code: code.replace(/ /g, '_').toLowerCase()
       };
       if (data) e.data = data;
+      if (log) e.log = log;
       return e;
     },
 
@@ -89,9 +130,9 @@ module.exports = function (base) {
         } else if (typeof middleware === 'string') {
           const config = base.config.get(middleware);
           Object.keys(config).forEach(mRoute => {
-            const m = base.utils.loadModule(`${middleware}:${mRoute}`)
+            const m = base.utils.loadModule(`${middleware}:${mRoute}`).module;
             this.middlewares.push(m);
-          })
+          });
         }
         return this;
       }
@@ -130,7 +171,7 @@ module.exports = function (base) {
         } else if (typeof fn === 'string') {
           const config = base.config.get(fn);
           Object.keys(config).forEach(name => {
-            const m = base.utils.loadModule(`${fn}:${name}`);
+            const m = base.utils.loadModule(`${fn}:${name}`).module;
             this.ops[name] = m.fn;
             if (m.alias) {
               m.alias.forEach(alias => {
@@ -144,7 +185,7 @@ module.exports = function (base) {
 
       evaluate(context, opContext, level, op) {
         if (base.logger.isDebugEnabled()) {
-          base.logger.debug('[evaluator]' + this.indent(level), Object.keys(op)[0], JSON.stringify(op).substring(0, 160));
+          base.logger.debug(`[evaluator]' ${this.indent(level)} ${Object.keys(op)[0]} ${JSON.stringify(op).substring(0, 160)}`);
         }
         const result = this.ops[Object.keys(op)[0]](
           context,

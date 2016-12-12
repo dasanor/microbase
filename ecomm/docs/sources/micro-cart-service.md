@@ -16,7 +16,7 @@ ecosystem.
 
 The Cart entity holds the Product inventory.
 
-**Cart**
+## Cart
 
 Field | Description| Type | Required | Default
 ------|------------|------|----------|--------
@@ -24,10 +24,17 @@ id | Internal unique Cart identifier | String | yes | System generated
 userId | Owner User identifier | String | yes | -
 expirationTime | Cart expiration time | Date | yes | Configurable
 items | List of Products added to the Cart | Object list | yes | -
-beforeTax | Cart total before taxes | Number | yes | -
-tax | Cart taxes total | Number | yes | -
+taxes | The calculated Taxes for the Cart | Object | yes | -
 
-**Items**
+### Taxes
+
+Field | Description| Type | Required | Default
+------|------------|------|----------|--------
+ok | Flag describing the tax calculus result | Boolean | yes | -
+tax | Cart taxes ammount | Number | yes | -
+beforeTax | Cart total before taxes | Number | yes | -
+
+## Items
 
 Field | Description| Type | Required | Default
 ------|------------|------|----------|--------
@@ -35,13 +42,32 @@ id | Internal unique item identifier | String | yes | System generated
 productId | The Product identifier | String | yes | -
 title | A Product description | String | yes | Product title + Variant details
 quantity | The Product quantity | Number | yes | -
-price | The single item sale price | Number | yes | -
-beforeTax | Item total before taxes (price * quantity - discounts) | Number | yes | -
-tax | Item taxes | Number | yes | -
-taxDetail | Item taxes detail | String | yes | -
+price | The single item sale price | Object | yes | -
+taxes | The calculated Taxes for the item | Object | yes | -  
 reserves | Reservation data | Object list | yes | -
 
-**Reserves**
+### Prices
+
+Argument | Required | Type | Example | Description
+---------|----------|------|---------|------------
+amount       | yes | Numeric | 109.99 | The Product base price
+currency     | yes | String  | USD | The currency code (ISO 4217)
+country      | no  | String  | US  | The country code (ISO 3166-1 alpha-2)
+customerType | no  | String  | VIP | The Customer type (VIP, B2B, B2C)
+channel      | no  | String  | WEB | The channel the Customer is using (WEB, MOBILE, Physical store ID)
+validFrom    | no  | Date    | 2016-01-01T00:00:00.000+0000 | Date start (inclusive) for the validy period of this Price.
+validUntil   | no  | Date    | 2017-12-31T23:59:59.000+0000 | Date end (inclusive) for the validy period of this Price.
+
+### Taxes
+
+Field | Description| Type | Required | Default
+------|------------|------|----------|--------
+tax | Item taxes amount | Number | yes | -
+beforeTax | Item total before taxes | Number | yes | -
+taxDetail | Item taxes detail | String | yes | -
+
+
+### Reserves
 
 Field | Description| Type | Required | Default
 ------|------------|------|----------|--------

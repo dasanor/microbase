@@ -16,12 +16,12 @@ cartId | yes | String  | H19PRsec        | The Cart id to get info on.
 
 Returns a Cart object:
 
-```javascript
+```json
 {
     "ok": true,
     "cart": {
         "id": "H19PRsec",
-        "userId": "anonymous",
+        "customerId": "ANON",
         "expirationTime": "2016-08-23T15:16:50.407Z",
         "tax": 0,
         "beforeTax": 0,

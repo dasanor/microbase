@@ -1,7 +1,11 @@
 const path = require('path');
-const glob = require('glob');
+const Brakes = require('brakes');
+const cls = require('continuation-local-storage');
 
 module.exports = function (base) {
+
+  const ns = cls.getNamespace('microbase') || cls.createNamespace('microbase');
+
   const service = {
     name: base.config.get('services:name'),
     version: base.config.get('services:version'),
@@ -25,27 +29,29 @@ module.exports = function (base) {
       `${serviceName}:${serviceVersion}:${operationName}`
   };
 
-  // Add wrappers
-  const wrappersFns = new Map();
-  const wrappers = [];
-  const wrappersBaseKey = 'services:wrappers';
-  Object.keys(base.config.get(wrappersBaseKey)).forEach(wrapperName => {
-    base.logger.info(`[services] loading wrapper '${wrapperName}'`);
-    const m = base.utils.loadModule(`${wrappersBaseKey}:${wrapperName}`);
-    wrappers.push(wrapperName);
-    wrappersFns.set(wrapperName, m);
+  // Circuit breakers for out calls
+  const circuits = {};
+
+  // Add inMiddlewares
+  const inMiddlewaresFns = new Map();
+  const inMiddlewares = [];
+
+  base.utils.loadModulesFromKey('services:inMiddlewares').forEach(inMiddleware => {
+    const middlewareName = inMiddleware.keys[inMiddleware.keys.length - 1];
+    base.logger.info(`[services] loading in middleware '${middlewareName}'`);
+    inMiddlewares.push(middlewareName);
+    inMiddlewaresFns.set(middlewareName, inMiddleware.module);
   });
 
-  // Add wrappers to operations
-  function addWrappers(operationFullName, op) {
-    // Loop the wrappers
-    for (let w = wrappers.length; w > 0; w--) {
-      const wrapperName = wrappers[w - 1];
-      if (op[wrapperName] || wrapperName.indexOf('system-') == 0) {
-        // Apply the wrapper if we have a configuration
-        const wrapper = wrappersFns.get(wrapperName);
+  // Add middlewares to operations
+  function addInMiddlewares(operationFullName, op) {
+    for (let w = inMiddlewares.length; w > 0; w--) {
+      const middlewareName = inMiddlewares[w - 1];
+      if (op[middlewareName] || middlewareName.indexOf('system-') === 0) {
+        // Apply the middleware if we have a configuration or is a system one
+        const middleware = inMiddlewaresFns.get(middlewareName);
         const originalFn = op.handler;
-        const handler = wrapper.handler(op[wrapperName] || { operationFullName });
+        const handler = middleware.handler(op[middlewareName] || { operationFullName });
         op.handler = function (params, reply, request) {
           handler(params, reply, request, function next(newReply) {
 
@@ -79,7 +85,7 @@ module.exports = function (base) {
   service.addOperation = function (op, transports = defaultTransports) {
     const operationFullName = service.getOperationFullName(service.name, service.version, op.name);
     base.logger.info(`[services] added service [${operationFullName}]`);
-    service.operations.set(operationFullName, addWrappers(operationFullName, op));
+    service.operations.set(operationFullName, addInMiddlewares(operationFullName, op));
     const usedTransports = op.transports || transports;
     usedTransports.forEach(transport => {
       base.transports[transport].use(operationFullName, op);
@@ -94,24 +100,116 @@ module.exports = function (base) {
   };
 
   // For given folder name each file exports an operation. Name resolved to filename if no one is provided
-  service.addOperationsFromFolder = function (folder = base.config.get('services:defaultFolder'), transports) {
-    const rootPath = base.config.get('rootPath');
-    glob(`${rootPath}/${folder}/*.js`, {}, (err, files) => {
-      files.forEach((file) => {
-        const operation = require(file)(base);
-        operation.name = operation.name || path.basename(file, '.js');
-        service.addOperation(operation, transports);
-      })
+  const defaultOperationsFolder = base.config.get('services:defaultFolder')
+  service.addOperationsFromFolder = (folder = defaultOperationsFolder, transports) => {
+    const modules = base.utils.loadModulesFromFolder(folder);
+    modules.forEach(operation => {
+      if (operation.module) {
+        operation.module.name = operation.module.name || path.basename(operation.file, '.js');
+        service.addOperation(operation.module, transports);
+      }
     });
   };
 
-  // Add proxy to transport call
-  const defaultCallTransport = base.config.get('services:defaultCallTransport');
-  service.call = function (config, msg) {
-    const { serviceName, serviceVersion, operationName } = service.splitOperationName(config.name);
-    const transport = config.transport || defaultCallTransport;
-    return base.transports[transport].call(config, msg);
-  };
+  // Default transport for out calls
+  const defaultOutTransport = base.config.get('services:defaultOutTransport');
+
+  // Call transport out middleware
+  function callTransportOutMiddleware(context, next) {
+    // Promise call
+    const promiseCall =
+      transport =>
+        function (data) {
+          return base.transports[transport]
+            .call(data.config, data.msg);
+        };
+
+    const transport = context.config.transport || defaultOutTransport;
+    let circuit = circuits[context.config.name];
+    if (!circuit) {
+      // TODO: move this values to the config file
+      const options = {
+        name: context.config.name,
+        statInterval: 2500,
+        threshold: 0.25,
+        circuitDuration: 5000,
+        timeout: 250,
+        waitThreshold: 3
+      };
+
+      Object.assign(options, context.config.circuitbreaker || {});
+
+      if (options.fallback) {
+        const sourceFn = options.fallback;
+        options.fallback = function (context) {
+          return new Promise((resolve, reject) => {
+            ns.run(function () {
+              ns.set('x-request-id', context.headers['x-request-id']);
+              ns.set('authorization', context.headers['authorization']);
+              resolve(sourceFn(context));
+            });
+          });
+        };
+      }
+      circuit = new Brakes(promiseCall(transport), options);
+
+      circuit.on('circuitOpen', () => {
+        base.logger.error(`[service] Circuit breaker opened for ${context.config.name}`);
+      });
+
+      circuit.on('circuitClosed', () => {
+        base.logger.warn(`[service] Circuit breaker closed for ${context.config.name}`);
+      });
+
+      // circuit.on('timeout', (e) => {
+      //   base.logger.warn(`[service] timeout for ${context.config.name} ${e}`);
+      // });
+      // circuit.on('snapshot', (s) => {
+      //   if (s.stats.failed !== 0 || s.stats.timedOut !== 0) {
+      //     base.logger.warn(`[service] stats for ${context.config.name} f:${s.stats.failed} + to:${s.stats.timedOut} / s:${s.stats.successful} l:${s.stats.latencyMean}`);
+      //   }
+      // });
+
+      circuits[context.config.name] = circuit;
+    }
+    context.headers = {
+      'x-request-id': ns.get('x-request-id'),
+      'authorization': ns.get('authorization')
+    };
+    circuit.exec(context)
+      .then(response => {
+        if (response.ok === false && response.error !== 'circuitbreaker') {
+          return next(base.utils.Error(response.error, response.data));
+        }
+        context.response = response;
+        return next();
+      })
+      .catch(error => {
+        ns.run(function () {
+          ns.set('x-request-id', context.headers['x-request-id']);
+          ns.set('authorization', context.headers['authorization']);
+          context.response = {
+            ok: false,
+            error: 'circuitbreaker',
+            data: {
+              code: error.code || error.constructor.name.toLowerCase(),
+              service: context.config.name
+            }
+          };
+          next();
+        });
+      });
+  }
+
+  // Create the out calls chain
+  const callChain = new base.utils.Chain().use('services:outMiddlewares');
+  callChain.use(callTransportOutMiddleware);
+
+  // Call other services
+  service.call = (config, msg) =>
+    callChain
+      .exec({ config, msg })
+      .then(context => context.response);
 
   // Add a ping operation to allow health checks and keep alives
   service.addOperation({
@@ -120,6 +218,21 @@ module.exports = function (base) {
     public: true,
     handler: (msg, reply) => {
       return reply({ answer: 'pong' });
+    }
+  });
+
+  // Add the monitoring hystrix streams
+  const globalStats = Brakes.getGlobalStats();
+  service.addOperation({
+    name: 'micro.hystrix',
+    transports: ['http'],
+    public: true,
+    handler: (msg, reply, req, res) => {
+      res.setHeader('Content-Type', 'text/event-stream;charset=UTF-8');
+      res.setHeader('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      globalStats.getHystrixStream().pipe(res);
+      return;
     }
   });
 

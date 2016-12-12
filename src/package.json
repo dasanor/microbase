@@ -1,6 +1,6 @@
 {
   "name": "microbase",
-  "version": "0.8.6",
+  "version": "0.9.0",
   "description": "Ecommerce platform to develop store backends.",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,7 @@
     "ajv": "^4.7.7",
     "amq": "^0.4.8",
     "body-parser": "^1.15.2",
+    "brakes": "^2.5.1",
     "catbox": "^7.1.1",
     "catbox-memory": "^2.0.3",
     "continuation-local-storage": "^3.2.0",
