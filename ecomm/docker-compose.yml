@@ -138,3 +138,17 @@ services:
     depends_on:
       - mongo
       - bus
+
+  recommendation-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
+    build: ./micro-recommendation-service
+    links:
+      - consul
+      - gateway
+      - bus
+      - mongo
+    depends_on:
+      - mongo
+      - bus
