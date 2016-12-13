@@ -1,8 +1,16 @@
 {
-  "name": "micro-base-ecom",
+  "name": "micro-ecomm",
   "version": "0.1.0",
   "description": "Ecommerce services.",
   "main": "index.js",
+  "homepage": "http://microbase.io",
+  "keywords": [
+    "microservices",
+    "ecommerce"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "scripts": {
     "doc": "generate-md --layout docs/layout --input docs/sources --output docs/generated --no-header-links",
     "codedoc": "npm install docker && docker -i . -o docs/generated/code index.js models operations"
@@ -11,8 +19,8 @@
     "type": "git",
     "url": "https://github.com/ncornag/micro-base.git"
   },
-  "author": "Nicolás Cornaglia Schlieman",
-  "license": "MIT",
+  "author": "Nicolás Cornaglia Schlieman (https://github.com/ncornag)",
+  "license": "OSL-3.0",
   "dependencies": {},
   "devDependencies": {
     "markdown-styles": "^3.1.6"
