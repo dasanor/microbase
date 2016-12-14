@@ -14,8 +14,6 @@ services:
     image: ncornag/micro-docker-nginx
     restart: always
     mem_limit: 128m
-    environment:
-      - BACKENDS={"name":"cart","poll":3,"onChange":"reload.sh onChange"},{"name":"catalog","poll":3,"onChange":"reload.sh onChange"},{"name":"tax","poll":3,"onChange":"reload.sh onChange"},{"name":"promotion","poll":3,"onChange":"reload.sh onChange"},{"name":"stock","poll":3,"onChange":"reload.sh onChange"},{"name":"recommendation","poll":3,"onChange":"reload.sh onChange"}
     links:
       - consul:consul
     ports:
