@@ -1,0 +1,84 @@
+consul:
+  command: agent -server -bootstrap-expect 1 -client 0.0.0.0 -ui
+  environment:
+    - CONSUL_BIND_INTERFACE=eth0
+    - CONSUL_CLIENT_INTERFACE=eth0
+  image: 'consul:latest'
+  mem_limit: 64m
+  ports:
+    - '8500:8500'
+  restart: always
+mongo:
+  image: 'mongo:3'
+  mem_limit: 64m
+  ports:
+    - '27017:27017'
+  restart: always
+bus:
+  image: 'rabbitmq:3-management'
+  ports:
+    - '15672:15672'
+  restart: always
+gateway:
+  autoredeploy: true
+  environment:
+    - UPSTREAMUSEIP=true
+  image: 'ncornag/micro-docker-nginx:latest'
+  mem_limit: 64m
+  ports:
+    - '80:80'
+  restart: always
+cart-service:
+  autoredeploy: true
+  image: 'ncornag/micro-cart-service:latest'
+  links:
+    - bus
+    - gateway
+    - mongo
+  mem_limit: 128m
+  restart: always
+catalog-service:
+  autoredeploy: true
+  image: 'ncornag/micro-catalog-service:latest'
+  links:
+    - bus
+    - gateway
+    - mongo
+  mem_limit: 128m
+  restart: always
+promotion-service:
+  autoredeploy: true
+  image: 'ncornag/micro-promotion-service:latest'
+  links:
+    - bus
+    - gateway
+    - mongo
+  mem_limit: 128m
+  restart: always
+recommendation-service:
+  autoredeploy: true
+  image: 'ncornag/micro-recommendation-service:latest'
+  links:
+    - bus
+    - gateway
+    - mongo
+  mem_limit: 128m
+  restart: always
+stock-service:
+  autoredeploy: true
+  image: 'ncornag/micro-stock-service:latest'
+  links:
+    - bus
+    - gateway
+    - mongo
+  mem_limit: 128m
+  restart: always
+tax-service:
+  autoredeploy: true
+  image: 'ncornag/micro-tax-service:latest'
+  links:
+    - bus
+    - gateway
+    - mongo
+  mem_limit: 128m
+  restart: always
