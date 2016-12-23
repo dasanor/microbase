@@ -17,7 +17,7 @@ services:
     links:
       - consul:consul
     environment:
-      - UPSTREAMUSEIP:true
+      - UPSTREAMUSEIP=true
     ports:
         - 80:80
 
