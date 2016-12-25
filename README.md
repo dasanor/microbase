@@ -1,5 +1,29 @@
 # MicroBase
 
+[![NPM version][npm-image]][npm-url] 
+[![Downloads][downloads-image]][npm-url] 
+[![Build Status][travis-image]][travis-url] 
+[![Coverage Status][coveralls-image]][coveralls-url] 
+[![bitHound Overall Score][bithound-overal-image]][bithound-url]
+[![bitHound Code][bithound-code-image]][bithound-url]
+[![Dependency status][bithound-image]][bithound-url] 
+[![Dev Dependency status][bithound-dev-image]][bithound-url] 
+
+[npm-url]:https://npmjs.org/package/microbase
+[downloads-image]:http://img.shields.io/npm/dm/microbase.svg
+[npm-image]:http://img.shields.io/npm/v/microbase.svg
+
+[travis-url]:https://travis-ci.org/ncornag/microbase
+[travis-image]:http://img.shields.io/travis/ncornag/microbase/develop.svg
+[coveralls-url]:https://coveralls.io/r/ncornag/microbase
+[coveralls-image]:https://img.shields.io/coveralls/ncornag/microbase/develop.svg
+
+[bithound-url]:https://www.bithound.io/github/ncornag/microbase/develop
+[bithound-overal-image]:https://www.bithound.io/github/ncornag/microbase/badges/score.svg
+[bithound-image]:https://img.shields.io/bithound/dependencies/github/ncornag/microbase.svg
+[bithound-dev-image]:https://img.shields.io/bithound/devDependencies/github/ncornag/microbase.svg
+[bithound-code-image]:https://www.bithound.io/github/ncornag/microbase/badges/code.svg
+
 MicroBase is an ecommerce platform ecosystem that allows the development 
 of the ecommerce store backends. The architecture embraces the 
 microservices paradigm, so the services are organized as a separate 
