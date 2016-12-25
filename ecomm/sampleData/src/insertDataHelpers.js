@@ -107,6 +107,18 @@ function helpers(base) {
       })
   }
 
+  function insertShipping(data) {
+    return Promise.all(handleFunctions([], data))
+      .then((r) => {
+        console.log(r, data);
+        return base.services.call({
+          name: 'cart:shipping.create',
+          headers: headers,
+          timeout: timeout
+        }, data);
+      })
+  }
+
   function insertCategory(data) {
     return Promise.all(handleFunctions([], data))
       .then(() => {
