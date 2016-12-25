@@ -46,7 +46,9 @@
       {"url": "api/tax.info.html", "body": "tax.info"},
       {"url": "api/tax.list.html", "body": "tax.list"},
       {"url": "api/tax.remove.html", "body": "tax.remove"},
-      {"url": "api/tax.update.html", "body": "tax.update"}
+      {"url": "api/tax.update.html", "body": "tax.update"},
+      {"url": "api/shipping.create.html", "body": "shipping.create"},
+      {"url": "api/shipping.remove.html", "body": "shipping.remove"}
     ]
   }
 }
