@@ -3,4 +3,5 @@ node_js:
   - "6"
 cache: yarn
 before_script: cd src
+before_install: npm install -g yarn
 install: yarn
