@@ -13,8 +13,9 @@
   },
   "scripts": {
     "doc": "docker -i . -o docs/code index.js modules",
-    "test": "lab test/test.js -I shortid,adjectives,nouns -v",
-    "test-cov-html": "lab -r html -o coverage.html test/test.js"
+    "test": "lab test/test.js -I shortid,adjectives,nouns,name -v",
+    "test-cov-html": "lab -r html -o coverage.html test/test.js -I shortid,adjectives,nouns,name",
+    "test-cov-lcov": "lab -r lcov -o lcov.info test/test.js -I shortid,adjectives,nouns,name"
   },
   "repository": {
     "type": "git",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "code": "^3.0.0",
+    "coveralls": "^2.11.15",
     "database-cleaner": "^0.13.0",
     "docker": "^0.2.14",
     "eslint": "^2.9.0",
