@@ -12,7 +12,7 @@ module.exports = function (base) {
       const errors = [];
       Object.keys(error.errors).forEach(key => {
         const eObj = error.errors[key];
-        if (eObj.dataPath) {
+        if (eObj.hasOwnProperty('dataPath')) {
           // Schema validation
           errors.push(`payload${eObj.dataPath}: ${eObj.message}`);
         } else {
