@@ -1,0 +1,9 @@
+{
+  "services": {
+    "inMiddlewares": {
+      "validator": "./modules/services/inMiddlewares/validator",
+      "eventEmitter": "./modules/services/inMiddlewares/eventEmitter",
+      "cache": "./modules/services/inMiddlewares/cache"
+    }
+  }
+}

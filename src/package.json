@@ -44,6 +44,7 @@
     "object-hash": "^1.1.2",
     "shimmer": "^1.1.0",
     "shortid": "^2.2.6",
+    "sinon": "^1.17.6",
     "winston": "^2.2.0",
     "winston-logstash": "^0.3.0",
     "wreck": "^10.0.0"
