@@ -71,7 +71,10 @@ module.exports = function (base) {
   app.use(expressWinston.logger({
     winstonInstance: base.logger,
     msg: base.config.get('transports:http:logpattern'),
-    meta: false
+    meta: false,
+    ignoreRoute: function (req, res) {
+      return req.url.match(/micro\.ping/);
+    }
   }));
 
   // Load external monitors
