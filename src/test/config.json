@@ -5,5 +5,15 @@
       "eventEmitter": "./modules/services/inMiddlewares/eventEmitter",
       "cache": "./modules/services/inMiddlewares/cache"
     }
+  },
+  "test": {
+    "loadModules": {
+      "module1": "./test/modulesOverwrite/moduleOverwritten"
+    },
+    "loadModule": {
+      "moduleDot": "./test/loadModules/module1",
+      "moduleNoDot": "shortid",
+      "nonExistentModule": "nonExistentModule"
+    }
   }
 }
