@@ -15,5 +15,18 @@
       "moduleNoDot": "shortid",
       "nonExistentModule": "nonExistentModule"
     }
+  },
+  "bus": {
+    "engines": {
+      "local": {
+        "handler": "./local"
+      }
+    },
+    "channels": {
+      "carts": {
+        "name": "TEST",
+        "engine": "local"
+      }
+    }
   }
 }
