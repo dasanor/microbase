@@ -21,8 +21,14 @@
       },
       "monitors": {
         "datadog": {
-          "enabled": false,
+          "enabledBeforeRoutes": false,
           "module": "./node_modules/microbase/modules/transports/http/monitors/datadog.js"
+        },
+        "sentry": {
+          "enabledBeforeRoutes": false,
+          "enabledBeforeErrorHandlers": false,
+          "module": "./node_modules/microbase/modules/transports/http/monitors/sentry.js",
+          "url": "https://***@sentry.io/127235"
         }
       }
     },

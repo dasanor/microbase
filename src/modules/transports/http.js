@@ -20,6 +20,9 @@ module.exports = function (base) {
   const serviceVersion = base.config.get('services:version');
   const routesStyle = base.config.get('transports:http:style');
 
+  // External monitors base key
+  const monitorsBaseKey = 'transports:http:monitors';
+
   // Call services variables
   const wreck = Wreck.defaults({
     headers: {
@@ -49,6 +52,19 @@ module.exports = function (base) {
 
   const app = express();
 
+  // Load external monitors before any other middleware
+  Object.keys(base.config.get(monitorsBaseKey)).forEach((monitorName) => {
+    if (base.config.get(`${monitorsBaseKey}:${monitorName}:enabledBeforeRoutes`)) {
+      const m = base.utils.loadModule(`${monitorsBaseKey}:${monitorName}:module`);
+      if (m) {
+        base.logger.info(`[http] activating BeforeRoutes monitor '${monitorName}'`);
+        m.module(app, 'beforeRoutes');
+      } else {
+        base.logger.error(`[http] activating BeforeRoutes monitor '${monitorName}'`);
+      }
+    }
+  });
+
   // CORS
   const corsOrigin = base.config.get('transports.http.cors.origin');
   app.options('*', cors({ origin: corsOrigin }));
@@ -77,24 +93,28 @@ module.exports = function (base) {
     }
   }));
 
-  // Load external monitors
-  const monitorsBaseKey = 'transports:http:monitors';
-  Object.keys(base.config.get(monitorsBaseKey)).forEach(monitorName => {
-    if (base.config.get(`${monitorsBaseKey}:${monitorName}:enabled`)) {
-      const m = base.utils.loadModule(`${monitorsBaseKey}:${monitorName}:module`).module;
-      base.logger.info(`[http] activating monitor '${monitorName}'`);
-      m(app);
+  // Load routes
+  app.use(router);
+
+  // Load external monitors before any other error Handler
+  Object.keys(base.config.get(monitorsBaseKey)).forEach((monitorName) => {
+    if (base.config.get(`${monitorsBaseKey}:${monitorName}:enabledBeforeErrorHandlers`)) {
+      const m = base.utils.loadModule(`${monitorsBaseKey}:${monitorName}:module`);
+      if (m) {
+        base.logger.info(`[http] activating BeforeErrorHandlers monitor '${monitorName}'`);
+        m.module(app, 'beforeErrorHandlers');
+      } else {
+        base.logger.error(`[http] activating BeforeErrorHandlers monitor '${monitorName}'`);
+      }
     }
   });
-
-  app.use(router);
 
   // Error handler for 401s
   app.use(function errorHandler(err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
       return res.status(401).json({ ok: false, error: 'invalid_token' });
     }
-    next();
+    next(err);
   });
 
   // Log Errors

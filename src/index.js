@@ -3,7 +3,9 @@ const path = require('path');
 
 module.exports = function (options) {
   options = options || {};
-  const base = {};
+  const base = {
+    extra: options.extra
+  };
 
   // Fake log
   base.log = (level, msg) => {
