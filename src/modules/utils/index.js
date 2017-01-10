@@ -71,7 +71,7 @@ module.exports = function (base) {
           path: modulePath
         };
       } catch (e) {
-        base.logger.error(`[modules] module '${key}:${modulePath}' not found`);
+        base.logger.error(`[modules] module '${key}:${modulePath}' not found (${e.message})`);
         return null;
       }
     },

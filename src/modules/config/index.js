@@ -9,7 +9,7 @@ module.exports = function (stores, base) {
   const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
   const basePath = path.normalize(__dirname + '/../..');
   let rootPath = path.dirname(require.main.filename);
-  if (rootPath.lastIndexOf('node_modules') != -1) {
+  if (rootPath.lastIndexOf('node_modules') !== -1) {
     rootPath = rootPath.substr(0, rootPath.lastIndexOf('node_modules') - 1);
   }
   // add framework defaults
@@ -40,6 +40,15 @@ module.exports = function (stores, base) {
   conf.set('env', env);
   conf.set('basePath', basePath);
   conf.set('rootPath', rootPath);
+
+  // Microbase version
+  const mbPackageFile = require(`${basePath}/package.json`);
+  conf.set('info:microbase:version', mbPackageFile.version);
+
+  // Package version
+  const packageFile = require(`${rootPath}/package.json`);
+  conf.set('info:package:name', packageFile.name);
+  conf.set('info:package:version', packageFile.version);
 
   return conf;
 };
