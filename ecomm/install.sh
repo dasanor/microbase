@@ -38,7 +38,7 @@ echo "⚡ Creating project folder $DEST"
 cp $ORIG/docker-compose*.yml $DEST
 cp -R $ORIG/dockerConf $DEST
 
-REPOS=( "catalog" "stock" "cart" "tax" "promotion" "recommendation")
+REPOS=( "catalog" "stock" "cart" "tax" "promotion" "recommendation" "customer")
 for i in "${REPOS[@]}"
 do
 	updateRepo $i $2

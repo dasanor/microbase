@@ -3,12 +3,12 @@ version: '2'
 services:
 
   consul:
-    image: progrium/consul:latest
+    image: consul:latest
     restart: always
     mem_limit: 128m
     ports:
       - 8501:8500
-    command: -server -bootstrap-expect 1 -ui-dir /ui
+    command: agent -server -bootstrap-expect 1 -client 0.0.0.0 -ui
 
   gateway:
     image: ncornag/micro-docker-nginx
@@ -16,6 +16,8 @@ services:
     mem_limit: 128m
     links:
       - consul:consul
+    environment:
+      - UPSTREAMUSEIP=true
     ports:
         - 80:80
 
@@ -97,6 +99,21 @@ services:
       - mongo
       - bus
 
+  customer-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
+    build: ./micro-customer-service
+    links:
+      - consul
+      - gateway
+      - mongo
+      - bus
+      - elasticsearch
+    depends_on:
+      - mongo
+      - bus
+
   cart-service:
     extends:
       file: docker-compose-common.yml
@@ -130,6 +147,20 @@ services:
       file: docker-compose-common.yml
       service: service
     build: ./micro-promotion-service
+    links:
+      - consul
+      - gateway
+      - bus
+      - mongo
+    depends_on:
+      - mongo
+      - bus
+
+  recommendation-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
+    build: ./micro-recommendation-service
     links:
       - consul
       - gateway

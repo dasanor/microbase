@@ -8,7 +8,7 @@
     ],
     "defaultOutTransport": "http"
   },
-  "transport": {
+  "transports": {
     "http": {
       "port": "3100"
     }

@@ -29,7 +29,7 @@
 				{
 					"id": "e0b83dd1-1897-8d54-4d37-a4c296233733",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portRecommendation}}/services/recommendation/v1/recommendation.alsoviewed?productId=Skrg4fR0HS",
+					"url": "http://{{host}}{{portRecommendation}}/services/recommendation/v1/recommendation.alsoviewed?productId=Skrg4fR0HS",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -38,7 +38,7 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1481580322841,
+					"time": 1482517274677,
 					"name": "recommendation.alsoviewed",
 					"description": "",
 					"collectionId": "2fcc112b-e782-b626-885f-9702d2227a48"
@@ -74,7 +74,7 @@
 				{
 					"id": "05d5c1e4-9e79-8071-c0bd-a06671eaf7c5",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portPromotion}}/services/promotion/v1/promotion.create",
+					"url": "http://{{host}}{{portPromotion}}/services/promotion/v1/promotion.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -83,7 +83,7 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1474639997911,
+					"time": 1482517263367,
 					"name": "promotion.create",
 					"description": "",
 					"collectionId": "5655c800-d53e-8be0-016f-bcb922fa1390"
@@ -91,7 +91,7 @@
 				{
 					"id": "993cd5c9-391c-2877-58ae-3f62969d457e",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portPromotion}}/services/promotion/v1/promotion.cartPromotions?cartId=H19PRsec",
+					"url": "http://{{host}}{{portPromotion}}/services/promotion/v1/promotion.cartPromotions?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -100,7 +100,7 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1478946753710,
+					"time": 1482517266542,
 					"name": "promotion.cartPromotions",
 					"description": "",
 					"collectionId": "5655c800-d53e-8be0-016f-bcb922fa1390"
@@ -136,7 +136,7 @@
 				{
 					"id": "042ac497-e60f-6d4c-cf34-1b71e11077fd",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portTax}}/services/tax/v1/tax.cartTaxes?cartId=H19PRsec",
+					"url": "http://{{host}}{{portTax}}/services/tax/v1/tax.cartTaxes?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -145,7 +145,7 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1476200299995,
+					"time": 1482517317548,
 					"name": "tax.cartTaxes",
 					"description": "",
 					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
@@ -153,7 +153,7 @@
 				{
 					"id": "75a921d2-2b82-6df8-88f3-9c03479ad60d",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/tax/v1/tax.create",
+					"url": "http://{{host}}{{portCart}}/services/tax/v1/tax.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -162,125 +162,10 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1475782707679,
+					"time": 1482517314124,
 					"name": "tax.create",
 					"description": "",
 					"collectionId": "587fc559-3057-4ec7-4aaa-34a0204eacd4"
-				}
-			]
-		},
-		{
-			"id": "43874c95-c712-3cb2-06cc-a6210d715de9",
-			"name": "micro-stock",
-			"description": "",
-			"order": [
-				"e840eb49-84d6-d77b-cc72-43c8f68e848b",
-				"aa8aa4de-a169-7fb1-cafd-1a7eea9a65cd",
-				"43949291-5987-eee9-ed9a-cafb8c89cb98",
-				"81be0c52-e25c-154e-88f1-be6f21d4bda6",
-				"cf09d8ab-c35d-f20a-a34e-52346c0adbb6"
-			],
-			"folders": [],
-			"timestamp": 0,
-			"synced": true,
-			"remote_id": "0",
-			"owner": "467243",
-			"sharedWithTeam": false,
-			"subscribed": false,
-			"remoteLink": null,
-			"public": false,
-			"createdAt": "2016-05-14T18:39:37.000Z",
-			"updatedAt": 1469790703389,
-			"write": true,
-			"published": false,
-			"favorite": false,
-			"permissions": {},
-			"syncedPermissions": {},
-			"requests": [
-				{
-					"id": "43949291-5987-eee9-ed9a-cafb8c89cb98",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.update",
-					"preRequestScript": "",
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n  \"productId\": \"HJ4g4fACrH\",\n  \"warehouseId\": \"001\",\n  \"quantityInStock\": 200,\n  \"quantityReserved\": 0\n}",
-					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1473691473701,
-					"name": "stock.update",
-					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
-				},
-				{
-					"id": "81be0c52-e25c-154e-88f1-be6f21d4bda6",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.reserve",
-					"preRequestScript": "",
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n  \"productId\": \"HJ4g4fACrH\",\n  \"warehouseId\": \"001\",\n  \"quantity\": 1,\n  \"reserveStockForMinutes\": 1440\n}",
-					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1473691426702,
-					"name": "stock.reserve",
-					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
-				},
-				{
-					"id": "aa8aa4de-a169-7fb1-cafd-1a7eea9a65cd",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.info?productId=HJ4g4fACrH&warehouseId=001",
-					"preRequestScript": "",
-					"pathVariables": {},
-					"method": "GET",
-					"data": "{\n  \"warehouseId\": \"003\",\n  \"quantityInStock\": 200,\n  \"quantityReserved\": 0\n}",
-					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1469789327062,
-					"name": "stock.info",
-					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
-				},
-				{
-					"id": "cf09d8ab-c35d-f20a-a34e-52346c0adbb6",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.unreserve",
-					"preRequestScript": "",
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n  \"reserveId\": \"rJIzFlFd\",\n  \"unreserveQuantity\": 1\n}",
-					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1473691448518,
-					"name": "stock.unreserve",
-					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
-				},
-				{
-					"id": "e840eb49-84d6-d77b-cc72-43c8f68e848b",
-					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portStock}}/services/stock/v1/stock.create",
-					"preRequestScript": "",
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n  \"productId\": \"0001\",\n  \"warehouseId\": \"002\",\n  \"quantityInStock\": 10000,\n  \"quantityReserved\": 0\n}",
-					"dataMode": "raw",
-					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1469787392744,
-					"name": "stock.create",
-					"description": "",
-					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
 				}
 			]
 		},
@@ -389,6 +274,122 @@
 			]
 		},
 		{
+			"id": "43874c95-c712-3cb2-06cc-a6210d715de9",
+			"name": "micro-stock",
+			"description": "",
+			"order": [
+				"e840eb49-84d6-d77b-cc72-43c8f68e848b",
+				"aa8aa4de-a169-7fb1-cafd-1a7eea9a65cd",
+				"43949291-5987-eee9-ed9a-cafb8c89cb98",
+				"81be0c52-e25c-154e-88f1-be6f21d4bda6",
+				"cf09d8ab-c35d-f20a-a34e-52346c0adbb6"
+			],
+			"folders": [],
+			"timestamp": 0,
+			"synced": true,
+			"remote_id": "0",
+			"owner": "467243",
+			"sharedWithTeam": false,
+			"subscribed": false,
+			"remoteLink": null,
+			"remoteLinkUpdatedAt": null,
+			"public": false,
+			"createdAt": "2016-05-14T18:39:37.000Z",
+			"updatedAt": 1469790703389,
+			"write": true,
+			"published": false,
+			"favorite": false,
+			"permissions": {},
+			"syncedPermissions": {},
+			"requests": [
+				{
+					"id": "43949291-5987-eee9-ed9a-cafb8c89cb98",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portStock}}/services/stock/v1/stock.update",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"productId\": \"HJ4g4fACrH\",\n  \"warehouseId\": \"001\",\n  \"quantityInStock\": 200,\n  \"quantityReserved\": 0\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1482517299628,
+					"name": "stock.update",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				},
+				{
+					"id": "81be0c52-e25c-154e-88f1-be6f21d4bda6",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portStock}}/services/stock/v1/stock.reserve",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"productId\": \"HJ4g4fACrH\",\n  \"warehouseId\": \"001\",\n  \"quantity\": 1,\n  \"reserveStockForMinutes\": 1440\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1482517303365,
+					"name": "stock.reserve",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				},
+				{
+					"id": "aa8aa4de-a169-7fb1-cafd-1a7eea9a65cd",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portStock}}/services/stock/v1/stock.info?productId=HJ4g4fACrH&warehouseId=001",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "GET",
+					"data": "{\n  \"warehouseId\": \"003\",\n  \"quantityInStock\": 200,\n  \"quantityReserved\": 0\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1482517296252,
+					"name": "stock.info",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				},
+				{
+					"id": "cf09d8ab-c35d-f20a-a34e-52346c0adbb6",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portStock}}/services/stock/v1/stock.unreserve",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"reserveId\": \"rJIzFlFd\",\n  \"unreserveQuantity\": 1\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1482517307244,
+					"name": "stock.unreserve",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				},
+				{
+					"id": "e840eb49-84d6-d77b-cc72-43c8f68e848b",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portStock}}/services/stock/v1/stock.create",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n  \"productId\": \"0001\",\n  \"warehouseId\": \"002\",\n  \"quantityInStock\": 10000,\n  \"quantityReserved\": 0\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1482517292765,
+					"name": "stock.create",
+					"description": "",
+					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
+				}
+			]
+		},
+		{
 			"id": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
 			"owner": "467243",
 			"name": "micro",
@@ -421,14 +422,12 @@
 			"shared": false,
 			"requests": [
 				{
-					"owner": "467243",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 303409711,
-					"folder": null,
-					"collection": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
 					"id": "0ec274b1-fdbd-2afd-2f4c-c6060bd44164",
-					"name": "oauth:token-generation",
-					"dataMode": "params",
+					"headers": "Authorization: Basic dXNlcjpwYXNz\nAuthorizationBackup: Basic user:pass\n",
+					"url": "http://{{host}}{{portOauth}}/services/oauth/v2/token",
+					"preRequestScript": null,
+					"pathVariables": {},
+					"method": "POST",
 					"data": [
 						{
 							"key": "grant_type",
@@ -443,27 +442,19 @@
 							"enabled": true
 						}
 					],
-					"rawModeData": null,
-					"descriptionFormat": null,
-					"description": "",
-					"headers": "Authorization: Basic dXNlcjpwYXNz\nAuthorizationBackup: Basic user:pass\n",
-					"method": "POST",
-					"pathVariables": {},
-					"url": "http://{{host}}:{{portOauth}}/services/oauth/v2/token",
-					"preRequestScript": null,
+					"dataMode": "params",
 					"tests": null,
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"createdAt": "2016-06-08T17:12:42.000Z",
-					"updatedAt": "2016-06-08T17:12:42.000Z",
-					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
-					"write": true
+					"time": 1482517140971,
+					"name": "oauth:token-generation",
+					"description": "",
+					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9"
 				},
 				{
 					"id": "aa8a35e0-9b48-b36a-5135-c52da3b6cf6b",
-					"owner": "467243",
 					"headers": "Content-Type: application/json\nAuthorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew\n",
-					"url": "http://{{host}}:{{portExamplesTaxes}}/services/taxes/v1/vat",
+					"url": "http://{{host}}{{portExamplesTaxes}}/services/taxes/v1/vat",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -471,49 +462,33 @@
 					"dataMode": "raw",
 					"tests": "",
 					"currentHelper": "normal",
-					"helperAttributes": "{}",
-					"time": 1472494294428,
+					"helperAttributes": {},
+					"time": 1482517136531,
 					"name": "taxes:vat",
 					"description": "",
-					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 515263648,
-					"folder": null,
-					"collection": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
-					"descriptionFormat": "html",
-					"createdAt": "2016-04-14T08:25:12.000Z",
-					"updatedAt": "2016-08-29T18:11:33.000Z"
+					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9"
 				},
 				{
-					"owner": "467243",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 303409729,
-					"folder": null,
-					"collection": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
 					"id": "afc1d7bd-bf60-a4cf-0b15-df9589d3db03",
-					"name": "math:ping",
-					"dataMode": "raw",
-					"data": "{\nop:'ping'\n}",
-					"descriptionFormat": null,
-					"description": "",
 					"headers": "",
-					"method": "GET",
-					"pathVariables": {},
-					"url": "http://{{host}}:{{port2}}/services/math/v1/ping",
+					"url": "http://{{host}}{{portExamplesMath}}/services/math/v1/ping",
 					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "GET",
+					"data": "{\nop:'ping'\n}",
+					"dataMode": "raw",
 					"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Pong answer\"] = jsonData.answer === \"pong\";",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"createdAt": "2016-04-18T11:21:04.000Z",
-					"updatedAt": "2016-06-08T17:12:42.000Z",
-					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
-					"write": true
+					"time": 1482517162906,
+					"name": "math:ping",
+					"description": "",
+					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9"
 				},
 				{
 					"id": "bbd79686-8541-3157-220b-b04dd873a3ea",
-					"owner": "467243",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portExamplesMath}}/services/math/v1/multiply",
+					"url": "http://{{host}}{{portExamplesMath}}/services/math/v1/multiply",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -521,18 +496,11 @@
 					"dataMode": "raw",
 					"tests": "",
 					"currentHelper": "normal",
-					"helperAttributes": "{}",
-					"time": 1472494301175,
+					"helperAttributes": {},
+					"time": 1482517131790,
 					"name": "math:multiply",
 					"description": "",
-					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 515263965,
-					"folder": null,
-					"collection": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9",
-					"descriptionFormat": "html",
-					"createdAt": "2016-07-15T10:02:52.000Z",
-					"updatedAt": "2016-08-29T18:11:40.000Z"
+					"collectionId": "7c136921-cdb0-2537-e17c-06d9d6b7bcf9"
 				}
 			]
 		},
@@ -546,7 +514,13 @@
 				"afe1f8af-0663-c0c9-435e-51d11ec099ac",
 				"671e9550-24be-e6b8-7d2b-c9f35ad996cd",
 				"041ae5c8-9833-d800-3ca8-5e11e6197906",
-				"48921e81-c492-e2f5-4ea3-51779e018a68"
+				"48921e81-c492-e2f5-4ea3-51779e018a68",
+				"5370ee85-f4bf-a4f1-d5ad-3fdaf471bb2d",
+				"1765ae15-82bc-2453-a6a8-5bac5cf43623",
+				"f1e6c9d2-08c7-87a3-ffe3-89119812fd7d",
+				"331e18fb-b2b9-8cb1-ca33-c8d183709cf8",
+				"36b68977-2824-4819-b6b3-12b36c1b1e22",
+				"3ae01089-3f1f-79c6-fed8-4b43c1226c4f"
 			],
 			"folders": [],
 			"timestamp": 0,
@@ -559,7 +533,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-05-08T20:27:42.000Z",
-			"updatedAt": 1479116452701,
+			"updatedAt": 1483632382034,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -569,7 +543,7 @@
 				{
 					"id": "041ae5c8-9833-d800-3ca8-5e11e6197906",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.removeFromCart",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.removeFromCart",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -578,16 +552,89 @@
 					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1477236533845,
+					"time": 1482517191299,
 					"name": "cart.removeFromCart",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
 				{
-					"id": "45a43c59-d46c-9c75-8440-61bf389ed581",
-					"owner": "467243",
+					"id": "1765ae15-82bc-2453-a6a8-5bac5cf43623",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.info?cartId=H19PRsec",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.setShippingMethod?cartId=H19PRsec",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{ \n\t\"method\": {\n      \"title\": \"UPS Same Day\",\n      \"taxCode\": \"default\",\n      \"rates\": [\n        {\n          \"amount\": 10.1,\n          \"currency\": \"EUR\"\n        },\n        {\n          \"amount\": 9.9,\n          \"currency\": \"GBP\"\n        }\n      ]\n    }\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483632891538,
+					"name": "cart.setShippingMethod",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+				},
+				{
+					"id": "331e18fb-b2b9-8cb1-ca33-c8d183709cf8",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/shipping.info?shippingId=SJi0oca4e",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "GET",
+					"data": "",
+					"dataMode": "raw",
+					"version": 2,
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483370299734,
+					"name": "shipping.info",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"responses": []
+				},
+				{
+					"id": "36b68977-2824-4819-b6b3-12b36c1b1e22",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/shipping.remove?shippingId=SJi0oca4e",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "",
+					"dataMode": "raw",
+					"version": 2,
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483630491501,
+					"name": "shipping.remove",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"responses": []
+				},
+				{
+					"id": "3ae01089-3f1f-79c6-fed8-4b43c1226c4f",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/shipping.addressMethods",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n\t\"address\": {\n\t    \"firstName\": \"John\",\n\t    \"lastName\": \"Doe\",\n\t    \"address_1\": \"1650 Bolman Court\",\n\t    \"postCode\": \"61701\",\n\t    \"city\": \"Valencia\",\n\t    \"state\": \"Piemonte\",\n\t    \"country\": \"IT\",\n\t    \"company\": \"Thinkwrap\",\n\t    \"phone\": 2173203531,\n\t    \"instructions\": \"Instructions\"\n  \t}\n}",
+					"dataMode": "raw",
+					"version": 2,
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483632924965,
+					"name": "shipping.addressMethods",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"responses": []
+				},
+				{
+					"id": "45a43c59-d46c-9c75-8440-61bf389ed581",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.info?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "GET",
@@ -596,20 +643,15 @@
 					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id == \"{{cartId}}\";",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1471360800904,
+					"time": 1482517154411,
 					"name": "cart.info",
 					"description": "",
-					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
-					"lastUpdatedBy": "467243",
-					"lastRevision": 480200698,
-					"descriptionFormat": null,
-					"createdAt": "2016-06-08T17:12:43.000Z",
-					"updatedAt": "2016-08-16T15:20:01.000Z"
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
 				{
 					"id": "48921e81-c492-e2f5-4ea3-51779e018a68",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.calculateCart?cartId=H19PRsec",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.calculateCart?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -618,15 +660,32 @@
 					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1479116554462,
+					"time": 1482517194217,
 					"name": "cart.calculateCart",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+				},
+				{
+					"id": "5370ee85-f4bf-a4f1-d5ad-3fdaf471bb2d",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.setShippingAddress?cartId=H19PRsec",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{ \n\t\"address\": {\n\t    \"firstName\": \"John\",\n\t    \"lastName\": \"Doe\",\n\t    \"address_1\": \"1650 Bolman Court\",\n\t    \"postCode\": \"61701\",\n\t    \"city\": \"Valencia\",\n\t    \"state\": \"Piemonte\",\n\t    \"country\": \"IT\",\n\t    \"company\": \"Thinkwrap\",\n\t    \"phone\": 2173203531,\n\t    \"instructions\": \"Instructions\"\n  \t}\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483631567882,
+					"name": "cart.setShippingAddress",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
 				{
 					"id": "671e9550-24be-e6b8-7d2b-c9f35ad996cd",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.addToCart?cartId=H19PRsec",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.addToCart?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -635,7 +694,7 @@
 					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1477235193353,
+					"time": 1482517187905,
 					"name": "cart.addToCart (bulk)",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
@@ -643,7 +702,7 @@
 				{
 					"id": "afe1f8af-0663-c0c9-435e-51d11ec099ac",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.addToCart?cartId=H19PRsec",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.addToCart?cartId=H19PRsec",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -652,7 +711,7 @@
 					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1477234066318,
+					"time": 1482517158428,
 					"name": "cart.addToCart",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
@@ -660,7 +719,7 @@
 				{
 					"id": "be32f58a-a98b-2ae1-46b6-00574073f644",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCart}}/services/cart/v1/cart.create",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -669,10 +728,29 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"cartId\", data.cart.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1477235165232,
+					"time": 1482517150532,
 					"name": "cart.create (anon)",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+				},
+				{
+					"id": "f1e6c9d2-08c7-87a3-ffe3-89119812fd7d",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/shipping.create",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n    \"title\" : \"UPS Same Day\",\n    \"active\" : true,\n    \"taxCode\" : \"default\",\n    \"rates\" : [\n      {\n        \"locations\" : [\n          { \"country\" : \"GB\" },\n          { \"country\" : \"IT\" },\n          { \"country\" : \"GB\" }\n        ],\n        \"rates\": [\n          {\"currency\" : \"EUR\", \"amount\" : 10.10},\n          {\"currency\" : \"GBP\", \"amount\" : 9.90}\n        ]\n      },\n      {\n        \"locations\" : [\n          { \"country\" : \"US\", \"state\" : \"Hawaii\" },\n          { \"country\" : \"US\", \"state\" : \"Alaska\" }\n        ],\n        \"rates\" : [\n          {\"currency\" : \"USD\", \"amount\" : 25.00}\n        ]\n      }\n    ]\n  }",
+					"dataMode": "raw",
+					"version": 2,
+					"tests": "",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483373550345,
+					"name": "shipping.create",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"responses": []
 				}
 			]
 		},
@@ -740,7 +818,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-06-08T17:12:41.000Z",
-			"updatedAt": 1474469843569,
+			"updatedAt": 1482604257144,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -750,7 +828,7 @@
 				{
 					"id": "20396af2-405c-94ca-bca4-8fe42e14fffb",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.list?categories=B1-Zr45Br",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/product.list?categories=B1-Zr45Br",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "GET",
@@ -759,7 +837,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469699694566,
+					"time": 1482517246438,
 					"name": "product:list",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -767,7 +845,7 @@
 				{
 					"id": "3889f8c3-5c7e-fe77-0ba6-5b2aa00808ac",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.update?id=Skrg4fR0HS",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/product.update?id=Skrg4fR0HS",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -776,7 +854,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1478276522517,
+					"time": 1482517250087,
 					"name": "product:update",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -784,7 +862,7 @@
 				{
 					"id": "5096da4a-1df7-a630-90de-211c09e35aa6",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.create",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/product.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -793,7 +871,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469693225281,
+					"time": 1482517238327,
 					"name": "product.create (as variant)",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -801,7 +879,7 @@
 				{
 					"id": "5a273997-caa3-1afb-088f-aa45e04ff84a",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.update?id=B1bQbuRP",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/category.update?id=B1bQbuRP",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -810,7 +888,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469619728111,
+					"time": 1482517217736,
 					"name": "category.update",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -818,7 +896,7 @@
 				{
 					"id": "6a9e43e6-2e29-1e4c-d95b-4f6fb77e61fe",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.info?id=ROOT&withChildren=true&recursive=true",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/category.info?id=ROOT&withChildren=true&recursive=true",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "GET",
@@ -827,7 +905,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1475136972491,
+					"time": 1482517210680,
 					"name": "category.info (with Childrens)",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -835,7 +913,7 @@
 				{
 					"id": "7e440631-31cb-e8ee-37f6-8fc9cdc3e358",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.create",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/product.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -844,7 +922,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469641756671,
+					"time": 1482517231080,
 					"name": "product.create (with classifications)",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -852,7 +930,7 @@
 				{
 					"id": "8fae5a9f-91d9-1a2c-6f08-eca35e95a320",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.create",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/category.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -861,7 +939,7 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469556538855,
+					"time": 1482517204833,
 					"name": "category.create (with classification)",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -869,7 +947,7 @@
 				{
 					"id": "9ce028c9-c88e-ac56-396f-820886965069",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\nCache-Control: no-store1\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.info?id=Skrg4fR0HS",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/product.info?id=Hyl7TvRLVe&customerId=627939",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "GET",
@@ -878,7 +956,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1476198256688,
+					"time": 1482517242183,
 					"name": "product.info",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -886,7 +964,7 @@
 				{
 					"id": "a0663c21-2df7-540d-7a4b-5667f76ce41b",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.remove?id=SywEhdVV",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/product.remove?id=SywEhdVV",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -895,7 +973,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469787327721,
+					"time": 1482517253719,
 					"name": "product:remove",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -903,7 +981,7 @@
 				{
 					"id": "a908a6f9-5be5-efe8-f716-31bad8c1c162",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.create",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/category.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -912,7 +990,7 @@
 					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469556533132,
+					"time": 1482517201219,
 					"name": "category.create",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -920,7 +998,7 @@
 				{
 					"id": "afd50e4f-fe6d-937a-75c6-f17039f2bf02",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.info?id=ROOT",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/category.info?id=ROOT",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "GET",
@@ -929,7 +1007,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469556553574,
+					"time": 1482517165475,
 					"name": "category.info",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -937,7 +1015,7 @@
 				{
 					"id": "cedc1bdf-2cbb-6205-8874-74cff07c5d6a",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.create",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/product.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -946,7 +1024,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469693221401,
+					"time": 1482517234464,
 					"name": "product.create (with modifiers)",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -954,7 +1032,7 @@
 				{
 					"id": "dbe51c3b-c13d-bc35-76d5-3ae629a9fd3f",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.list?title=frigo",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/category.list?title=frigo",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "GET",
@@ -963,7 +1041,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469619682096,
+					"time": 1482517214265,
 					"name": "category.list",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -971,7 +1049,7 @@
 				{
 					"id": "e7daab90-b1a9-8e67-434a-a8864b5cefb4",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/product.create",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/product.create",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -980,7 +1058,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1481398861586,
+					"time": 1482517227600,
 					"name": "product.create",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -988,7 +1066,7 @@
 				{
 					"id": "f913102c-8c0a-b399-4048-8adde644aa70",
 					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
-					"url": "http://{{host}}:{{portCatalog}}/services/catalog/v1/category.remove?id=By-4rrmsN",
+					"url": "http://{{host}}{{portCatalog}}/services/catalog/v1/category.remove?id=By-4rrmsN",
 					"preRequestScript": "",
 					"pathVariables": {},
 					"method": "POST",
@@ -997,7 +1075,7 @@
 					"tests": "",
 					"currentHelper": "normal",
 					"helperAttributes": {},
-					"time": 1469629503247,
+					"time": 1482517222136,
 					"name": "catgegory.remove",
 					"description": "",
 					"collectionId": "e53f025d-c547-4051-eea3-ba61797f9210"
@@ -1007,114 +1085,102 @@
 	],
 	"environments": [
 		{
-			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
-			"name": "micro-localhost",
+			"id": "0c3d6505-6d30-be62-a5d1-fc90cb219788",
+			"name": "micro-dockercloud",
 			"values": [
 				{
-					"key": "portStock",
+					"key": "host",
 					"type": "text",
-					"value": "3000",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portCart",
-					"type": "text",
-					"value": "3001",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portCatalog",
-					"type": "text",
-					"value": "3002",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portTax",
-					"type": "text",
-					"value": "3003",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portPromotion",
-					"type": "text",
-					"value": "3004",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portCustomer",
-					"type": "text",
-					"value": "3005",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portRecommendation",
-					"type": "text",
-					"value": "3006",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portOauth",
-					"type": "text",
-					"value": "4000",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portExamplesMath",
-					"type": "text",
-					"value": "3001",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "portExamplesTaxes",
-					"type": "text",
-					"value": "3000",
-					"enabled": true,
-					"warning": ""
+					"value": "dev.microbase.io",
+					"enabled": true
 				},
 				{
 					"key": "categoryId",
 					"type": "text",
 					"value": "undefined",
-					"enabled": true,
-					"warning": ""
-				},
-				{
-					"key": "cartId",
-					"type": "text",
-					"value": "HyvYROObg",
-					"enabled": true,
-					"warning": ""
-				}
-			],
-			"team": null,
-			"timestamp": 1481580244461
-		},
-		{
-			"id": "80676599-01e8-4dde-a289-6374b3539fc8",
-			"name": "micro-rancher-ec2",
-			"values": [
-				{
-					"key": "host",
-					"value": "rhost01.dnsalias.com",
-					"type": "text",
 					"enabled": true
 				}
 			],
 			"team": null,
-			"timestamp": 1481618057711
+			"timestamp": 1484083449761
+		},
+		{
+			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
+			"name": "micro-localhost",
+			"values": [
+				{
+					"key": "portStock",
+					"value": ":3000",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portCart",
+					"value": ":3001",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portCatalog",
+					"value": ":3002",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portTax",
+					"value": ":3003",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portPromotion",
+					"value": ":3004",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portCustomer",
+					"value": ":3005",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portRecommendation",
+					"value": ":3006",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portOauth",
+					"value": ":4000",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portExamplesMath",
+					"value": ":3001",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portExamplesTaxes",
+					"value": ":3000",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "cartId",
+					"value": "rkNYH1uHg",
+					"enabled": true,
+					"type": "text"
+				}
+			],
+			"team": null,
+			"timestamp": 1484083449775
 		},
 		{
 			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
-			"name": "micro-localhost-gateway",
+			"name": "micro-localhost-docker",
 			"values": [
 				{
 					"key": "categoryId",
@@ -1130,7 +1196,127 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1481618057723
+			"timestamp": 1484083449802
+		},
+		{
+			"id": "75af29ac-e480-13b3-517e-f7eefe1ac034",
+			"name": "micro-dockercloud (Copy)",
+			"values": [
+				{
+					"key": "host",
+					"type": "text",
+					"value": "dev.microbase.io",
+					"enabled": true
+				},
+				{
+					"key": "categoryId",
+					"type": "text",
+					"value": "undefined",
+					"enabled": true
+				}
+			],
+			"team": null,
+			"timestamp": 1484084118263
+		},
+		{
+			"id": "e1211484-8fa3-4280-a7c4-88dc1fca488b",
+			"name": "micro-localhost (Copy)",
+			"values": [
+				{
+					"key": "portStock",
+					"type": "text",
+					"value": ":3000",
+					"enabled": true
+				},
+				{
+					"key": "portCart",
+					"type": "text",
+					"value": ":3001",
+					"enabled": true
+				},
+				{
+					"key": "portCatalog",
+					"type": "text",
+					"value": ":3002",
+					"enabled": true
+				},
+				{
+					"key": "portTax",
+					"type": "text",
+					"value": ":3003",
+					"enabled": true
+				},
+				{
+					"key": "portPromotion",
+					"type": "text",
+					"value": ":3004",
+					"enabled": true
+				},
+				{
+					"key": "portCustomer",
+					"type": "text",
+					"value": ":3005",
+					"enabled": true
+				},
+				{
+					"key": "portRecommendation",
+					"type": "text",
+					"value": ":3006",
+					"enabled": true
+				},
+				{
+					"key": "portOauth",
+					"type": "text",
+					"value": ":4000",
+					"enabled": true
+				},
+				{
+					"key": "portExamplesMath",
+					"type": "text",
+					"value": ":3001",
+					"enabled": true
+				},
+				{
+					"key": "portExamplesTaxes",
+					"type": "text",
+					"value": ":3000",
+					"enabled": true
+				},
+				{
+					"key": "categoryId",
+					"type": "text",
+					"value": "undefined",
+					"enabled": true
+				},
+				{
+					"key": "cartId",
+					"type": "text",
+					"value": "HyvYROObg",
+					"enabled": true
+				}
+			],
+			"team": null,
+			"timestamp": 1484084118265
+		},
+		{
+			"id": "1377e09b-9b81-075b-041c-a4c0cdf1d29c",
+			"name": "micro-localhost-docker (Copy)",
+			"values": [
+				{
+					"key": "categoryId",
+					"type": "text",
+					"value": "undefined",
+					"enabled": true
+				},
+				{
+					"key": "cartId",
+					"type": "text",
+					"value": "r1lNEYw0ge",
+					"enabled": true
+				}
+			],
+			"team": null,
+			"timestamp": 1484084118272
 		}
 	],
 	"headerPresets": [
@@ -1159,85 +1345,73 @@
 			"key": "token",
 			"type": "text",
 			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew",
-			"enabled": true,
-			"warning": ""
+			"enabled": true
 		},
 		{
 			"key": "host",
 			"type": "text",
 			"value": "localhost",
-			"enabled": true,
-			"warning": ""
+			"enabled": true
 		},
 		{
 			"key": "portCart",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portCatalog",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portStock",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portOauth",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portExamplesMath",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portExamplesTaxes",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portPromotion",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portTax",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portRecommendation",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		},
 		{
 			"key": "portCustomer",
 			"type": "text",
-			"value": "80",
-			"enabled": true,
-			"warning": ""
+			"value": "",
+			"enabled": true
 		}
 	]
 }

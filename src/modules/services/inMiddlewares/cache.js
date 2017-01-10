@@ -34,7 +34,6 @@ module.exports = function (base) {
         }
 
         function customReply(response, error) {
-          //console.log(a);
           // No cache on error
           if (error) return reply(response, error);
           // return the data and async cache the data

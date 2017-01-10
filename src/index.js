@@ -1,11 +1,14 @@
 const os = require('os');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = function (options) {
   options = options || {};
-  const base = {};
+  const base = {
+    extra: options.extra
+  };
 
-  // Fake log
+  // Fake log until the logger is activated
   base.log = (level, msg) => {
     const levels = {
       debug: '\u001b[34mdebug\u001b[39m',
@@ -16,19 +19,27 @@ module.exports = function (options) {
     console.log(`${new Date().toISOString()} - ${levels[level]}: [${os.hostname()}] ${msg}`);
   };
 
-  // Logs microbase start
-  base.version = require('./package.json').version;
-  base.log('info', `[main] Microbase ${base.version} starting`);
-
-  // Configuration object
+  // Calculate rootPath
   let rootPath = path.dirname(require.main.filename);
-  if (rootPath.lastIndexOf('node_modules') != -1) {
+  if (rootPath.lastIndexOf('node_modules') !== -1) {
     rootPath = rootPath.substr(0, rootPath.lastIndexOf('node_modules') - 1);
   }
-  base.config = options.config || require('./modules/config')([
-      `${rootPath}/config/${process.env.NODE_ENV || 'development'}.json`,
-      `${rootPath}/config/defaults.json`
-    ], base);
+
+  // Configuration object
+  const configFiles = [];
+  if (process.env.LOCAL_CONFIG_FILE) {
+    configFiles.push(process.env.LOCAL_CONFIG_FILE);
+  }
+  if (fs.existsSync(`${rootPath}/extra.json`)) {
+    configFiles.push(`${rootPath}/extra.json`);
+  }
+  configFiles.push(`${rootPath}/config/${process.env.NODE_ENV || 'development'}.json`);
+  configFiles.push(`${rootPath}/config/defaults.json`);
+  base.config = options.config || require('./modules/config')(configFiles, base);
+
+  // Log service start
+  const info = base.config.get('info');
+  base.log('info', `[main] Package ${info.package.name}@${info.package.version} starting (Microbase ${info.microbase.version}) ${info.package.commit}`);
 
   // Util service
   base.utils = options.utils || require('./modules/utils')(base);

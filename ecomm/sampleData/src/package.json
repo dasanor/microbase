@@ -3,16 +3,24 @@
   "version": "0.1.0",
   "description": "Sample data creaation.",
   "main": "index.js",
+  "homepage": "http://microbase.io",
+  "keywords": [
+    "microservices",
+    "ecommerce"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ncornag/micro-base.git"
+    "url": "https://github.com/ncornag/microbase.git"
   },
-  "author": "Nicolás Cornaglia Schlieman",
-  "license": "MIT",
+  "author": "Nicolás Cornaglia Schlieman (https://github.com/ncornag)",
+  "license": "OSL-3.0",
   "dependencies": {
     "csv-parse": "^1.1.1",
     "csv-stringify": "^1.0.4",
