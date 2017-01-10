@@ -8,6 +8,28 @@ version numbers will follow a [Semver][]-ish `0.y.z` format, where `y`
 is incremented when new features or breaking changes are introduced,
 and `z` is incremented for lesser changes or bug fixes.
 
+## [0.10.0][] (2017-01-10)
+
+* Added microbase and package info to the config object. 
+* Added a local config file configurable with LOCAL_CONFIG_FILE env var. 
+* Added a ‘extra.json’ config file to use by external process (like CI).
+* Split monitors in beforeRoutes and beforeErrorHandlers.
+* Added ‘sentry’ monitor option. 
+* Added option to pass data to the base object. 
+* ecomm
+  * Updated documentation.
+  * Added customer-service to docker-compose.
+  * Added recommendation-service to docker-compose.
+  * Added Shipping Methods to ecomm sample data.
+  * Added host variables to testplan.
+* Added travis/coveralls/bithound CI config and badges.
+* Improved tests.
+* Don't log http health pings.
+* Fix schema errors reporting.
+* Added CHANGELOG file to npm package.
+* Added dockercloud config files.
+* Refactor gateway docker-compose backends.
+
 ## [0.9.0][] (2016-12-12)
 
 * Refactored loadModules utilities, to allow load from keys and folders and overwrite option to loadFromFolder.
