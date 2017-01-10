@@ -1102,7 +1102,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1484083449761
+			"timestamp": 1484145542581
 		},
 		{
 			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
@@ -1176,7 +1176,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1484083449775
+			"timestamp": 1484145542589
 		},
 		{
 			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
@@ -1196,127 +1196,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1484083449802
-		},
-		{
-			"id": "75af29ac-e480-13b3-517e-f7eefe1ac034",
-			"name": "micro-dockercloud (Copy)",
-			"values": [
-				{
-					"key": "host",
-					"type": "text",
-					"value": "dev.microbase.io",
-					"enabled": true
-				},
-				{
-					"key": "categoryId",
-					"type": "text",
-					"value": "undefined",
-					"enabled": true
-				}
-			],
-			"team": null,
-			"timestamp": 1484084118263
-		},
-		{
-			"id": "e1211484-8fa3-4280-a7c4-88dc1fca488b",
-			"name": "micro-localhost (Copy)",
-			"values": [
-				{
-					"key": "portStock",
-					"type": "text",
-					"value": ":3000",
-					"enabled": true
-				},
-				{
-					"key": "portCart",
-					"type": "text",
-					"value": ":3001",
-					"enabled": true
-				},
-				{
-					"key": "portCatalog",
-					"type": "text",
-					"value": ":3002",
-					"enabled": true
-				},
-				{
-					"key": "portTax",
-					"type": "text",
-					"value": ":3003",
-					"enabled": true
-				},
-				{
-					"key": "portPromotion",
-					"type": "text",
-					"value": ":3004",
-					"enabled": true
-				},
-				{
-					"key": "portCustomer",
-					"type": "text",
-					"value": ":3005",
-					"enabled": true
-				},
-				{
-					"key": "portRecommendation",
-					"type": "text",
-					"value": ":3006",
-					"enabled": true
-				},
-				{
-					"key": "portOauth",
-					"type": "text",
-					"value": ":4000",
-					"enabled": true
-				},
-				{
-					"key": "portExamplesMath",
-					"type": "text",
-					"value": ":3001",
-					"enabled": true
-				},
-				{
-					"key": "portExamplesTaxes",
-					"type": "text",
-					"value": ":3000",
-					"enabled": true
-				},
-				{
-					"key": "categoryId",
-					"type": "text",
-					"value": "undefined",
-					"enabled": true
-				},
-				{
-					"key": "cartId",
-					"type": "text",
-					"value": "HyvYROObg",
-					"enabled": true
-				}
-			],
-			"team": null,
-			"timestamp": 1484084118265
-		},
-		{
-			"id": "1377e09b-9b81-075b-041c-a4c0cdf1d29c",
-			"name": "micro-localhost-docker (Copy)",
-			"values": [
-				{
-					"key": "categoryId",
-					"type": "text",
-					"value": "undefined",
-					"enabled": true
-				},
-				{
-					"key": "cartId",
-					"type": "text",
-					"value": "r1lNEYw0ge",
-					"enabled": true
-				}
-			],
-			"team": null,
-			"timestamp": 1484084118272
+			"timestamp": 1484145542593
 		}
 	],
 	"headerPresets": [
@@ -1343,74 +1223,74 @@
 	"globals": [
 		{
 			"key": "token",
-			"type": "text",
 			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL21pY3JvYmFzZS5pbyIsInN1YiI6InVzZXIiLCJzY29wZSI6ImFwaSIsImp0aSI6ImZmYjVhOTQxLTQwYWMtNDBjNy1iMDNiLWIzZjdiMTdlOGRlMCIsImlhdCI6MTQ2NDYwNzU1MCwiZXhwIjoxNDk2MTQzNTUwfQ.kgFdYAGjwLC7wrY2gcm-8swDzwSCuEwLhgSx10rKZew",
-			"enabled": true
+			"enabled": true,
+			"type": "text"
 		},
 		{
 			"key": "host",
-			"type": "text",
 			"value": "localhost",
-			"enabled": true
+			"enabled": true,
+			"type": "text"
 		},
 		{
 			"key": "portCart",
-			"type": "text",
 			"value": "",
+			"type": "text",
 			"enabled": true
 		},
 		{
 			"key": "portCatalog",
-			"type": "text",
 			"value": "",
+			"type": "text",
 			"enabled": true
 		},
 		{
 			"key": "portStock",
-			"type": "text",
 			"value": "",
-			"enabled": true
-		},
-		{
-			"key": "portOauth",
 			"type": "text",
-			"value": "",
-			"enabled": true
-		},
-		{
-			"key": "portExamplesMath",
-			"type": "text",
-			"value": "",
-			"enabled": true
-		},
-		{
-			"key": "portExamplesTaxes",
-			"type": "text",
-			"value": "",
-			"enabled": true
-		},
-		{
-			"key": "portPromotion",
-			"type": "text",
-			"value": "",
 			"enabled": true
 		},
 		{
 			"key": "portTax",
-			"type": "text",
 			"value": "",
+			"type": "text",
 			"enabled": true
 		},
 		{
-			"key": "portRecommendation",
-			"type": "text",
+			"key": "portPromotion",
 			"value": "",
+			"type": "text",
 			"enabled": true
 		},
 		{
 			"key": "portCustomer",
-			"type": "text",
 			"value": "",
+			"type": "text",
+			"enabled": true
+		},
+		{
+			"key": "portRecommendation",
+			"value": "",
+			"type": "text",
+			"enabled": true
+		},
+		{
+			"key": "portOauth",
+			"value": "",
+			"type": "text",
+			"enabled": true
+		},
+		{
+			"key": "portExamplesMath",
+			"value": "",
+			"type": "text",
+			"enabled": true
+		},
+		{
+			"key": "portExamplesTaxes",
+			"value": "",
+			"type": "text",
 			"enabled": true
 		}
 	]
