@@ -1,32 +1,41 @@
 sudo: required
 language: node_js
 node_js:
-  - '6'
+- '6'
 branches:
   only:
   - master
   - develop
 services:
-  - mongodb
-  - docker
+- mongodb
+- docker
 cache:
   directories:
-  - $HOME/.yarn-cache
+  - "$HOME/.yarn-cache"
 before_install:
-  # Repo for Yarn
-  - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
-  - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq yarn
+- sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+- echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+- sudo apt-get update -qq
+- sudo apt-get install -y -qq yarn
+env:
+  global:
+  - secure: bv1B51lsNU4pC0dvfOufIUr0JDhT1hFiZy2Dh5emRmIM+mjtFy+X1CvkEjhYWezulSIzW7EVHwtFTh8SPV1wyyCmsAZpXICaxdZW1XgzdV4mha41g/tijq4Sg9bTOcBvA1/At+1+k8E2ZaILYF1SMcN27cJyfgG0bEOp/GVd0fFAAqZmS1CNvubg/uO+2BN33CzgATUIncs+Z8Z0jaWh2UHHeMRHN9z0CI/pSXcvCmm+lxp3hNanMWfRVqAegGTeUaajop55YTiTzJhjwGSHilEMvxcmh9EPGOAJuT4h0wAEfoVxBKD5hlNIkbf4ymJIA55/dzQUVI96rQjKjawei2tDnjmGhLgbMcQgV4wB4gDgH8P5qtV7pUi9fcSTRv0leRy46Aq/HLryNHUhoqTwEC3HZcOvCG8gkk148qZx2VmFisfRwfco0jMtwM6nDL9RQ298yaTcNadqyckuCJZLI0Hxfz84RILzEY6bRJPcCZFxjloSnisjF+yFsUx8BYzKeekuECesLgs2oRNo/KMyvtQLdnln0p5GCGEG6qTjSp7YOEh01JXALYzjyQ5cz7gk7KbmWpNLTFazbupD+e9JaBVg8UHNcxju2+awQxRHo15WrGNUvNjXzyPrlqusdAZllvsTHRR5DBaxrc0+KIn1aAmoUFOL7LF+dz5qhmUEVBs=
+  - secure: h+U0cn+jgjT9hGT8JDYi8Sge2ZWxJqJwqMu5jIJjsUIVDYHgm3mkklS6fQGz/AkPymaQvfDayuMtmDpqXX5jKG3jGuy96e4GlkBPX6XXGb2DSjnwOvJprI1mruJsglfGDwvektqZGJD5WCUkYQA14kTHfz/W8957I0T5LC5lvCKTZLMA2qyFXoMtiyP/URGyhGNp9inf1zPb4RpcA48tZ6il+0e/tXl+4Ol1estJRBotpSGRCj7KEBmR/4uRACqVwnjjsh7IqYBwzK2OdnLTkFa7+y/6NulQQAx9wUR9MmScaum+/QpoUx5xM4JpUpafJOY4NzYz3BHrk+ASu5edYoTQaGeN7aP46Y+M94KdJ5vVqA7wq5BeUhY7YjlTr5b4tZJM90jgWD9dNvkb1HGEhfHQdWPX//XQ2KzOGuKPE+yy3MeBX7LFdDAd48OMXGGClGFodoV5+SL2yEb8Z8RexHb6w4EKDED0VWvnGWILi5h3vNRZtTvzbPlHy4Ryb/Y3QEqttJkkdsYPXV/PwotapHLOZ10TfYrqTDYPFwCDsdRXR+E+RtakRA2wBXI+UefXXzDaJbwdupq0Sa331reUxBIPYJflL7TSaLrVEaKkB+XkoO9aRKwiYtmaW44qc9P/hk38tXS0LSsyxL4jH8jGdsaWM4pi9VOTzf2unEGexz0=
+  - secure: OcUmvWn2PomUVhsP58KthuPBG5r28EQNe1TzmMMc+tlCtefswWb5otMYq5MTreDxgqQaSDLikIlTzlmR1Obz7If5+pglEuyiKyKZN/KFNKSPQTM5bmxhPRl/J7KsoVHNN/ANiBNnYjjD+PJFEpv+ww5g1d9Qp6zhQOv4hmbP+c6X2lGMCa50tnkTuRr92VBsSGgdENSyV06pArgP+B3VycEQtc8QWT89N+USsK1bmuPLbb5Dw7Bpv4LKZJO3+DZT+KFm5ItjRglWPC3Ck7nIOVMCT6/4EIPj2HpkSGVkIQF7kgU83pUxUaErMnqm01AFKhrH/Y0T1D8Y7SCI34PPTsf9GHfty+OiDz9pOdmtHp+GMlynUWa6a0Ni4zJggUDDRIUzKU6MGiAy5mY6hpX6NCItz5x0Qm/uoMeI/4C4pCh3+S0DqyX7hvq8hlJ39M/FxgJsFqToHCfLhF9CTwsOB3T9Xh3iiqND4mdxYr9ZQ+xqnEjITiYBUj1tWXRD++IWKq2ED1X2Q9Vd74KBwYpxkXP5SX6PhCs0I2tdWF60XkGlF5sGd77vXZRxEGOzSH/k6+lklK9nHaA6sYJec70WTaQlxWjvK3wxWgnE7049CH80s45pPp480rS/gy/iEj/n9Ouy1R1+p37RgJ9RfiTzysRlTR8oK9TSp4kzmcRKDZc=
 install:
-  - cd src
-  - yarn --pure-lockfile
+- cd src
+- yarn --pure-lockfile
 before_script:
-  - sleep 15
+- sleep 15
 script:
-  - npm run test-cov-lcov
+- npm run test-cov-lcov
 after_success:
-  - cat ./lcov.info | ./node_modules/.bin/coveralls
+- cat ./lcov.info | ./node_modules/.bin/coveralls
+deploy:
+  provider: script
+  script: npmpublish.sh
+  on:
+    branch: master
 notifications:
   slack:
     secure: J/lOLe9y6fUPSb83GB2ipFCsJXlBfrEaS8glqpTxQImcAV49Dzi/sgw4bVE7AP7yPNlJCdVGW2/jgesR3Gz9XOJW6aTziqyO171EyRoNmecgzI9rXgLRQtpf0q0R92PXb84ZAnSdZlrq5qmHtV477UWTpTn9Csogk9SVbVZityBcJTtY1fKPh3P9is0uWOMY4uJ8kW6AoibRCsmOBEpVMAqR+2m8EUxACj2ZZcAEIX8Ou9bf/a3pzFd+p4aor3c/uIz1lV8yEBPDmu34OxW6YYYF4jb6M2cL/2uYin6ne5Dbk0owllgAAOPQARVNOG8bPSrUI4ipOwF/d+vs6gSyeAhOKbqTcITXYpJEP9biGP6mjl1xhogh9YVzIW07ecgp0bO0tAXKbrfuKV5ViCXKwazLCI/Nz3y1rIKO7GMigsC41cwomOewVJmNRtHXJyyyCOQfrlsB/OYd6ri/8lHUi5r+xsbqjarN8Nkqfg851ih5ldDLW3GzovV1kaVKxL/TuRZU3mRZhlCzxJBNl5gfJWNmNGaAQDoN/+fIfOWFID3v43vQaDWbcxAqQe2wTStCJFMzOk8aeBLdJhrCvPKh8FErDLGqjQ8DsfnbFA3eZztjXJZJ/iX6mu24U9fcA27Z01mfZLc+ogRpvnz7MBZkttDJ0Lgc9axPzHgdGzMVGiY=
