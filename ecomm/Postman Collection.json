@@ -170,6 +170,110 @@
 			]
 		},
 		{
+			"id": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+			"name": "elasticsearch",
+			"description": "",
+			"order": [
+				"00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
+				"703a1c10-8dc0-7038-af0f-715106f7a74f",
+				"4ad70d79-f495-d9ba-ad35-26acd58fe815",
+				"c1374ebd-b85e-020d-a24f-5882c083a2a3"
+			],
+			"folders": [],
+			"timestamp": 1465836740698,
+			"synced": false,
+			"remote_id": 0,
+			"owner": "467243",
+			"sharedWithTeam": false,
+			"subscribed": false,
+			"remoteLink": "",
+			"remoteLinkUpdatedAt": null,
+			"public": false,
+			"createdAt": 1465836740698,
+			"updatedAt": 1476355573780,
+			"write": true,
+			"published": false,
+			"favorite": false,
+			"permissions": {},
+			"syncedPermissions": {},
+			"requests": [
+				{
+					"id": "00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
+					"headers": "",
+					"url": "http://localhost:9200/_cat/indices?v",
+					"preRequestScript": null,
+					"pathVariables": {},
+					"method": "GET",
+					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
+					"dataMode": "raw",
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1476355256692,
+					"name": "generic:indices",
+					"description": "",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"responses": []
+				},
+				{
+					"id": "4ad70d79-f495-d9ba-ad35-26acd58fe815",
+					"headers": "",
+					"url": "http://localhost:9200/products",
+					"preRequestScript": null,
+					"pathVariables": {},
+					"method": "DELETE",
+					"data": null,
+					"dataMode": "params",
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1465836851565,
+					"name": "products:removeindex",
+					"description": "",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"responses": []
+				},
+				{
+					"id": "703a1c10-8dc0-7038-af0f-715106f7a74f",
+					"headers": "",
+					"url": "http://localhost:9200/products/product/_search?q=*",
+					"preRequestScript": null,
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
+					"dataMode": "raw",
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1476355569515,
+					"name": "products:search",
+					"description": "",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"responses": []
+				},
+				{
+					"id": "c1374ebd-b85e-020d-a24f-5882c083a2a3",
+					"headers": "",
+					"url": "http://localhost:9200/products/product/_mapping",
+					"pathVariables": {},
+					"preRequestScript": null,
+					"method": "GET",
+					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
+					"data": null,
+					"dataMode": "params",
+					"name": "products:mapping",
+					"description": "",
+					"descriptionFormat": "html",
+					"time": 1465901722021,
+					"version": 2,
+					"responses": [],
+					"tests": null,
+					"currentHelper": "normal",
+					"helperAttributes": {}
+				}
+			]
+		},
+		{
 			"id": "43874c95-c712-3cb2-06cc-a6210d715de9",
 			"name": "micro-stock",
 			"description": "",
@@ -282,110 +386,6 @@
 					"name": "stock.create",
 					"description": "",
 					"collectionId": "43874c95-c712-3cb2-06cc-a6210d715de9"
-				}
-			]
-		},
-		{
-			"id": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-			"name": "elasticsearch",
-			"description": "",
-			"order": [
-				"00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
-				"703a1c10-8dc0-7038-af0f-715106f7a74f",
-				"4ad70d79-f495-d9ba-ad35-26acd58fe815",
-				"c1374ebd-b85e-020d-a24f-5882c083a2a3"
-			],
-			"folders": [],
-			"timestamp": 1465836740698,
-			"synced": false,
-			"remote_id": 0,
-			"owner": "467243",
-			"sharedWithTeam": false,
-			"subscribed": false,
-			"remoteLink": "",
-			"remoteLinkUpdatedAt": null,
-			"public": false,
-			"createdAt": 1465836740698,
-			"updatedAt": 1476355573780,
-			"write": true,
-			"published": false,
-			"favorite": false,
-			"permissions": {},
-			"syncedPermissions": {},
-			"requests": [
-				{
-					"id": "00daed12-a29e-ac35-9d62-a3af6f3d7dc4",
-					"headers": "",
-					"url": "http://localhost:9200/_cat/indices?v",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "GET",
-					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
-					"dataMode": "raw",
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1476355256692,
-					"name": "generic:indices",
-					"description": "",
-					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-					"responses": []
-				},
-				{
-					"id": "4ad70d79-f495-d9ba-ad35-26acd58fe815",
-					"headers": "",
-					"url": "http://localhost:9200/products",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "DELETE",
-					"data": null,
-					"dataMode": "params",
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1465836851565,
-					"name": "products:removeindex",
-					"description": "",
-					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-					"responses": []
-				},
-				{
-					"id": "703a1c10-8dc0-7038-af0f-715106f7a74f",
-					"headers": "",
-					"url": "http://localhost:9200/products/product/_search?q=*",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n    \"size\" : 0,\n    \"aggs\" : { \n        \"brand\" : { \n            \"terms\" : { \n              \"field\" : \"brand\"\n            }\n        },\n        \"colors\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.color\"\n            }\n        },\n        \"energy\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.energy\"\n            }\n        },\n        \"height\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.height\"\n            }\n        },\n        \"width\" : { \n            \"terms\" : { \n              \"field\" : \"classifications.width\"\n            }\n        }\n    }\n}",
-					"dataMode": "raw",
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1476355569515,
-					"name": "products:search",
-					"description": "",
-					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-					"responses": []
-				},
-				{
-					"id": "c1374ebd-b85e-020d-a24f-5882c083a2a3",
-					"headers": "",
-					"url": "http://localhost:9200/products/product/_mapping",
-					"pathVariables": {},
-					"preRequestScript": null,
-					"method": "GET",
-					"collectionId": "4b35f66b-38aa-18d7-85f9-add38785c8f8",
-					"data": null,
-					"dataMode": "params",
-					"name": "products:mapping",
-					"description": "",
-					"descriptionFormat": "html",
-					"time": 1465901722021,
-					"version": 2,
-					"responses": [],
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {}
 				}
 			]
 		},
@@ -514,7 +514,13 @@
 				"afe1f8af-0663-c0c9-435e-51d11ec099ac",
 				"671e9550-24be-e6b8-7d2b-c9f35ad996cd",
 				"041ae5c8-9833-d800-3ca8-5e11e6197906",
-				"48921e81-c492-e2f5-4ea3-51779e018a68"
+				"48921e81-c492-e2f5-4ea3-51779e018a68",
+				"5370ee85-f4bf-a4f1-d5ad-3fdaf471bb2d",
+				"1765ae15-82bc-2453-a6a8-5bac5cf43623",
+				"f1e6c9d2-08c7-87a3-ffe3-89119812fd7d",
+				"331e18fb-b2b9-8cb1-ca33-c8d183709cf8",
+				"36b68977-2824-4819-b6b3-12b36c1b1e22",
+				"3ae01089-3f1f-79c6-fed8-4b43c1226c4f"
 			],
 			"folders": [],
 			"timestamp": 0,
@@ -527,7 +533,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-05-08T20:27:42.000Z",
-			"updatedAt": 1479116452701,
+			"updatedAt": 1483632382034,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -550,6 +556,80 @@
 					"name": "cart.removeFromCart",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+				},
+				{
+					"id": "1765ae15-82bc-2453-a6a8-5bac5cf43623",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.setShippingMethod?cartId=H19PRsec",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{ \n\t\"method\": {\n      \"title\": \"UPS Same Day\",\n      \"taxCode\": \"default\",\n      \"rates\": [\n        {\n          \"amount\": 10.1,\n          \"currency\": \"EUR\"\n        },\n        {\n          \"amount\": 9.9,\n          \"currency\": \"GBP\"\n        }\n      ]\n    }\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483632891538,
+					"name": "cart.setShippingMethod",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+				},
+				{
+					"id": "331e18fb-b2b9-8cb1-ca33-c8d183709cf8",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/shipping.info?shippingId=SJi0oca4e",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "GET",
+					"data": "",
+					"dataMode": "raw",
+					"version": 2,
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483370299734,
+					"name": "shipping.info",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"responses": []
+				},
+				{
+					"id": "36b68977-2824-4819-b6b3-12b36c1b1e22",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/shipping.remove?shippingId=SJi0oca4e",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "",
+					"dataMode": "raw",
+					"version": 2,
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483630491501,
+					"name": "shipping.remove",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"responses": []
+				},
+				{
+					"id": "3ae01089-3f1f-79c6-fed8-4b43c1226c4f",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/shipping.addressMethods",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n\t\"address\": {\n\t    \"firstName\": \"John\",\n\t    \"lastName\": \"Doe\",\n\t    \"address_1\": \"1650 Bolman Court\",\n\t    \"postCode\": \"61701\",\n\t    \"city\": \"Valencia\",\n\t    \"state\": \"Piemonte\",\n\t    \"country\": \"IT\",\n\t    \"company\": \"Thinkwrap\",\n\t    \"phone\": 2173203531,\n\t    \"instructions\": \"Instructions\"\n  \t}\n}",
+					"dataMode": "raw",
+					"version": 2,
+					"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"categoryId\", data.id)",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483632924965,
+					"name": "shipping.addressMethods",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"responses": []
 				},
 				{
 					"id": "45a43c59-d46c-9c75-8440-61bf389ed581",
@@ -582,6 +662,23 @@
 					"helperAttributes": {},
 					"time": 1482517194217,
 					"name": "cart.calculateCart",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+				},
+				{
+					"id": "5370ee85-f4bf-a4f1-d5ad-3fdaf471bb2d",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/cart.setShippingAddress?cartId=H19PRsec",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{ \n\t\"address\": {\n\t    \"firstName\": \"John\",\n\t    \"lastName\": \"Doe\",\n\t    \"address_1\": \"1650 Bolman Court\",\n\t    \"postCode\": \"61701\",\n\t    \"city\": \"Valencia\",\n\t    \"state\": \"Piemonte\",\n\t    \"country\": \"IT\",\n\t    \"company\": \"Thinkwrap\",\n\t    \"phone\": 2173203531,\n\t    \"instructions\": \"Instructions\"\n  \t}\n}",
+					"dataMode": "raw",
+					"tests": "var data = JSON.parse(responseBody);\n\ntests[\"Cart exists\"] = data.id === \"{{cartId}}\"\ntests[\"Item was added\"] = data.entries > 0",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483631567882,
+					"name": "cart.setShippingAddress",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
 				},
@@ -635,6 +732,25 @@
 					"name": "cart.create (anon)",
 					"description": "",
 					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb"
+				},
+				{
+					"id": "f1e6c9d2-08c7-87a3-ffe3-89119812fd7d",
+					"headers": "Content-Type: application/json\nAccept: application/json\nAuthorization: Bearer {{token}}\n",
+					"url": "http://{{host}}{{portCart}}/services/cart/v1/shipping.create",
+					"preRequestScript": "",
+					"pathVariables": {},
+					"method": "POST",
+					"data": "{\n    \"title\" : \"UPS Same Day\",\n    \"active\" : true,\n    \"taxCode\" : \"default\",\n    \"rates\" : [\n      {\n        \"locations\" : [\n          { \"country\" : \"GB\" },\n          { \"country\" : \"IT\" },\n          { \"country\" : \"GB\" }\n        ],\n        \"rates\": [\n          {\"currency\" : \"EUR\", \"amount\" : 10.10},\n          {\"currency\" : \"GBP\", \"amount\" : 9.90}\n        ]\n      },\n      {\n        \"locations\" : [\n          { \"country\" : \"US\", \"state\" : \"Hawaii\" },\n          { \"country\" : \"US\", \"state\" : \"Alaska\" }\n        ],\n        \"rates\" : [\n          {\"currency\" : \"USD\", \"amount\" : 25.00}\n        ]\n      }\n    ]\n  }",
+					"dataMode": "raw",
+					"version": 2,
+					"tests": "",
+					"currentHelper": "normal",
+					"helperAttributes": {},
+					"time": 1483373550345,
+					"name": "shipping.create",
+					"description": "",
+					"collectionId": "8faec062-617f-7ef1-8ebb-c09b3a69aebb",
+					"responses": []
 				}
 			]
 		},
@@ -702,7 +818,7 @@
 			"remoteLinkUpdatedAt": null,
 			"public": false,
 			"createdAt": "2016-06-08T17:12:41.000Z",
-			"updatedAt": 1474469843569,
+			"updatedAt": 1482604257144,
 			"write": true,
 			"published": false,
 			"favorite": false,
@@ -986,11 +1102,125 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1482517554973
+			"timestamp": 1484083449761
 		},
 		{
 			"id": "f757ba2f-f8c8-e1bd-81d8-a0312701db0f",
 			"name": "micro-localhost",
+			"values": [
+				{
+					"key": "portStock",
+					"value": ":3000",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portCart",
+					"value": ":3001",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portCatalog",
+					"value": ":3002",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portTax",
+					"value": ":3003",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portPromotion",
+					"value": ":3004",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portCustomer",
+					"value": ":3005",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portRecommendation",
+					"value": ":3006",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portOauth",
+					"value": ":4000",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portExamplesMath",
+					"value": ":3001",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "portExamplesTaxes",
+					"value": ":3000",
+					"enabled": true,
+					"type": "text"
+				},
+				{
+					"key": "cartId",
+					"value": "rkNYH1uHg",
+					"enabled": true,
+					"type": "text"
+				}
+			],
+			"team": null,
+			"timestamp": 1484083449775
+		},
+		{
+			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
+			"name": "micro-localhost-docker",
+			"values": [
+				{
+					"key": "categoryId",
+					"type": "text",
+					"value": "undefined",
+					"enabled": true
+				},
+				{
+					"key": "cartId",
+					"type": "text",
+					"value": "r1lNEYw0ge",
+					"enabled": true
+				}
+			],
+			"team": null,
+			"timestamp": 1484083449802
+		},
+		{
+			"id": "75af29ac-e480-13b3-517e-f7eefe1ac034",
+			"name": "micro-dockercloud (Copy)",
+			"values": [
+				{
+					"key": "host",
+					"type": "text",
+					"value": "dev.microbase.io",
+					"enabled": true
+				},
+				{
+					"key": "categoryId",
+					"type": "text",
+					"value": "undefined",
+					"enabled": true
+				}
+			],
+			"team": null,
+			"timestamp": 1484084118263
+		},
+		{
+			"id": "e1211484-8fa3-4280-a7c4-88dc1fca488b",
+			"name": "micro-localhost (Copy)",
 			"values": [
 				{
 					"key": "portStock",
@@ -1066,11 +1296,11 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1482517554990
+			"timestamp": 1484084118265
 		},
 		{
-			"id": "fd07efff-0bd5-8b17-5c32-f76110eee49d",
-			"name": "micro-localhost-docker",
+			"id": "1377e09b-9b81-075b-041c-a4c0cdf1d29c",
+			"name": "micro-localhost-docker (Copy)",
 			"values": [
 				{
 					"key": "categoryId",
@@ -1086,7 +1316,7 @@
 				}
 			],
 			"team": null,
-			"timestamp": 1482517554995
+			"timestamp": 1484084118272
 		}
 	],
 	"headerPresets": [

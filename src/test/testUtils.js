@@ -113,7 +113,7 @@ describe('Utils', () => {
     const spy = sinon.spy(base.logger, 'error');
     const module = base.utils.loadModule('test:loadModule:nonExistentModule');
     expect(module).to.be.null();
-    expect(spy.getCall(0).args[0]).equals('[modules] module \'test:loadModule:nonExistentModule:nonExistentModule\' not found');
+    expect(spy.getCall(0).args[0]).equals('[modules] module \'test:loadModule:nonExistentModule:nonExistentModule\' not found (Cannot find module \'nonExistentModule\')');
     base.logger.error.restore();
     done();
   });
