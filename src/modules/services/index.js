@@ -153,6 +153,10 @@ module.exports = function (base) {
       }
       circuit = new Brakes(promiseCall(transport), options);
 
+      circuit.on('failure', () => {
+        base.logger.error(`[service] Circuit breaker failure for ${context.config.name}`);
+      });
+
       circuit.on('circuitOpen', () => {
         base.logger.error(`[service] Circuit breaker opened for ${context.config.name}`);
       });
