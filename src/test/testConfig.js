@@ -48,7 +48,7 @@ describe('Config', () => {
     done();
   });
   it('should return a correct value', (done) => {
-    const value = base.config.get('services:defaultFolder');
+    const value = base.config.get('services:defaultOperationsFolder');
     expect(value).to.equal('operations');
     done();
   });
