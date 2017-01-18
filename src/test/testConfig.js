@@ -49,7 +49,7 @@ describe('Config', () => {
   });
   it('should return a correct value', (done) => {
     const value = base.config.get('services:defaultOperationsFolder');
-    expect(value).to.equal('operations');
+    expect(value).to.equal('${servicePath}/operations');
     done();
   });
   it('should return a correct env value', (done) => {

@@ -64,11 +64,11 @@ module.exports = function (base) {
     loadModule(key) {
       if (base.logger.isDebugEnabled()) base.logger.debug(`[modules] loading module from '${key}'`);
       let name = base.config.get(key);
-      name = this.template(name, base.config.get());
       if (!name) {
         base.logger.warn(`[modules] module '${key}' not found`);
         return null;
       }
+      name = this.template(name, base.config.get());
       let modulePath;
       if (name.startsWith('.')) {
         modulePath = path.normalize(`${rootPath}/${name}`);
