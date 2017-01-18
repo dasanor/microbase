@@ -75,5 +75,25 @@ module.exports = function (options) {
   // Workers service
   base.workers = options.workers || require('./modules/workers')(base);
 
+  base.shutdown = () => {
+    base.logger.info('[main] Received kill signal, shutting down gracefully.');
+    base.transports.http.server.close(function () {
+      base.logger.info('[main] Closed out remaining connections.');
+      process.exit();
+    });
+
+    // if after
+    setTimeout(function () {
+      base.logger.warn('[main] Could not close connections in time, forcefully shutting down.');
+      process.exit();
+    }, 10 * 1000);
+  };
+
+  // listen for TERM signal .e.g. kill
+  process.on('SIGTERM', base.shutdown);
+
+  // listen for INT signal e.g. Ctrl-C
+  process.on('SIGINT', base.shutdown);
+
   return base;
 };
