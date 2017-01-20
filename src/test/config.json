@@ -1,0 +1,32 @@
+{
+  "services": {
+    "inMiddlewares": {
+      "validator": "./modules/services/inMiddlewares/validator",
+      "eventEmitter": "./modules/services/inMiddlewares/eventEmitter",
+      "cache": "./modules/services/inMiddlewares/cache"
+    },
+    "operations": {
+      "module1": "${rootPath}/test/modulesOverwrite/moduleOverwritten"
+    }
+  },
+  "test": {
+    "loadModule": {
+      "moduleDot": "./test/loadModules/module1",
+      "moduleNoDot": "shortid",
+      "nonExistentModule": "nonExistentModule"
+    }
+  },
+  "bus": {
+    "engines": {
+      "local": {
+        "handler": "./local"
+      }
+    },
+    "channels": {
+      "carts": {
+        "name": "TEST",
+        "engine": "local"
+      }
+    }
+  }
+}

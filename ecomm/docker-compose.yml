@@ -99,6 +99,21 @@ services:
       - mongo
       - bus
 
+  customer-service:
+    extends:
+      file: docker-compose-common.yml
+      service: service
+    build: ./micro-customer-service
+    links:
+      - consul
+      - gateway
+      - mongo
+      - bus
+      - elasticsearch
+    depends_on:
+      - mongo
+      - bus
+
   cart-service:
     extends:
       file: docker-compose-common.yml

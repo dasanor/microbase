@@ -65,6 +65,11 @@ project. For the most up to date ones refer to the original repositories:
 * Fast Cart calculation
 * Abandonment handling
 
+[Customer Service](https://github.com/ncornag/micro-customer-service)
+
+* Customers and addresses management (create, read, update and delete operations).
+* Check customers credentials.
+
 [Stock Service](https://github.com/ncornag/micro-stock-service)
 
 * Warehose enabled

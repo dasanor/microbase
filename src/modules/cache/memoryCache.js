@@ -3,12 +3,10 @@ const memoryCache = require('catbox-memory');
 
 module.exports = function (base) {
 
-  const implementation = base.config.get('cache:implementation');
-
   const proxy = (cache) => {
     return {
       get: (key) => {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
           const keys = key.split(':');
           if (keys[1]) {
             // Hierarchical key
@@ -20,32 +18,36 @@ module.exports = function (base) {
           } else {
             cache.get(key, (err, value, cached, report) => {
               if (err) return reject(err);
-              return resolve(cached.item);
+              return resolve(cached ? cached.item : null);
             });
           }
-        })
+        });
       },
 
       set: (key, value) => {
-        const keys = key.split(':');
-        if (keys[1]) {
-          // Hierarchical key
-          cache.get(keys[0], (err, val, cached, report) => {
-            if (err) return reject(err);
-            let cachedValue = {};
-            if (cached) {
-              cachedValue = cached.item;
-            }
-            cachedValue[keys[1]] = value;
-            cache.set(keys[0], cachedValue, undefined, err => {
-              if (err) base.logger.error(`[cache] setting '${key}'`)
+        return new Promise((resolve, reject) => {
+          const keys = key.split(':');
+          if (keys[1]) {
+            // Hierarchical key
+            cache.get(keys[0], (err, val, cached, report) => {
+              if (err) return reject(err);
+              let cachedValue = {};
+              if (cached) {
+                cachedValue = cached.item;
+              }
+              cachedValue[keys[1]] = value;
+              cache.set(keys[0], cachedValue, undefined, err => {
+                if (err) return reject(err);
+                return resolve();
+              });
             });
-          });
-        } else {
-          cache.set(key, value, undefined, err => {
-            if (err) base.logger.error(`[cache] setting '${key}'`)
-          });
-        }
+          } else {
+            return cache.set(key, value, undefined, err => {
+              if (err) return reject(err);
+              return resolve();
+            });
+          }
+        });
       },
 
       drop: (key) => {

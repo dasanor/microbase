@@ -1,11 +1,13 @@
 const os = require('os');
 const path = require('path');
+const fs = require('fs');
 
-module.exports = function (options) {
-  options = options || {};
-  const base = {};
+module.exports = function (options = {}) {
+  const base = {
+    extra: options.extra
+  };
 
-  // Fake log
+  // Fake log until the logger is activated
   base.log = (level, msg) => {
     const levels = {
       debug: '\u001b[34mdebug\u001b[39m',
@@ -16,19 +18,27 @@ module.exports = function (options) {
     console.log(`${new Date().toISOString()} - ${levels[level]}: [${os.hostname()}] ${msg}`);
   };
 
-  // Logs microbase start
-  base.version = require('./package.json').version;
-  base.log('info', `[main] Microbase ${base.version} starting`);
-
-  // Configuration object
-  let rootPath = path.dirname(require.main.filename);
-  if (rootPath.lastIndexOf('node_modules') != -1) {
-    rootPath = rootPath.substr(0, rootPath.lastIndexOf('node_modules') - 1);
+  const configFiles = options.configFiles || [];
+  if (!options.configFiles) {
+    base.log('info', '[main] using default configuration files');
+    const rootPath = path.dirname(require.main.filename);
+    if (process.env.LOCAL_CONFIG_FILE) {
+      configFiles.push(process.env.LOCAL_CONFIG_FILE);
+    }
+    if (fs.existsSync(`${rootPath}/extra.json`)) {
+      configFiles.push(`${rootPath}/extra.json`);
+    }
+    configFiles.push(`${rootPath}/config/${process.env.NODE_ENV || 'development'}.json`);
+    configFiles.push(`${rootPath}/config/defaults.json`);
   }
-  base.config = options.config || require('./modules/config')([
-      `${rootPath}/config/${process.env.NODE_ENV || 'development'}.json`,
-      `${rootPath}/config/defaults.json`
-    ], base);
+  base.config = options.config || require('./modules/config')(configFiles, base);
+  Object.keys(options.configObject || {}).forEach((k) => {
+    base.config.set(k, (options.configObject || {})[k]);
+  });
+
+  // Log service start
+  const info = base.config.get('info');
+  base.log('info', `[main] Package ${info.package.name}@${info.package.version} starting (Microbase ${info.microbase.version}) ${info.package.commit || ''}`);
 
   // Util service
   base.utils = options.utils || require('./modules/utils')(base);
@@ -63,6 +73,26 @@ module.exports = function (options) {
 
   // Workers service
   base.workers = options.workers || require('./modules/workers')(base);
+
+  base.shutdown = () => {
+    base.logger.info('[main] Received kill signal, shutting down gracefully.');
+    base.transports.http.server.close(function () {
+      base.logger.info('[main] Closed out remaining connections.');
+      process.exit();
+    });
+
+    // if after
+    setTimeout(function () {
+      base.logger.warn('[main] Could not close connections in time, forcefully shutting down.');
+      process.exit();
+    }, 10 * 1000);
+  };
+
+  // listen for TERM signal .e.g. kill
+  process.on('SIGTERM', base.shutdown);
+
+  // listen for INT signal e.g. Ctrl-C
+  process.on('SIGINT', base.shutdown);
 
   return base;
 };
